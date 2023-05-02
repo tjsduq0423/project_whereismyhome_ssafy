@@ -18,8 +18,8 @@ public class BoardService {
         boardRepository.save(board);
     }
 
-
-
-
-
+    //게시글 삭제
+    public void delete(int id) {
+        boardRepository.deleteById(id);
+    }
 }

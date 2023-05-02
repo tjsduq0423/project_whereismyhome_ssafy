@@ -3,8 +3,9 @@ package com.whereismyhome.notice.service;
 import com.whereismyhome.notice.entity.Notice;
 import com.whereismyhome.notice.repository.NoticeRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -17,4 +18,8 @@ public class NoticeService {
     }
 
     //공지사항 전체 조회
+    public List<Notice> NoticeList(){
+        List<Notice> list = noticeRepository.findAll();
+        return list;
+    }
 }

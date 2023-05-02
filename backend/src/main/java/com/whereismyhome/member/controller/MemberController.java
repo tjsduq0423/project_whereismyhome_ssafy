@@ -17,12 +17,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class MemberController {
 
     private final MemberService memberService;
-    private final MemberMapper mapper;
+
     //회원 가입
     @PostMapping("/join")
     public ResponseEntity join(@RequestBody MemberJoinDto memberJoinDto) throws IllegalAccessException {
-        memberService.join(mapper.memberJoinDtoToMember(memberJoinDto));
-
+        memberService.join(memberJoinDto);
         return ResponseEntity.ok().build();
     }
 

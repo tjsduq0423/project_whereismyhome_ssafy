@@ -10,6 +10,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,6 +25,7 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class JwtProvider {
     //비밀키
     private String secretKey = "dasdasdasdasfadsdfsdfsfsfadfasdfadfaasdfasdfasdfasdfasdfasdfasdfasdfasdfasgebabadfsfsdfsdfadfabadbsdbsb";
@@ -76,8 +78,10 @@ public class JwtProvider {
     public String getTokenFromCookie(HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
+            log.debug("쿠키 있음");
             for (Cookie cookie : cookies) {
                 if (cookie.getName().equals("Authorization")) {
+                    log.debug("찾고 싶은 거 찾음");
                     return cookie.getValue();
                 }
             }

@@ -13,8 +13,10 @@ import java.util.List;
 
 @Getter
 @Setter
-@Builder
 @Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Member implements UserDetails {
     @Id
     private String id;

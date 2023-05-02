@@ -25,6 +25,8 @@ public class MemberService {
         Member member = Member.builder()
                 .id(postDto.getId())
                 .password(passwordEncoder.encode(postDto.getPassword()))
+                .email(postDto.getEmail())
+                .name(postDto.getName())
                 .roles(Collections.singletonList("ROLE_USER"))
                 .build();
 

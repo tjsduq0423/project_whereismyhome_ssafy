@@ -10,12 +10,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-@Entity
+
 @Getter
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
 @Setter
+@Builder
+@Entity
 public class Member implements UserDetails {
     @Id
     private String id;

@@ -1,5 +1,6 @@
 package com.whereismyhome.board.entity;
 
+import com.whereismyhome.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -28,4 +29,8 @@ public class Board {
 
     @Column
     private String responseContent;
+
+    @ManyToOne
+    @JoinColumn(name = "member_id")
+    private Member member;
 }

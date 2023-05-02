@@ -1,6 +1,7 @@
 package com.whereismyhome.member.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.whereismyhome.board.entity.Board;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -29,6 +30,9 @@ public class Member implements UserDetails {
 
     @Column(nullable = false, length = 45)
     private String email;
+
+    @OneToMany(mappedBy = "member")
+    private List<Board> boardList;
 
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ElementCollection(fetch = FetchType.EAGER)

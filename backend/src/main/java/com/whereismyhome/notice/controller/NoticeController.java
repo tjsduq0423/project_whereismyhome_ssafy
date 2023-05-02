@@ -1,14 +1,15 @@
 package com.whereismyhome.notice.controller;
 
 import com.whereismyhome.notice.dto.NoticePostDto;
+import com.whereismyhome.notice.dto.NoticeResponseDto;
+import com.whereismyhome.notice.entity.Notice;
 import com.whereismyhome.notice.mapper.NoticeMapper;
 import com.whereismyhome.notice.service.NoticeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -26,8 +27,14 @@ public class NoticeController {
         return ResponseEntity.ok().build();
     }
 
-
     //공지사항 전체 조회
+    @GetMapping("/list")
+    public ResponseEntity selectAll(){
+        List<Notice> noticeList = noticeService.noticeList();
+        List<NoticeResponseDto> responseDto = mapper.noticeListToNoticeResponseDto(noticeList);
+
+        return ResponseEntity.ok().body(responseDto);
+    }
 
     //공지사항 하나 조회
 }

@@ -18,7 +18,7 @@ public class NoticeService {
     }
 
     //공지사항 전체 조회
-    public List<Notice> NoticeList(){
+    public List<Notice> noticeList(){
         List<Notice> list = noticeRepository.findAll();
         return list;
     }

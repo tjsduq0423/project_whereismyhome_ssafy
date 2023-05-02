@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class BoardListResponseDto {
     private int id;
+    private String memberId;
     private String title;
     private String content;
     private LocalDateTime createtime;

@@ -47,7 +47,7 @@ public class BoardController {
     public ResponseEntity boardList(@PathVariable("id") String id) {
         List<Board> boards = boardService.boardList(id);
         List<BoardListResponseDto> boardListResponseDtos = mapper.boardListToBoardListResponseDto(boards);
-
-        return new ResponseEntity(boardListResponseDtos, HttpStatus.OK);
+        List<BoardListResponseDto> boardList = boardService.setId(boardListResponseDtos, id);
+        return new ResponseEntity(boardList, HttpStatus.OK);
     }
 }

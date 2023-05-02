@@ -1,5 +1,6 @@
 package com.whereismyhome.board.service;
 
+import com.whereismyhome.board.dto.BoardListResponseDto;
 import com.whereismyhome.board.entity.Board;
 import com.whereismyhome.board.repository.BoardRepository;
 import com.whereismyhome.jwt.JwtProvider;
@@ -29,5 +30,12 @@ public class BoardService {
         List<Board> boardList = boardRepository.findByMemberId(id);
 
         return boardList;
+    }
+
+    public List<BoardListResponseDto> setId(List<BoardListResponseDto> list,String id){
+        for(BoardListResponseDto b : list){
+            b.setMemberId(id);
+        }
+        return list;
     }
 }

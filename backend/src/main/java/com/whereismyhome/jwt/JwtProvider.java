@@ -3,9 +3,10 @@ package com.whereismyhome.jwt;
 
 import com.whereismyhome.member.repository.MemberRepository;
 import com.whereismyhome.member.service.CustomUserDetailService;
-import io.jsonwebtoken.*;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtParser;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -40,8 +41,6 @@ public class JwtProvider {
         //토큰 제목
         Claims claims = Jwts.claims().setSubject(id);
 
-        //유저 id 넣기
-        claims.put("id", id);
         //유저 role 넣기 -> (관리자, 유저)
         claims.put("roles", roles);
 
@@ -49,7 +48,6 @@ public class JwtProvider {
         return Jwts.builder()
                 .setClaims(claims)
                 .setIssuedAt(date)
-//                .setExpiration(new Date(date.getTime() + accessTokenValidTime))
                 .signWith(getSigningKey(secretKey), SignatureAlgorithm.HS256)
                 .compact();
     }

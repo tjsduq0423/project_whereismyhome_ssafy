@@ -31,7 +31,7 @@ public class MemberController {
     @PostMapping("/join")
     public ResponseEntity join(@RequestBody MemberJoinDto memberJoinDto) throws IllegalAccessException {
         memberService.join(memberJoinDto);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body("회원가입을 축하합니다.");
     }
 
     @PostMapping("/login")

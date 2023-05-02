@@ -1,6 +1,7 @@
 package com.whereismyhome.member.service;
 
 import com.whereismyhome.member.dto.MemberJoinDto;
+import com.whereismyhome.member.dto.MemberLoginDto;
 import com.whereismyhome.member.entity.Member;
 import com.whereismyhome.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -39,9 +40,13 @@ public class MemberService {
         }
     }
 
-    public Member findUser(MemberJoinDto JoinDto) {
-        Member member = memberRepository.findById(JoinDto.getId())
+    public Member findUser(MemberLoginDto loginDto) {
+        Member member = memberRepository.findById(loginDto.getId())
                 .orElseThrow(() -> new IllegalArgumentException("아이디 혹은 비밀번호가 잘 못 되었음 "));
         return member;
+    }
+
+    public boolean checkPassWord(Member member, MemberLoginDto loginDto) {
+        return passwordEncoder.matches(loginDto.getPassword(), member.getPassword());
     }
 }

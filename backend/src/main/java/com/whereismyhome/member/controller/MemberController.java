@@ -5,7 +5,6 @@ import com.whereismyhome.jwt.JwtProvider;
 import com.whereismyhome.member.dto.MemberJoinDto;
 import com.whereismyhome.member.dto.MemberLoginDto;
 import com.whereismyhome.member.entity.Member;
-import com.whereismyhome.member.mapper.MemberMapper;
 import com.whereismyhome.member.service.MemberService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;

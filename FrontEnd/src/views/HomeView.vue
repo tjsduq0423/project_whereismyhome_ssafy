@@ -8,4 +8,9 @@
 
 <script setup></script>
 
-<style scoped></style>
+<style scoped>
+.bg-img {
+  z-index: -1;
+  position: absolute;
+}
+</style>

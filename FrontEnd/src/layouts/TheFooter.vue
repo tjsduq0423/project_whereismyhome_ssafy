@@ -1,9 +1,13 @@
 <template>
-  <footer>
+  <div class="footer">
     <div>Footer 입니다</div>
-  </footer>
+  </div>
 </template>
 
 <script setup></script>
 
-<style scoped></style>
+<style scoped>
+.footer {
+  background-color: black;
+}
+</style>

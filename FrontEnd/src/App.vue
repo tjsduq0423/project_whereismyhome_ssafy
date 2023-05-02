@@ -11,4 +11,12 @@ import TheFooter from './layouts/TheFooter.vue';
 import TheHeader from './layouts/TheHeader.vue';
 </script>
 
-<style scoped></style>
+<style scoped>
+@font-face {
+  font-family: 'BMFonts';
+  src: url('@/fonts/otf/BMHANNAProOTF.otf');
+}
+* {
+  font-family: 'BMFonts', sans-serif;
+}
+</style>

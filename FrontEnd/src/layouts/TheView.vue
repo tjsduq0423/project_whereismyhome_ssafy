@@ -1,5 +1,5 @@
 <template>
-  <div class="viewBox d-flex justify-content-center">
+  <div class="viewBox d-flex justify-content-center mt-5">
     <RouterView></RouterView>
   </div>
 </template>
@@ -10,6 +10,7 @@ import { RouterView } from 'vue-router';
 
 <style scoped>
 .viewBox {
+  position: relative;
   height: 100vh;
 }
 </style>

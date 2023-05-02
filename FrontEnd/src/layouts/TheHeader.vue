@@ -21,7 +21,7 @@
             >
           </li>
           <li class="nav-item">
-            <RouterLink class="nav-link" to="/auth">로그인</RouterLink>
+            <RouterLink class="nav-link" to="/login">로그인</RouterLink>
           </li>
           <li v-if="temp" class="nav-item dropdown">
             <a

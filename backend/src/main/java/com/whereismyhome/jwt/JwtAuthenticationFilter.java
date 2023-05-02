@@ -24,7 +24,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         log.debug("filter 메소드 실행");
 
-        String token = getTokenFromCookie(request);
+        String token = jwtProvider.getTokenFromCookie(request);
         //쿠키가 있으면
         if(token != null){
             setAuthentication(token);
@@ -32,17 +32,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         filterChain.doFilter(request,response);
     }
 
-    public String getTokenFromCookie(HttpServletRequest request) {
-        Cookie[] cookies = request.getCookies();
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if (cookie.getName().equals("Authorization")) {
-                    return cookie.getValue();
-                }
-            }
-        }
-        return null;
-    }
+
     
     //사용자 정보 등록
     public void setAuthentication(String token) {

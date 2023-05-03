@@ -1,6 +1,17 @@
 <template>
-  <div class="footer">
-    <div>Footer 입니다</div>
+  <div
+    class="container footer d-flex justify-content-between align-items-center"
+  >
+    <div class="head d-flex flex-row gap-4">
+      <div>SSAFY</div>
+      <div>DAEJEON</div>
+      <div>08</div>
+      <div>LICENSE</div>
+    </div>
+    <div class="tail d-flex flex-row gap-2">
+      <i class="bi bi-c-circle"></i>
+      <div>2023 made by MoonJoonHo&HanSungHyun</div>
+    </div>
   </div>
 </template>
 
@@ -8,6 +19,8 @@
 
 <style scoped>
 .footer {
-  background-color: black;
+  background-color: white;
+  font-size: 1.5em;
+  min-height: 150px;
 }
 </style>

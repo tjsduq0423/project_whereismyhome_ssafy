@@ -1,9 +1,9 @@
 <template>
   <AppContent class="img">
-    <AppHeader>비밀번호 찾기</AppHeader>
+    <AppHeader> 비밀번호 찾기</AppHeader>
     <div class="card-body d-flex flex-column justify-content-center">
       <form @submit.prevent>
-        <div class="mb-3">
+        <div class="mb-4">
           <label for="id" class="form-label">ID</label>
           <input
             type="text"

@@ -1,6 +1,6 @@
 <template>
   <div class="viewBox d-flex justify-content-center align-items-center">
-    <div class="card shadow-lg py-5 px-5">
+    <div class="card py-5 px-5">
       <slot></slot>
     </div>
   </div>
@@ -13,9 +13,11 @@
   background-position: center center;
   background-size: cover;
   background-repeat: no-repeat;
-  height: 100vh;
+  min-height: 100vh;
   position: relative;
 }
 .card {
+  box-shadow: 0px 32px 32px -16px rgba(0, 0, 0, 0.6);
+  border: 0px black;
 }
 </style>

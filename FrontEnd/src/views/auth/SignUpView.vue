@@ -3,7 +3,7 @@
     <AppHeader>회원가입</AppHeader>
     <div class="card-body d-flex flex-column justify-content-center">
       <form @click.prevent>
-        <div class="mb-3">
+        <div class="mb-4">
           <label for="id" class="form-label">ID</label>
           <input
             type="text"
@@ -12,7 +12,7 @@
             placeholder="Enter your ID"
           />
         </div>
-        <div class="mb-3">
+        <div class="mb-4">
           <label for="password" class="form-label">Password</label>
           <input
             type="password"
@@ -21,7 +21,7 @@
             placeholder="Enter your Password"
           />
         </div>
-        <div class="mb-3">
+        <div class="mb-4">
           <label for="name" class="form-label">Name</label>
           <input
             type="text"
@@ -30,7 +30,7 @@
             placeholder="Enter your Name"
           />
         </div>
-        <div class="mb-3">
+        <div class="mb-4">
           <label for="email" class="form-label">Email</label>
           <input
             type="email"

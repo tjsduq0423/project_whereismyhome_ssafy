@@ -3,7 +3,7 @@
     <AppHeader>로그인</AppHeader>
     <div class="card-body d-flex flex-column justify-content-center">
       <form @submit.prevent>
-        <div class="mb-3">
+        <div class="mb-4">
           <label for="id" class="form-label">ID</label>
           <input
             type="text"
@@ -12,7 +12,7 @@
             placeholder="Enter your ID"
           />
         </div>
-        <div class="mb-3">
+        <div class="mb-4">
           <label for="password" class="form-label">Password</label>
           <input
             type="password"
@@ -23,7 +23,7 @@
         </div>
         <button
           type="button"
-          class="d-grid col-12 btn btn-primary text-truncate"
+          class="d-grid col-12 btn btn-primary text-truncate mb-4"
         >
           로그인
         </button>

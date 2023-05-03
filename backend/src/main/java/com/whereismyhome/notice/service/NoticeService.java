@@ -1,12 +1,15 @@
 package com.whereismyhome.notice.service;
 
+import com.whereismyhome.notice.dto.NoticePutDto;
 import com.whereismyhome.notice.entity.Notice;
 import com.whereismyhome.notice.repository.NoticeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -33,6 +36,20 @@ public class NoticeService {
     //공지사항 상세 조회
     public Notice detailNotice(int id) {
         return findNotice(id);
+    }
+
+    //공지사항 수정
+    public void updateNotice(NoticePutDto putDto) {
+        Notice findNotice = findNotice(putDto.getId());
+
+        Optional.ofNullable(putDto.getTitle())
+                .ifPresent(findNotice::setTitle);
+        Optional.ofNullable(putDto.getContent())
+                .ifPresent(findNotice::setContent);
+
+        findNotice.setModifedtime(LocalDateTime.now());
+
+        noticeRepository.save(findNotice);
     }
 
 }

@@ -1,6 +1,7 @@
 package com.whereismyhome.notice.controller;
 
 import com.whereismyhome.notice.dto.NoticePostDto;
+import com.whereismyhome.notice.dto.NoticePutDto;
 import com.whereismyhome.notice.dto.NoticeResponseDto;
 import com.whereismyhome.notice.entity.Notice;
 import com.whereismyhome.notice.mapper.NoticeMapper;
@@ -24,7 +25,7 @@ public class NoticeController {
     public ResponseEntity regist(@RequestBody NoticePostDto postDto) {
         noticeService.postNotice(mapper.noticePostDtoToNotice(postDto));
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body("공지사항 등록 완료");
     }
 
     //공지사항 전체 조회
@@ -43,4 +44,15 @@ public class NoticeController {
 
         return ResponseEntity.ok().body(response);
     }
+
+    //공지사항 수정
+    @PutMapping("/{id}")
+    public ResponseEntity updateNotice(@PathVariable("id") int id,
+                                       @RequestBody NoticePutDto noticePutDto) {
+        noticePutDto.setId(id);
+        noticeService.updateNotice(noticePutDto);
+        return ResponseEntity.ok().body("공지사항 수정 완료");
+    }
+
+
 }

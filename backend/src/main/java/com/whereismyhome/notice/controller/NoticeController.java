@@ -29,12 +29,18 @@ public class NoticeController {
 
     //공지사항 전체 조회
     @GetMapping("/list")
-    public ResponseEntity selectAll(){
+    public ResponseEntity selectAll() {
         List<Notice> noticeList = noticeService.noticeList();
         List<NoticeResponseDto> responseDto = mapper.noticeListToNoticeResponseDto(noticeList);
 
         return ResponseEntity.ok().body(responseDto);
     }
 
-    //공지사항 하나 조회
+    //공지사항 상세 조회
+    @GetMapping("/{id}")
+    public ResponseEntity detailNotice(@PathVariable("id") int id) {
+        NoticeResponseDto response = mapper.noticeToNoticeResponseDto(noticeService.detailNotice(id));
+
+        return ResponseEntity.ok().body(response);
+    }
 }

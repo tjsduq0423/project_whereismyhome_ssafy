@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
 
@@ -27,6 +28,10 @@ public class Notice {
     private String content;
 
     @CreatedDate
-    @Column
+    @Column(updatable = false)
     private LocalDateTime createtime = LocalDateTime.now();
+
+    @LastModifiedDate
+    @Column
+    private LocalDateTime modifedtime;
 }

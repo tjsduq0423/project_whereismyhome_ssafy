@@ -2,7 +2,7 @@
   <AppContent class="img">
     <div class="row mt-5 text-center">
       <div class="col">
-        <h1>Home Page</h1>
+        <h1>아파트 매매 정보</h1>
       </div>
     </div>
   </AppContent>
@@ -14,6 +14,6 @@ import AppContent from '@/components/AppContent.vue';
 
 <style scoped>
 .img {
-  background-image: url('@/img/apartment03jpg.jpg');
+  background-image: url('@/img/apartment04jpg.jpg');
 }
 </style>

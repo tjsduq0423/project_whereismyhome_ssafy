@@ -1,21 +1,18 @@
 <template>
-  <div class="viewBox d-flex justify-content-center">
+  <AppContent class="img">
     <div class="mt-5 text-center text-warning">
       <h1>404 Error</h1>
       <h1>Page Not Found</h1>
     </div>
-  </div>
+  </AppContent>
 </template>
 
-<script setup></script>
+<script setup>
+import AppContent from '@/components/AppContent.vue';
+</script>
 
 <style scoped>
-.viewBox {
+.img {
   background-image: url('@/img/notFound.jpg');
-  background-position: center center;
-  background-size: cover;
-  background-repeat: no-repeat;
-  position: relative;
-  height: 100vh;
 }
 </style>

@@ -1,10 +1,6 @@
 <template>
   <div class="viewBox d-flex justify-content-center">
-    <div class="row mt-5 text-center">
-      <div class="col">
-        <h1>아파트 매매 정보</h1>
-      </div>
-    </div>
+    <slot></slot>
   </div>
 </template>
 
@@ -12,7 +8,6 @@
 
 <style scoped>
 .viewBox {
-  background-image: url('@/img/apartment04jpg.jpg');
   background-position: center center;
   background-size: cover;
   background-repeat: no-repeat;

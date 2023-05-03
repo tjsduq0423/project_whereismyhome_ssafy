@@ -12,4 +12,6 @@ public interface NoticeMapper {
     Notice noticePostDtoToNotice(NoticePostDto postDto);
 
     List<NoticeResponseDto> noticeListToNoticeResponseDto(List<Notice> noticeList);
+
+    NoticeResponseDto noticeToNoticeResponseDto(Notice notice);
 }

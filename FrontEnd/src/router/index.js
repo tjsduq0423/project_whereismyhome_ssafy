@@ -13,7 +13,7 @@ const router = createRouter({
     {
       path: '/aptInfo',
       name: 'aptInfo',
-      component: () => import('@/views/AptInfoView.vue'),
+      component: () => import('@/views/main/AptInfoView.vue'),
     },
     {
       path: '/login',

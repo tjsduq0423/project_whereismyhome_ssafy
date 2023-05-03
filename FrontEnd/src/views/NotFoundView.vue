@@ -1,6 +1,7 @@
 <template>
   <AppContent class="img">
-    <div class="mt-5 text-center text-warning">
+    <div class="text-warning">
+      <h1>Oops...</h1>
       <h1>404 Error</h1>
       <h1>Page Not Found</h1>
     </div>

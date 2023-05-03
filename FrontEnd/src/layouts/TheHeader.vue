@@ -74,9 +74,7 @@
                   <i class="bi bi-info-square pe-2"></i>내 정보
                 </RouterLink>
               </li>
-              <li>
-                <hr class="dropdown-divider" />
-              </li>
+              <hr class="dropdown-divider" />
               <li>
                 <a
                   class="dropdown-item fs-5"

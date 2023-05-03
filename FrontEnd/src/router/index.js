@@ -31,6 +31,11 @@ const router = createRouter({
       component: () => import('@/views/auth/SignUpView.vue'),
     },
     {
+      path: '/notice',
+      name: 'notice',
+      component: () => import('@/views/main/NoticeView.vue'),
+    },
+    {
       path: '/:pathMatch(.*)*',
       component: NotFound,
     },

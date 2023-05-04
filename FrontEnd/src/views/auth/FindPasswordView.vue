@@ -39,6 +39,6 @@ import AppHeader from '@/components/AppHeader.vue';
 
 <style scoped>
 .img {
-  background-image: url('@/img/aprtments01.jpg');
+  background-image: url('@/assets/img/aprtments01.jpg');
 }
 </style>

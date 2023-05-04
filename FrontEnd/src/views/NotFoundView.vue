@@ -14,6 +14,6 @@ import AppContent from '@/components/AppContent.vue';
 
 <style scoped>
 .img {
-  background-image: url('@/img/notFound.jpg');
+  background-image: url('@/assets/img/notFound.jpg');
 }
 </style>

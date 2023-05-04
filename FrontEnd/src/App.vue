@@ -14,7 +14,7 @@ import TheHeader from './layouts/TheHeader.vue';
 <style scoped>
 @font-face {
   font-family: 'BMFonts';
-  src: url('@/fonts/otf/BMHANNAProOTF.otf');
+  src: url('@/assets/fonts/otf/BMHANNAProOTF.otf');
 }
 * {
   font-family: 'BMFonts', sans-serif;

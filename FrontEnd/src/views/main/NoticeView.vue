@@ -63,7 +63,7 @@ articles.value = [...dummyData];
 
 <style scoped>
 .img {
-  background-image: url('@/img/notice02.jpg');
+  background-image: url('@/assets/img/notice02.jpg');
 }
 .card-body {
   width: 1000px;

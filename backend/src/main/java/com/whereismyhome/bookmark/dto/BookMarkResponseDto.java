@@ -1,14 +1,10 @@
 package com.whereismyhome.bookmark.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-
-import java.util.List;
+import lombok.*;
 
 @Getter
-@AllArgsConstructor
+@Setter
 @NoArgsConstructor
 public class BookMarkResponseDto {
-    List<BookMarkDto> bookMarkList;
+    private long aptCode;
 }

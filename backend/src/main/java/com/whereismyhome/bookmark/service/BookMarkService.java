@@ -39,5 +39,9 @@ public class BookMarkService {
     }
 
     //북마크 조회 - 회원에 해당하는 북마크 리스트만
+    public List<BookMark> getList(String id) {
+        List<BookMark> bookMarkList = bookMarkRepository.findByMember_Id(id);
 
+        return bookMarkList;
+    }
 }

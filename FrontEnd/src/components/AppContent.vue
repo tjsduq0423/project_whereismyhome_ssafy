@@ -13,7 +13,7 @@
   background-position: center center;
   background-size: cover;
   background-repeat: no-repeat;
-  min-height: 100vh;
+  min-height: 80vh;
   position: relative;
 }
 .card {

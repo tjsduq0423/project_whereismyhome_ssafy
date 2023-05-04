@@ -1,11 +1,13 @@
 package com.whereismyhome.bookmark.mapper;
 
+import com.whereismyhome.bookmark.dto.BookMarkResponseDto;
 import com.whereismyhome.bookmark.dto.BookMarkServiceDto;
 import com.whereismyhome.bookmark.dto.BookMarkUpdateDto;
 import com.whereismyhome.bookmark.entity.BookMark;
 import com.whereismyhome.houseinfo.entity.HouseInfo;
 import com.whereismyhome.member.entity.Member;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,4 +56,8 @@ public interface BookMarkMapper {
         markServiceDto.setDeleteList(delete);
         return markServiceDto;
     }
+    List<BookMarkResponseDto> bookMarkListToBookMarkResponseDtos(List<BookMark> bookMarkList);
+
+    @Mapping(source = "houseInfo.aptCode",target = "aptCode")
+    BookMarkResponseDto bookMarkToBookMarkResponseDto(BookMark bookMark);
 }

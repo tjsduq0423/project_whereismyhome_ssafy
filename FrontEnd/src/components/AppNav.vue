@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar sticky-top navbar-expand-md bg-light">
+  <nav class="navbar fixed-top navbar-expand-md bg-transparent navbar-dark">
     <div class="container">
       <RouterLink class="navbar-brand fs-3" to="/">HappyHouse</RouterLink>
       <button
@@ -17,7 +17,7 @@
         <ul class="navbar-nav ms-auto">
           <li class="nav-item">
             <button
-              class="nav-link fs-5 fw-bold border-0 bg-light"
+              class="nav-link fs-5 fw-bold border-0 bg-transparent"
               @click="goAptInfoPage"
             >
               <i class="bi bi-buildings pe-2"></i>아파트 매매 정보
@@ -42,7 +42,7 @@
               </li>
               <hr class="dropdown-divider" />
               <li>
-                <RouterLink class="dropdown-item fs-5" to="/">
+                <RouterLink class="dropdown-item fs-5" to="/qna">
                   <i class="bi bi-clipboard"></i> 질의응답
                 </RouterLink>
               </li>
@@ -51,7 +51,7 @@
           <!-- 로그인. 마이 페이지 -->
           <li v-if="accessToken === false" class="nav-item">
             <button
-              class="nav-link fs-5 fw-bold border-0 bg-light"
+              class="nav-link fs-5 fw-bold border-0 bg-transparent"
               @click="goLoginPage"
             >
               <i class="bi bi-box-arrow-in-right pe-1"></i> 로그인
@@ -112,4 +112,8 @@ const logout = () => {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.nav-link {
+  color: white;
+}
+</style>

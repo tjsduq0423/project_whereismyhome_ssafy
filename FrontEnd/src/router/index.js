@@ -36,6 +36,11 @@ const router = createRouter({
       component: () => import('@/views/main/NoticeView.vue'),
     },
     {
+      path: '/qna',
+      name: 'qna',
+      component: () => import('@/views/main/QnAView.vue'),
+    },
+    {
       path: '/:pathMatch(.*)*',
       component: NotFound,
     },

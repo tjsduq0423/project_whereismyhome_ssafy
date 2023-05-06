@@ -1,6 +1,6 @@
 <template>
-  <nav class="mt-5" aria-label="Page navigation">
-    <ul class="pagination justify-content-center">
+  <nav aria-label="Page navigation" class="mt-2">
+    <ul class="pagination justify-content-center m-0">
       <li class="page-item" :class="isPrevPage">
         <a
           class="page-link"
@@ -74,4 +74,10 @@ const isNextPage = computed(() => ({
 }));
 </script>
 
-<style lang="scss" scoped></style>
+<style scoped>
+.pagination {
+  --bs-pagination-color: black;
+  --bs-pagination-active-bg: #a0ff57;
+  --bs-pagination-active-border-color: #a0ff57;
+}
+</style>

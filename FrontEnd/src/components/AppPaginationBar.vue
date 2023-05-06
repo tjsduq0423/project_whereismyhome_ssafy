@@ -30,9 +30,9 @@ const lastNumber = computed(() => {
     ? pageGroup.value * props.pageCount
     : totalPage;
 });
-const fistNumber = computed(() => {
-  return lastNumber.value - (props.pageCount - 1);
-});
+// const fistNumber = computed(() => {
+//   return lastNumber.value - (props.pageCount - 1);
+// });
 </script>
 
 <style scoped></style>

@@ -28,10 +28,9 @@
 import AppContent from '@/components/AppContent.vue';
 import AppPaginationBar from '@/components/AppPaginationBar.vue';
 import { ref } from 'vue';
-import { data } from '@/assets/data/dummy.js';
+import data from '@/assets/data/dummy.js';
 
-const articles = ref([]);
-articles.value = [...data];
+const articles = ref([...data]);
 </script>
 
 <style scoped>

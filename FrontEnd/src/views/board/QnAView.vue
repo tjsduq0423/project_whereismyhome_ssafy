@@ -1,19 +1,19 @@
 <template>
   <AppContent class="img">
     <div class="header"></div>
-    <h1 class="text-center text-truncate mb-5">공지사항</h1>
+    <h1 class="text-center text-truncate mb-5">QnA</h1>
     <table class="table text-center text-truncate">
       <thead>
         <tr>
-          <th scope="col">번호</th>
+          <th scope="col">답변상태</th>
           <th scope="col">제목</th>
           <th scope="col">작성자</th>
           <th scope="col">작성시간</th>
         </tr>
       </thead>
       <tbody class="table-group-divider">
-        <tr v-for="item in _items" :key="item.id">
-          <th>{{ item.id }}</th>
+        <tr v-for="item in _items" :key="item.id" class="text-truncate">
+          <th>{{ item.isAnswered ? '답변완료' : '미답변' }}</th>
           <td>{{ item.title }}</td>
           <td>{{ item.author }}</td>
           <td>{{ item.createTime }}</td>
@@ -27,6 +27,9 @@
       :show-pagination-btn-count="showPaginationBtnCount"
       @page="page => (curPage = page)"
     ></AppPaginationBar>
+    <button type="button" class="btn btn-outline-success ms-auto me-2 btn-lg">
+      문의하기
+    </button>
   </AppContent>
 </template>
 
@@ -34,7 +37,7 @@
 import AppContent from '@/components/AppContent.vue';
 import AppPaginationBar from '@/components/AppPaginationBar.vue';
 import { computed, ref } from 'vue';
-import data from '@/assets/data/noticeData.js';
+import data from '@/assets/data/QnAData.js';
 
 const curPage = ref(1);
 const items = ref([...data]);
@@ -49,7 +52,7 @@ const _items = computed(() => {
 
 <style scoped>
 .img {
-  background-image: url('@/assets/img/notice02.jpg');
+  background-image: url('@/assets/img/Qna01.jpg');
 }
 .header {
   margin: 0rem 32rem 0rem 32rem;

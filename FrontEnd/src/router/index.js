@@ -33,12 +33,12 @@ const router = createRouter({
     {
       path: '/notice',
       name: 'notice',
-      component: () => import('@/views/main/NoticeView.vue'),
+      component: () => import('@/views/board/NoticeView.vue'),
     },
     {
       path: '/qna',
       name: 'qna',
-      component: () => import('@/views/main/QnAView.vue'),
+      component: () => import('@/views/board/QnAView.vue'),
     },
     {
       path: '/:pathMatch(.*)*',

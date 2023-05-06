@@ -77,7 +77,7 @@ const isNextPage = computed(() => ({
 <style scoped>
 .pagination {
   --bs-pagination-color: black;
-  --bs-pagination-active-bg: #a0ff57;
-  --bs-pagination-active-border-color: #a0ff57;
+  --bs-pagination-active-bg: #198754;
+  --bs-pagination-active-border-color: #198754;
 }
 </style>

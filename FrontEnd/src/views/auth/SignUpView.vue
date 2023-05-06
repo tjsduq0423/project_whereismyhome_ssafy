@@ -1,6 +1,6 @@
 <template>
   <AppContent class="img">
-    <AppHeader>회원가입</AppHeader>
+    <AppCardHeader>회원가입</AppCardHeader>
     <div class="card-body d-flex flex-column justify-content-center">
       <form @click.prevent>
         <div class="mb-4">
@@ -51,7 +51,7 @@
 </template>
 
 <script setup>
-import AppHeader from '@/components/AppHeader.vue';
+import AppCardHeader from '@/components/AppCardHeader.vue';
 import AppContent from '@/components/AppContent.vue';
 </script>
 

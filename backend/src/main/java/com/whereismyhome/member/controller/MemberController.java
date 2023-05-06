@@ -10,6 +10,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,6 +22,7 @@ import java.nio.charset.StandardCharsets;
 
 @RestController
 @RequiredArgsConstructor
+@Slf4j
 @RequestMapping("/member")
 public class MemberController {
 
@@ -49,6 +51,7 @@ public class MemberController {
         String encode = URLEncoder.encode(accessToken, StandardCharsets.UTF_8);
 
         Cookie cookie = new Cookie("Authorization", encode);
+        cookie.setPath(("/"));
         cookie.setHttpOnly(true);
         cookie.setMaxAge(60 * 60);
         response.addCookie(cookie);
@@ -58,7 +61,7 @@ public class MemberController {
 
     //로그아웃
     @PostMapping("/logout")
-    public ResponseEntity logout(HttpServletRequest request, HttpServletResponse response) {
+    public ResponseEntity logout(HttpServletResponse response) {
         Cookie cookie = new Cookie("Authorization", null);
         cookie.setMaxAge(0);
 

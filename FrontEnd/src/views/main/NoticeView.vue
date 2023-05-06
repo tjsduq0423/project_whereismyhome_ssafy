@@ -12,7 +12,7 @@
         </tr>
       </thead>
       <tbody class="table-group-divider">
-        <tr v-for="item in items" :key="item.id">
+        <tr v-for="item in _items" :key="item.id">
           <th>{{ item.id }}</th>
           <td>{{ item.title }}</td>
           <td>{{ item.author }}</td>
@@ -33,13 +33,18 @@
 <script setup>
 import AppContent from '@/components/AppContent.vue';
 import AppPaginationBar from '@/components/AppPaginationBar.vue';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import data from '@/assets/data/dummy.js';
 
 const curPage = ref(1);
 const items = ref([...data]);
 const showContentCount = 10;
 const showPaginationBtnCount = 5;
+const _items = computed(() => {
+  const start = (curPage.value - 1) * showContentCount + 1;
+  const end = start + showContentCount;
+  return items.value.slice(start, end);
+});
 </script>
 
 <style scoped>

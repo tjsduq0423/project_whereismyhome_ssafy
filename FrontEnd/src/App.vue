@@ -1,14 +1,14 @@
 <template>
-  <TheHeader></TheHeader>
+  <AppNav></AppNav>
 
-  <TheView></TheView>
+  <RouterView></RouterView>
 
-  <TheFooter></TheFooter>
+  <AppFooter></AppFooter>
 </template>
 <script setup>
-import TheView from './layouts/TheView.vue';
-import TheFooter from './layouts/TheFooter.vue';
-import TheHeader from './layouts/TheHeader.vue';
+import { RouterView } from 'vue-router';
+import AppNav from './components/AppNav.vue';
+import AppFooter from './components/AppFooter.vue';
 </script>
 
 <style scoped>

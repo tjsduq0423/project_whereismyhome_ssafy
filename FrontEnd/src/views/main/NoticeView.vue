@@ -12,15 +12,21 @@
         </tr>
       </thead>
       <tbody class="table-group-divider">
-        <tr v-for="article in articles" :key="article.id">
-          <th>{{ article.id }}</th>
-          <td>{{ article.title }}</td>
-          <td>{{ article.author }}</td>
-          <td>{{ article.createTime }}</td>
+        <tr v-for="item in items" :key="item.id">
+          <th>{{ item.id }}</th>
+          <td>{{ item.title }}</td>
+          <td>{{ item.author }}</td>
+          <td>{{ item.createTime }}</td>
         </tr>
       </tbody>
     </table>
-    <AppPaginationBar></AppPaginationBar>
+    <AppPaginationBar
+      :current-page="curPage"
+      :total-content-count="items.length"
+      :show-content-count="showContentCount"
+      :show-pagination-btn-count="showPaginationBtnCount"
+      @page="page => (curPage = page)"
+    ></AppPaginationBar>
   </AppContent>
 </template>
 
@@ -30,7 +36,10 @@ import AppPaginationBar from '@/components/AppPaginationBar.vue';
 import { ref } from 'vue';
 import data from '@/assets/data/dummy.js';
 
-const articles = ref([...data]);
+const curPage = ref(1);
+const items = ref([...data]);
+const showContentCount = 10;
+const showPaginationBtnCount = 5;
 </script>
 
 <style scoped>

@@ -1,6 +1,6 @@
 <template>
   <AppContent class="img">
-    <AppHeader> 비밀번호 찾기</AppHeader>
+    <AppCardHeader> 비밀번호 찾기</AppCardHeader>
     <div class="card-body d-flex flex-column justify-content-center">
       <form @submit.prevent>
         <div class="mb-4">
@@ -34,7 +34,7 @@
 
 <script setup>
 import AppContent from '@/components/AppContent.vue';
-import AppHeader from '@/components/AppHeader.vue';
+import AppCardHeader from '@/components/AppCardHeader.vue';
 </script>
 
 <style scoped>

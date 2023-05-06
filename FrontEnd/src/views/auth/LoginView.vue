@@ -1,6 +1,6 @@
 <template>
   <AppContent class="img">
-    <AppHeader>로그인</AppHeader>
+    <AppCardHeader>로그인</AppCardHeader>
     <div class="card-body d-flex flex-column justify-content-center">
       <form @submit.prevent>
         <div class="mb-4">
@@ -49,7 +49,7 @@
 </template>
 
 <script setup>
-import AppHeader from '@/components/AppHeader.vue';
+import AppCardHeader from '@/components/AppCardHeader.vue';
 import AppContent from '@/components/AppContent.vue';
 import router from '@/router';
 

@@ -1,38 +1,77 @@
 <template>
-  <nav aria-label="Search results pages" class="mt-3">
+  <nav class="mt-5" aria-label="Page navigation">
     <ul class="pagination justify-content-center">
-      <li class="page-item">
-        <a class="page-link" href="#">Previous</a>
+      <li class="page-item" :class="isPrevPage">
+        <a
+          class="page-link"
+          aria-label="Previous"
+          href="#"
+          @click.prevent="$emit('page', currentPage - 1)"
+        >
+          <span aria-hidden="true">&lt;</span>
+        </a>
       </li>
-      <li class="page-item"><a class="page-link" href="#">1</a></li>
-      <li class="page-item"><a class="page-link" href="#">2</a></li>
-      <li class="page-item"><a class="page-link" href="#">3</a></li>
-      <li class="page-item"><a class="page-link" href="#">Next</a></li>
+      <li
+        v-for="page in PaginationPageList"
+        :key="page"
+        class="page-item"
+        :class="{ active: currentPage === page }"
+      >
+        <a class="page-link" href="#" @click.prevent="$emit('page', page)">{{
+          page
+        }}</a>
+      </li>
+      <li class="page-item" :class="isNextPage">
+        <a
+          class="page-link"
+          aria-label="Next"
+          href="#"
+          @click.prevent="$emit('page', currentPage + 1)"
+        >
+          <span aria-hidden="true">&gt;</span>
+        </a>
+      </li>
     </ul>
   </nav>
 </template>
 
 <script setup>
-import { computed, ref } from 'vue';
-const props = defineProps({
-  totalCount: Number, // 페이지네이션 할 요소의 전체 개수
-  limit: Number, // 한 페이지 몇 개의 요소를 보여줄 건가?
-  pageCount: Number, // 페이지네이션 바의 크기
-});
-const currentPage = ref(1);
-const totalPage = Math.ceil(props.totalCount / props.limit);
+import { computed } from 'vue';
 
-const pageGroup = computed(() => {
-  return Math.ceil(currentPage.value / props.pageCount);
+const props = defineProps({
+  currentPage: {
+    type: Number,
+    required: true,
+  },
+  totalContentCount: {
+    type: Number,
+    required: true,
+  },
+  showContentCount: {
+    type: Number,
+    required: true,
+  },
+  showPaginationBtnCount: {
+    type: Number,
+    default: 10,
+  },
 });
-const lastNumber = computed(() => {
-  return pageGroup.value * props.pageCount < totalPage
-    ? pageGroup.value * props.pageCount
-    : totalPage;
+defineEmits(['page']);
+
+const maxPage = Math.ceil(props.totalContentCount / props.showContentCount);
+const PaginationPageList = computed(() => {
+  const start =
+    (Math.ceil(props.currentPage / props.showPaginationBtnCount) - 1) *
+      props.showPaginationBtnCount +
+    1;
+  const end = Math.min(maxPage, start + props.showPaginationBtnCount - 1);
+  return Array.from({ length: end - start + 1 }, (_, i) => start + i);
 });
-// const fistNumber = computed(() => {
-//   return lastNumber.value - (props.pageCount - 1);
-// });
+
+const isPrevPage = computed(() => ({ disabled: !(props.currentPage > 1) }));
+const isNextPage = computed(() => ({
+  disabled: !(props.currentPage < maxPage),
+}));
 </script>
 
-<style scoped></style>
+<style lang="scss" scoped></style>

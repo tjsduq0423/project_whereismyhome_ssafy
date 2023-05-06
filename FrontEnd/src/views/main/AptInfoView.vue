@@ -10,6 +10,6 @@ import AppContent from '@/components/AppContent.vue';
 
 <style scoped>
 .img {
-  background-image: url('@/img/apartment04jpg.jpg');
+  background-image: url('@/assets/img/apartment04jpg.jpg');
 }
 </style>

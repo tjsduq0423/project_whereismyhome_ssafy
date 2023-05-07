@@ -1,11 +1,12 @@
 <template>
   <AppContent class="img">
     <div class="cardWidthPadding"></div>
-    <h1 class="mb-3">{{ item.title }}</h1>
-    <div class="mb-3">{{ item.content }}</div>
+    <h1 class="my-3 text-center">{{ item.title }}</h1>
+    <hr />
+    <div>{{ item.content }}</div>
+    <hr />
     <div class="row g-2">
-      <div class="col-auto me-auto"></div>
-      <div class="col-auto">
+      <div class="col-auto me-auto">
         <button
           type="button"
           class="btn btn-outline-primary btn-lg"
@@ -28,7 +29,7 @@
         <button
           type="button"
           class="btn btn-outline-danger btn-lg"
-          @click="deleteNotice(id)"
+          @click="deleteNotice"
         >
           삭제
         </button>
@@ -48,7 +49,7 @@ const id = route.params.id;
 const item = { ...data[id] };
 const goListPage = () => router.push({ name: 'Notice' });
 const goEditPage = () => router.push({ name: 'NoticeEdit', params: { id } });
-// const deleteNotice = () => {};
+const deleteNotice = () => {};
 </script>
 
 <style scoped>

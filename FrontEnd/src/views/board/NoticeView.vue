@@ -34,7 +34,11 @@
       :show-pagination-btn-count="showPaginationBtnCount"
       @page="page => (curPage = page)"
     ></AppPaginationBar>
-    <button type="button" class="btn btn-outline-success ms-auto me-2 btn-lg">
+    <button
+      type="button"
+      class="btn btn-outline-success ms-auto me-2 btn-lg"
+      @click="goCreatePage"
+    >
       공지작성
     </button>
   </AppContent>
@@ -62,6 +66,10 @@ const _items = computed(() => {
 //상세페이지 이동
 const goDetailPage = id => {
   router.push({ name: 'NoticeDetail', params: { id } });
+};
+// 공지작성 이동
+const goCreatePage = () => {
+  router.push({ name: 'NoticeCreate' });
 };
 </script>
 

@@ -14,7 +14,14 @@
       <tbody class="table-group-divider">
         <tr v-for="item in _items" :key="item.id" class="text-truncate">
           <th>{{ item.isAnswered ? '답변완료' : '미답변' }}</th>
-          <td>{{ item.title }}</td>
+          <td>
+            <a
+              href=""
+              class="text-decoration-none"
+              @click.prevent="goDetailPage(item.id)"
+              >{{ item.title }}</a
+            >
+          </td>
           <td>{{ item.author }}</td>
           <td>{{ item.createTime }}</td>
         </tr>
@@ -27,7 +34,11 @@
       :show-pagination-btn-count="showPaginationBtnCount"
       @page="page => (curPage = page)"
     ></AppPaginationBar>
-    <button type="button" class="btn btn-outline-success ms-auto me-2 btn-lg">
+    <button
+      type="button"
+      class="btn btn-outline-success ms-auto me-2 btn-lg"
+      @click="goCreatePage"
+    >
       문의하기
     </button>
   </AppContent>
@@ -37,8 +48,10 @@
 import AppContent from '@/components/AppContent.vue';
 import AppPaginationBar from '@/components/AppPaginationBar.vue';
 import { computed, ref } from 'vue';
+import { useRouter } from 'vue-router';
 import data from '@/assets/data/QnAData.js';
 
+const router = useRouter();
 const curPage = ref(1);
 const items = ref([...data]);
 const showContentCount = 5;
@@ -48,6 +61,15 @@ const _items = computed(() => {
   const end = start + showContentCount;
   return items.value.slice(start, end);
 });
+
+// 상세페이지 이동
+const goDetailPage = id => {
+  router.push({ name: 'QnADetail', params: { id } });
+};
+// 문의하기 이동
+const goCreatePage = () => {
+  router.push({ name: 'QnACreate' });
+};
 </script>
 
 <style scoped>

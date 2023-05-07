@@ -3,6 +3,7 @@ package com.whereismyhome.jwt;
 
 import com.whereismyhome.member.repository.MemberRepository;
 import com.whereismyhome.member.service.CustomUserDetailService;
+import com.whereismyhome.role.entity.MemberRole;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
@@ -41,7 +42,7 @@ public class JwtProvider {
 
 
     //jwt토큰 생성
-    public String createToken(String id, List<String> roles) {
+    public String createToken(String id, List<MemberRole> roles) {
         //토큰 제목
         Claims claims = Jwts.claims().setSubject(id);
 
@@ -57,7 +58,7 @@ public class JwtProvider {
     }
 
     //엑세스토큰 생성
-    public String createAccessToken(String id, List<String> roles) {
+    public String createAccessToken(String id, List<MemberRole> roles) {
         return this.createToken(id, roles);
     }
 
@@ -78,10 +79,10 @@ public class JwtProvider {
     public String getTokenFromCookie(HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
-            log.debug("쿠키 있음");
+            log.info("쿠키 있음");
             for (Cookie cookie : cookies) {
                 if (cookie.getName().equals("Authorization")) {
-                    log.debug("찾고 싶은 거 찾음");
+                    log.info("찾고 싶은 거 찾음");
                     return cookie.getValue();
                 }
             }
@@ -96,7 +97,9 @@ public class JwtProvider {
     }
 
     //권한 확인
-    public List<String> getRoles(String id) {
-        return memberRepository.findById(id).get().getRoles();
-    }
+//    public List<String> getRoles(String id) {
+//        return memberRepository.findById(id).get().getRoles();
+//
+//    }
+
 }

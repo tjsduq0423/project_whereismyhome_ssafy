@@ -2,7 +2,6 @@ package com.whereismyhome.jwt;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -22,11 +21,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        log.debug("filter 메소드 실행");
-
+        log.info("filter 메소드 실행");
+        
         String token = jwtProvider.getTokenFromCookie(request);
+        System.out.println("token = " + token);
         //쿠키가 있으면
         if(token != null){
+            log.info("쿠키있음");
             setAuthentication(token);
         }
         filterChain.doFilter(request,response);

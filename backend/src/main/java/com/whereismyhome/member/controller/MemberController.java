@@ -7,7 +7,6 @@ import com.whereismyhome.member.dto.MemberLoginDto;
 import com.whereismyhome.member.entity.Member;
 import com.whereismyhome.member.service.MemberService;
 import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -47,6 +46,7 @@ public class MemberController {
         }
 
         String accessToken = jwtProvider.createAccessToken(member.getId(), member.getRoles());
+        log.info("토큰 정상 생성");
 //        String encode = URLEncoder.encode("Bearer " + accessToken, StandardCharsets.UTF_8);
         String encode = URLEncoder.encode(accessToken, StandardCharsets.UTF_8);
 
@@ -64,6 +64,7 @@ public class MemberController {
     public ResponseEntity logout(HttpServletResponse response) {
         Cookie cookie = new Cookie("Authorization", null);
         cookie.setMaxAge(0);
+        cookie.setPath("/");
 
         response.addCookie(cookie);
 

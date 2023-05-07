@@ -1,8 +1,11 @@
 package com.whereismyhome.member.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.whereismyhome.board.entity.Board;
-import jakarta.persistence.*;
+import com.whereismyhome.role.entity.MemberRole;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -34,10 +37,9 @@ public class Member implements UserDetails {
     @OneToMany(mappedBy = "member")
     private List<Board> boardList;
 
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    @ElementCollection(fetch = FetchType.EAGER)
-    @Builder.Default
-    private List<String> roles = new ArrayList<>();
+    @OneToMany(mappedBy = "member")
+    private List<MemberRole> roles = new ArrayList<>();
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

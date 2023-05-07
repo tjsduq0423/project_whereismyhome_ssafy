@@ -18,7 +18,7 @@
 }
 .card {
   box-shadow: 0px 32px 32px -16px rgba(0, 0, 0, 0.6);
-  margin-top: 25%;
+  margin-top: 20%;
   margin-bottom: auto;
 }
 </style>

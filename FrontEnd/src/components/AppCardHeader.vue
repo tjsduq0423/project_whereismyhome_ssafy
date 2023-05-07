@@ -14,6 +14,6 @@
   z-index: 1;
   background: white;
   text-align: center;
-  width: 60%;
+  min-width: 60%;
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <AppContent class="img">
-    <div class="header"></div>
+    <div class="cardWidthPadding"></div>
     <h1 class="text-center text-truncate mb-5">QnA</h1>
     <table class="table text-center text-truncate">
       <thead>
@@ -54,7 +54,7 @@ const _items = computed(() => {
 .img {
   background-image: url('@/assets/img/Qna01.jpg');
 }
-.header {
+.cardWidthPadding {
   margin: 0rem 32rem 0rem 32rem;
 }
 </style>

@@ -99,16 +99,16 @@ import { ref } from 'vue';
 const userPosition = ref('관리자');
 const accessToken = ref(true);
 const goLoginPage = () => {
-  router.push({ name: 'login' });
+  router.push({ name: 'Login' });
 };
 const goAptInfoPage = () => {
-  router.push({ name: 'aptInfo' });
+  router.push({ name: 'AptInfo' });
 };
 
 // logout
 const logout = () => {
   accessToken.value = false;
-  router.push({ name: 'home' });
+  router.push({ name: 'Home' });
 };
 </script>
 

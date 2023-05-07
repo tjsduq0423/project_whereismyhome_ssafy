@@ -1,6 +1,6 @@
 <template>
   <AppContent class="img">
-    <div class="header"></div>
+    <div class="cardWidthPadding"></div>
     <h1 class="text-center text-truncate mb-5">공지사항</h1>
     <table class="table text-center text-truncate">
       <thead>
@@ -14,7 +14,14 @@
       <tbody class="table-group-divider">
         <tr v-for="item in _items" :key="item.id">
           <th>{{ item.id }}</th>
-          <td>{{ item.title }}</td>
+          <td>
+            <a
+              href=""
+              class="text-decoration-none"
+              @click.prevent="goDetailPage(item.id)"
+              >{{ item.title }}</a
+            >
+          </td>
           <td>{{ item.author }}</td>
           <td>{{ item.createTime }}</td>
         </tr>
@@ -36,8 +43,11 @@
 <script setup>
 import AppContent from '@/components/AppContent.vue';
 import AppPaginationBar from '@/components/AppPaginationBar.vue';
+import { useRouter } from 'vue-router';
 import { computed, ref } from 'vue';
 import data from '@/assets/data/noticeData.js';
+
+const router = useRouter();
 
 const curPage = ref(1);
 const items = ref([...data]);
@@ -48,13 +58,18 @@ const _items = computed(() => {
   const end = start + showContentCount;
   return items.value.slice(start, end);
 });
+
+//상세페이지 이동
+const goDetailPage = id => {
+  router.push({ name: 'NoticeDetail', params: { id } });
+};
 </script>
 
 <style scoped>
 .img {
   background-image: url('@/assets/img/notice02.jpg');
 }
-.header {
+.cardWidthPadding {
   margin: 0rem 32rem 0rem 32rem;
 }
 </style>

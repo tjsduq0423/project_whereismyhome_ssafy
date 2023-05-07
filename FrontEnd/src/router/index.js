@@ -7,37 +7,42 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      name: 'home',
+      name: 'Home',
       component: HomeView,
     },
     {
       path: '/aptInfo',
-      name: 'aptInfo',
+      name: 'AptInfo',
       component: () => import('@/views/main/AptInfoView.vue'),
     },
     {
       path: '/login',
-      name: 'login',
+      name: 'Login',
       component: () => import('@/views/auth/LoginView.vue'),
     },
     {
       path: '/findPassword',
-      name: 'findPassword',
+      name: 'FindPassword',
       component: () => import('@/views/auth/FindPasswordView.vue'),
     },
     {
       path: '/signUp',
-      name: 'signUp',
+      name: 'SignUp',
       component: () => import('@/views/auth/SignUpView.vue'),
     },
     {
       path: '/notice',
-      name: 'notice',
+      name: 'Notice',
       component: () => import('@/views/board/NoticeView.vue'),
     },
     {
+      path: '/notice/:id',
+      name: 'NoticeDetail',
+      component: () => import('@/views/board/NoticeDetailView.vue'),
+    },
+    {
       path: '/qna',
-      name: 'qna',
+      name: 'QnA',
       component: () => import('@/views/board/QnAView.vue'),
     },
     {

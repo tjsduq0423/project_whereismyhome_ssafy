@@ -50,4 +50,11 @@ public class BoardController {
         List<BoardListResponseDto> boardList = boardService.setId(boardListResponseDtos, id);
         return new ResponseEntity(boardList, HttpStatus.OK);
     }
+
+    //테스트
+    @GetMapping("/answer")
+    public ResponseEntity test(){
+
+        return ResponseEntity.ok().body("답변 작성 메서드 요청 성공");
+    }
 }

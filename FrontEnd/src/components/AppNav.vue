@@ -1,24 +1,16 @@
 <template>
   <nav class="navbar fixed-top navbar-expand-md bg-transparent navbar-dark">
     <div class="container">
-      <RouterLink class="navbar-brand fs-3" to="/">HappyHouse</RouterLink>
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
+      <RouterLink class="navbar-brand fs-3" to="/">
+        <i class="bi bi-house-heart-fill"></i>
+        HappyHouse</RouterLink
       >
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <div class="collapse navbar-collapse">
         <ul class="navbar-nav ms-auto">
           <li class="nav-item">
             <button
               class="nav-link fs-5 fw-bold border-0 bg-transparent"
-              @click="goAptInfoPage"
+              @click="$router.push({ name: 'AptInfo' })"
             >
               <i class="bi bi-buildings pe-2"></i>아파트 매매 정보
             </button>
@@ -34,17 +26,25 @@
               <i class="bi bi-grid-3x3-gap pe-1"></i>
               게시판
             </a>
-            <ul class="dropdown-menu text-right">
+            <ul class="dropdown-menu text-right m-0">
               <li>
-                <RouterLink class="dropdown-item fs-5" to="/notice">
+                <a
+                  class="dropdown-item fs-5"
+                  href=""
+                  @click.prevent="$router.push({ name: 'Notice' })"
+                >
                   <i class="bi bi-megaphone pe-2"></i>공지사항
-                </RouterLink>
+                </a>
               </li>
               <hr class="dropdown-divider" />
               <li>
-                <RouterLink class="dropdown-item fs-5" to="/qna">
+                <a
+                  class="dropdown-item fs-5"
+                  href=""
+                  @click.prevent="$router.push({ name: 'QnA' })"
+                >
                   <i class="bi bi-clipboard"></i> 질의응답
-                </RouterLink>
+                </a>
               </li>
             </ul>
           </li>
@@ -52,7 +52,7 @@
           <li v-if="accessToken === false" class="nav-item">
             <button
               class="nav-link fs-5 fw-bold border-0 bg-transparent"
-              @click="goLoginPage"
+              @click="$router.push({ name: 'Login' })"
             >
               <i class="bi bi-box-arrow-in-right pe-1"></i> 로그인
             </button>
@@ -68,7 +68,7 @@
               <i class="bi bi-person-circle"></i>
               {{ userPosition }}
             </a>
-            <ul class="dropdown-menu text-right">
+            <ul class="dropdown-menu text-right m-0">
               <li>
                 <RouterLink class="dropdown-item fs-5" to="/notice">
                   <i class="bi bi-info-square pe-2"></i>내 정보
@@ -93,17 +93,12 @@
 </template>
 
 <script setup>
-import router from '@/router';
+import { useRouter } from 'vue-router';
 import { ref } from 'vue';
 
+const router = useRouter();
 const userPosition = ref('관리자');
 const accessToken = ref(true);
-const goLoginPage = () => {
-  router.push({ name: 'Login' });
-};
-const goAptInfoPage = () => {
-  router.push({ name: 'AptInfo' });
-};
 
 // logout
 const logout = () => {

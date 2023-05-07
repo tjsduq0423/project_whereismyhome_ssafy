@@ -1,6 +1,6 @@
 <template>
   <div class="viewBox d-flex justify-content-center">
-    <div class="card p-5 my-auto">
+    <div class="card p-5">
       <slot></slot>
     </div>
   </div>
@@ -17,6 +17,8 @@
   position: relative;
 }
 .card {
-  box-shadow: 0px 32px 32px rgba(0, 0, 0, 0.6);
+  box-shadow: 0px 32px 32px -16px rgba(0, 0, 0, 0.6);
+  margin-top: 20%;
+  margin-bottom: auto;
 }
 </style>

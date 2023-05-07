@@ -7,33 +7,68 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      name: 'home',
+      name: 'Home',
       component: HomeView,
     },
     {
       path: '/aptInfo',
-      name: 'aptInfo',
+      name: 'AptInfo',
       component: () => import('@/views/main/AptInfoView.vue'),
     },
     {
       path: '/login',
-      name: 'login',
+      name: 'Login',
       component: () => import('@/views/auth/LoginView.vue'),
     },
     {
       path: '/findPassword',
-      name: 'findPassword',
+      name: 'FindPassword',
       component: () => import('@/views/auth/FindPasswordView.vue'),
     },
     {
       path: '/signUp',
-      name: 'signUp',
+      name: 'SignUp',
       component: () => import('@/views/auth/SignUpView.vue'),
     },
     {
       path: '/notice',
-      name: 'notice',
-      component: () => import('@/views/main/NoticeView.vue'),
+      name: 'Notice',
+      component: () => import('@/views/board/NoticeView.vue'),
+    },
+    {
+      path: '/notice/create',
+      name: 'NoticeCreate',
+      component: () => import('@/views/board/NoticeCreateView.vue'),
+    },
+    {
+      path: '/notice/:id',
+      name: 'NoticeDetail',
+      component: () => import('@/views/board/NoticeDetailView.vue'),
+    },
+    {
+      path: '/notice/edit/:id',
+      name: 'NoticeEdit',
+      component: () => import('@/views/board/NoticeEditView.vue'),
+    },
+    {
+      path: '/qna',
+      name: 'QnA',
+      component: () => import('@/views/board/QnAView.vue'),
+    },
+    {
+      path: '/qna/create',
+      name: 'QnACreate',
+      component: () => import('@/views/board/QnACreateView.vue'),
+    },
+    {
+      path: '/qna/:id',
+      name: 'QnADetail',
+      component: () => import('@/views/board/QnADetailView.vue'),
+    },
+    {
+      path: '/qna/edit/:id',
+      name: 'QnAEdit',
+      component: () => import('@/views/board/QnAEditView.vue'),
     },
     {
       path: '/:pathMatch(.*)*',

@@ -45,7 +45,7 @@ public class MemberController {
             throw new IllegalStateException("아이디 혹은 비밀번호가 잘 못 되었습니다.");
         }
 
-        String accessToken = jwtProvider.createAccessToken(member.getId(), member.getRoles());
+        String accessToken = jwtProvider.createAccessToken(member.getId(), member.getRoles().getRole());
         log.info("토큰 정상 생성");
 //        String encode = URLEncoder.encode("Bearer " + accessToken, StandardCharsets.UTF_8);
         String encode = URLEncoder.encode(accessToken, StandardCharsets.UTF_8);

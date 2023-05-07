@@ -3,7 +3,6 @@ package com.whereismyhome.jwt;
 
 import com.whereismyhome.member.repository.MemberRepository;
 import com.whereismyhome.member.service.CustomUserDetailService;
-import com.whereismyhome.role.entity.MemberRole;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
@@ -22,7 +21,6 @@ import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
-import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -42,13 +40,14 @@ public class JwtProvider {
 
 
     //jwt토큰 생성
-    public String createToken(String id, List<MemberRole> roles) {
+    public String createToken(String id, String roles) {
         //토큰 제목
         Claims claims = Jwts.claims().setSubject(id);
 
         //유저 role 넣기 -> (관리자, 유저)
         claims.put("roles", roles);
 
+        log.info("토큰 생성하러 들어감");
         Date date = new Date();
         return Jwts.builder()
                 .setClaims(claims)
@@ -58,7 +57,7 @@ public class JwtProvider {
     }
 
     //엑세스토큰 생성
-    public String createAccessToken(String id, List<MemberRole> roles) {
+    public String createAccessToken(String id, String roles) {
         return this.createToken(id, roles);
     }
 

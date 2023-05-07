@@ -32,8 +32,13 @@ public class MemberService {
 //                .roles(roles)
                 .build();
 
+        String autho = "ROLE_USER";
+        if(postDto.getId().contains("admin")){
+            autho = "ROLE_ADMIN";
+        }
+
         MemberRole role = new MemberRole();
-        role.setRole("ROLE_USER");
+        role.setRole(autho);
         role.setMember(member);
 
 //        member.getRoles().add(role);

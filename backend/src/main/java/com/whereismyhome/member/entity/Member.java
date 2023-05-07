@@ -1,11 +1,9 @@
 package com.whereismyhome.member.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.whereismyhome.board.entity.Board;
 import com.whereismyhome.role.entity.MemberRole;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -37,8 +35,9 @@ public class Member implements UserDetails {
     @OneToMany(mappedBy = "member")
     private List<Board> boardList;
 
-    @OneToMany(mappedBy = "member")
-    private List<MemberRole> roles = new ArrayList<>();
+    @JsonBackReference
+    @OneToOne(mappedBy = "member")
+    private MemberRole roles;
 
 
     @Override

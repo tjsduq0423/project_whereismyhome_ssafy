@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar fixed-top navbar-expand-md bg-transparent navbar-dark">
+  <nav class="navbar sticky-top navbar-expand-md bg-light">
     <div class="container">
       <RouterLink class="navbar-brand fs-3" to="/">
         <i class="bi bi-house-heart-fill"></i>
@@ -107,8 +107,4 @@ const logout = () => {
 };
 </script>
 
-<style scoped>
-.nav-link {
-  color: white;
-}
-</style>
+<style scoped></style>

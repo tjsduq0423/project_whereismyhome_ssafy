@@ -1,157 +1,239 @@
 <template>
   <AppContent class="img">
-    <nav class="card-header navbar navbar-expand-lg bg-light">
-      <div class="container-fluid">
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
+    <div class="container-fluid card-header">
+      <div class="row bg-light p-2">
+        <!-- 선택 taps -->
+        <div class="col-auto d-flex align-items-center">
+          <a class="nav-link fs-4" aria-current="page" href="#"
+            >아파트 매매 정보</a
+          >
+        </div>
+        <div class="col-auto d-flex align-items-center">
+          <a class="nav-link fs-4" href="#">북마크 매매 정보</a>
+        </div>
+        <!-- 시도 select -->
+        <div class="col-auto d-flex align-items-center gap-2">
+          <div class="dropdown-center">
+            <button
+              class="btn btn-outline-dark dropdown-toggle my-1"
+              type="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+              style="min-width: 10rem"
+            >
+              {{ selectedSido === null ? '시도선택' : selectedSido }}
+            </button>
+            <ul class="dropdown-menu text-center m-0">
+              <li v-for="sido in sidoList" :key="sido">
+                <a
+                  class="dropdown-item"
+                  href=""
+                  @click.prevent="
+                    () => {
+                      selectedSido = sido;
+                      selectedGugun = null;
+                    }
+                  "
+                  >{{ sido }}</a
+                >
+              </li>
+            </ul>
+          </div>
+          <!-- 구군 셀렉트 -->
+          <div class="dropdown-center">
+            <button
+              class="btn btn-outline-dark dropdown-toggle"
+              type="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+              style="min-width: 10rem"
+            >
+              {{ selectedGugun === null ? '구군 선택' : selectedGugun }}
+            </button>
+            <ul
+              v-show="gugunList !== undefined"
+              class="dropdown-menu text-center overflow-auto m-0"
+              style="height: 30rem"
+            >
+              <li v-for="gugun in gugunList" :key="gugun">
+                <a
+                  class="dropdown-item"
+                  href=""
+                  @click.prevent="selectedGugun = gugun"
+                  >{{ gugun }}</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+        <!-- 학교, 병원, 버정, 지하철, CCTV checkBoxes -->
+        <div class="col-auto gap-2 d-flex align-items-center fs-6">
+          <div class="form-check">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              value=""
+              id="flexCheckDefault"
+            />
+            <label class="form-check-label" for="flexCheckDefault">
+              학교
+            </label>
+          </div>
+          <div class="form-check">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              value=""
+              id="flexCheckDefault"
+            />
+            <label class="form-check-label" for="flexCheckDefault">
+              병원
+            </label>
+          </div>
+          <div class="form-check">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              value=""
+              id="flexCheckDefault"
+            />
+            <label class="form-check-label" for="flexCheckDefault">
+              버스
+            </label>
+          </div>
+          <div class="form-check">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              value=""
+              id="flexCheckDefault"
+            />
+            <label class="form-check-label" for="flexCheckDefault">
+              지하철
+            </label>
+          </div>
+          <div class="form-check">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              value=""
+              id="flexCheckDefault"
+            />
+            <label class="form-check-label" for="flexCheckDefault">
+              CCTV
+            </label>
+          </div>
+        </div>
+        <!-- 금액, 면적 필터 dropdown -->
+        <div
+          class="dropdown-center col-auto d-flex align-items-center justify-content-center"
         >
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0 gap-3 fs-5">
-            <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="#"
-                >아파트 매매 정보</a
-              >
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">북마크 매매 정보</a>
-            </li>
-
-            <!-- 시도 select -->
-            <li class="nav-item dropdown">
-              <button
-                class="btn btn-outline-dark dropdown-toggle"
-                type="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-                style="min-width: 10rem"
-              >
-                {{ selectedSido === null ? '시도선택' : selectedSido }}
-              </button>
-              <ul class="dropdown-menu text-center" style="min-width: 10rem">
-                <li v-for="sido in sidoList" :key="sido">
-                  <a
-                    class="dropdown-item"
-                    href=""
-                    @click.prevent="
-                      () => {
-                        selectedSido = sido;
-                        selectedGugun = null;
-                      }
-                    "
-                    >{{ sido }}</a
-                  >
-                </li>
-              </ul>
-            </li>
-            <!-- 구군 셀렉트 -->
-            <li class="nav-item dropdown">
-              <button
-                class="btn btn-outline-dark dropdown-toggle"
-                type="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-                style="width: 10rem"
-              >
-                {{ selectedGugun === null ? '구군 선택' : selectedGugun }}
-              </button>
-              <ul
-                v-show="gugunList !== undefined"
-                class="dropdown-menu text-center overflow-auto"
-                style="max-height: 36rem"
-              >
-                <li v-for="gugun in gugunList" :key="gugun">
-                  <a
-                    class="dropdown-item"
-                    href=""
-                    @click.prevent="selectedGugun = gugun"
-                    style="width: 10rem"
-                    >{{ gugun }}</a
-                  >
-                </li>
-              </ul>
-            </li>
-            <!-- 학교, 병원, 버정, 지하철, CCTV checkBoxes -->
-            <li class="nav-item gap-2" style="min-width: 20rem">
-              <div class="form-check">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  value=""
-                  id="flexCheckDefault"
-                />
-                <label class="form-check-label" for="flexCheckDefault">
-                  학교
-                </label>
-              </div>
-              <div class="form-check">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  value=""
-                  id="flexCheckDefault"
-                />
-                <label class="form-check-label" for="flexCheckDefault">
-                  병원
-                </label>
-              </div>
-              <div class="form-check">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  value=""
-                  id="flexCheckDefault"
-                />
-                <label class="form-check-label" for="flexCheckDefault">
-                  버스
-                </label>
-              </div>
-              <div class="form-check">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  value=""
-                  id="flexCheckDefault"
-                />
-                <label class="form-check-label" for="flexCheckDefault">
-                  지하철
-                </label>
-              </div>
-            </li>
-            <!-- 금액, 면적 필터 dropdown -->
-            <li class="nav-item">
-              <button class="btn btn-outline-dark fs-5 px-4" type="button">
-                <i class="bi bi-filter me-2"></i>
-                필터
-              </button>
-            </li>
-            <!-- 지역, 아파트, 지하철 검색 filter(input box) -->
-            <li class="nav-item">
-              <form class="d-flex" role="search">
-                <input
-                  class="form-control me-2"
-                  type="search"
-                  placeholder="Search"
-                  aria-label="Search"
-                />
-                <button class="btn btn-outline-dark" type="button">
-                  Search
-                </button>
-              </form>
-            </li>
+          <button
+            class="btn btn-outline-dark dropdown-toggle"
+            type="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            <i class="bi bi-filter"></i>
+            필터
+          </button>
+          <ul class="dropdown-menu text-center m-0">
+            아직 아무것도
           </ul>
         </div>
+        <!-- 지역, 아파트, 지하철 검색 filter(input box) -->
+        <div class="col d-flex align-items-center">
+          <form class="position-relative">
+            <i class="searchIcon bi bi-search"></i>
+            <input
+              class="form-control me-2"
+              type="search"
+              placeholder="Search"
+              aria-label="Search"
+            />
+          </form>
+        </div>
       </div>
-    </nav>
-
-    <div id="map" style="min-width: 500px; height: 400px"></div>
+    </div>
+    <div id="map" style="min-height: 30rem">
+      <div v-show="sideBar" class="sidebar">
+        <!-- 로드뷰 + 헤더 + 등등 들어갈 자리 -->
+        <div class="accordion accordion-flush" id="accordionFlushExample">
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="flush-headingOne">
+              <button
+                class="accordion-button collapsed"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#flush-collapseOne"
+                aria-expanded="false"
+                aria-controls="flush-collapseOne"
+              >
+                Accordion Item #1
+              </button>
+            </h2>
+            <div
+              id="flush-collapseOne"
+              class="accordion-collapse collapse"
+              aria-labelledby="flush-headingOne"
+              data-bs-parent="#accordionFlushExample"
+            >
+              <div class="accordion-body">
+                Placeholder content for this accordion, which is intended to
+                demonstrat
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="flush-headingTwo">
+              <button
+                class="accordion-button collapsed"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#flush-collapseTwo"
+                aria-expanded="false"
+                aria-controls="flush-collapseTwo"
+              >
+                Accordion Item #2
+              </button>
+            </h2>
+            <div
+              id="flush-collapseTwo"
+              class="accordion-collapse collapse"
+              aria-labelledby="flush-headingTwo"
+              data-bs-parent="#accordionFlushExample"
+            >
+              <div class="accordion-body">Placeholder conte</div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="flush-headingThree">
+              <button
+                class="accordion-button collapsed"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#flush-collapseThree"
+                aria-expanded="false"
+                aria-controls="flush-collapseThree"
+              >
+                Accordion Item #3
+              </button>
+            </h2>
+            <div
+              id="flush-collapseThree"
+              class="accordion-collapse collapse"
+              aria-labelledby="flush-headingThree"
+              data-bs-parent="#accordionFlushExample"
+            >
+              <div class="accordion-body">
+                Placeholder content for this accordion, which is intended to
+                demonstra
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </AppContent>
 </template>
 
@@ -159,6 +241,8 @@
 import AppContent from '@/components/AppContent.vue';
 import sidoGugunData from '@/assets/data/sido_gugun';
 import { computed, onMounted, ref } from 'vue';
+// 아파트 매매 정보 관련 사이드바 제어
+const sideBar = ref(true);
 
 // 시도 구군 셀렉트 바
 const selectedSido = ref(null);
@@ -199,16 +283,20 @@ onMounted(() => {
 .img {
   background-image: url('@/assets/img/apartment04jpg.jpg');
 }
-a {
-  color: black;
+.searchIcon {
+  position: absolute;
+  top: 0;
+  right: 0;
+  transform: translate(-60%, 20%);
+  font-size: 20px;
+  font-weight: bolder;
 }
-.navbar {
-  overflow: hidden;
-}
-.nav-item {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 10rem;
+.sidebar {
+  position: absolute;
+  z-index: 3;
+  width: 365px;
+  height: 100%;
+  background-color: white;
+  overflow: auto;
 }
 </style>

@@ -17,7 +17,7 @@
           <td>
             <a
               href=""
-              class="text-decoration-none"
+              class="text-decoration-none text-success"
               @click.prevent="goDetailPage(item.id)"
               >{{ item.title }}</a
             >

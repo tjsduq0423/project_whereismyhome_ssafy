@@ -7,9 +7,9 @@ import com.whereismyhome.member.dto.MemberLoginDto;
 import com.whereismyhome.member.entity.Member;
 import com.whereismyhome.member.service.MemberService;
 import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,6 +21,7 @@ import java.nio.charset.StandardCharsets;
 
 @RestController
 @RequiredArgsConstructor
+@Slf4j
 @RequestMapping("/member")
 public class MemberController {
 
@@ -44,11 +45,13 @@ public class MemberController {
             throw new IllegalStateException("아이디 혹은 비밀번호가 잘 못 되었습니다.");
         }
 
-        String accessToken = jwtProvider.createAccessToken(member.getId(), member.getRoles());
+        String accessToken = jwtProvider.createAccessToken(member.getId(), member.getRoles().getRole());
+        log.info("토큰 정상 생성");
 //        String encode = URLEncoder.encode("Bearer " + accessToken, StandardCharsets.UTF_8);
         String encode = URLEncoder.encode(accessToken, StandardCharsets.UTF_8);
 
         Cookie cookie = new Cookie("Authorization", encode);
+        cookie.setPath(("/"));
         cookie.setHttpOnly(true);
         cookie.setMaxAge(60 * 60);
         response.addCookie(cookie);
@@ -58,9 +61,10 @@ public class MemberController {
 
     //로그아웃
     @PostMapping("/logout")
-    public ResponseEntity logout(HttpServletRequest request, HttpServletResponse response) {
+    public ResponseEntity logout(HttpServletResponse response) {
         Cookie cookie = new Cookie("Authorization", null);
         cookie.setMaxAge(0);
+        cookie.setPath("/");
 
         response.addCookie(cookie);
 

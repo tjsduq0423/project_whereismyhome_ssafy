@@ -21,7 +21,6 @@ import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
-import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -41,13 +40,14 @@ public class JwtProvider {
 
 
     //jwt토큰 생성
-    public String createToken(String id, List<String> roles) {
+    public String createToken(String id, String roles) {
         //토큰 제목
         Claims claims = Jwts.claims().setSubject(id);
 
         //유저 role 넣기 -> (관리자, 유저)
         claims.put("roles", roles);
 
+        log.info("토큰 생성하러 들어감");
         Date date = new Date();
         return Jwts.builder()
                 .setClaims(claims)
@@ -57,7 +57,7 @@ public class JwtProvider {
     }
 
     //엑세스토큰 생성
-    public String createAccessToken(String id, List<String> roles) {
+    public String createAccessToken(String id, String roles) {
         return this.createToken(id, roles);
     }
 
@@ -78,10 +78,10 @@ public class JwtProvider {
     public String getTokenFromCookie(HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
-            log.debug("쿠키 있음");
+            log.info("쿠키 있음");
             for (Cookie cookie : cookies) {
                 if (cookie.getName().equals("Authorization")) {
-                    log.debug("찾고 싶은 거 찾음");
+                    log.info("찾고 싶은 거 찾음");
                     return cookie.getValue();
                 }
             }
@@ -96,7 +96,9 @@ public class JwtProvider {
     }
 
     //권한 확인
-    public List<String> getRoles(String id) {
-        return memberRepository.findById(id).get().getRoles();
-    }
+//    public List<String> getRoles(String id) {
+//        return memberRepository.findById(id).get().getRoles();
+//
+//    }
+
 }

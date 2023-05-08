@@ -1,10 +1,12 @@
 package com.whereismyhome.member.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.whereismyhome.board.entity.Board;
+import com.whereismyhome.role.entity.MemberRole;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
@@ -34,14 +36,16 @@ public class Member implements UserDetails {
     @OneToMany(mappedBy = "member")
     private List<Board> boardList;
 
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    @ElementCollection(fetch = FetchType.EAGER)
-    @Builder.Default
-    private List<String> roles = new ArrayList<>();
+    @JsonBackReference
+    @OneToOne(mappedBy = "member")
+    private MemberRole roles;
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority(this.roles.getRole()));
+        return authorities;
     }
 
     @Override

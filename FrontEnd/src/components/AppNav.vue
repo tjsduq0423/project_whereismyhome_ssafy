@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar sticky-top navbar-expand-md bg-light">
+  <nav class="navbar navbar-expand-md navbar-dark bg-transparent">
     <div class="container">
       <RouterLink class="navbar-brand fs-3" to="/">
         <i class="bi bi-house-heart-fill"></i>
@@ -107,4 +107,13 @@ const logout = () => {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.navbar {
+  position: absolute;
+  z-index: 3;
+  min-width: 100vw;
+}
+.nav-link {
+  color: white;
+}
+</style>

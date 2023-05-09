@@ -10,6 +10,7 @@ import AppContent from '@/components/AppContent.vue';
 
 <style scoped>
 .img {
-  background-image: url('@/assets/img/apartment03jpg.jpg');
+  background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.5)),
+    url('@/assets/img/apartment03jpg.jpg');
 }
 </style>

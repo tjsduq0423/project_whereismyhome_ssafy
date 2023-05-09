@@ -74,7 +74,8 @@ const goCreatePage = () => {
 
 <style scoped>
 .img {
-  background-image: url('@/assets/img/Qna01.jpg');
+  background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.5)),
+    url('@/assets/img/Qna01.jpg');
 }
 .cardWidthPadding {
   margin: 0rem 32rem 0rem 32rem;

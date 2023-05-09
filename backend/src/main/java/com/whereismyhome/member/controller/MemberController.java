@@ -38,12 +38,7 @@ public class MemberController {
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody MemberLoginDto loginDto, HttpServletResponse response) {
         Member member = memberService.findUser(loginDto);
-        boolean check = memberService.checkPassWord(member, loginDto);
-
-        //비밀번호 체크
-        if (!check) {
-            throw new IllegalStateException("아이디 혹은 비밀번호가 잘 못 되었습니다.");
-        }
+        memberService.checkPassWord(member, loginDto);
 
         String accessToken = jwtProvider.createAccessToken(member.getId(), member.getRoles().getRole());
         log.info("토큰 정상 생성");

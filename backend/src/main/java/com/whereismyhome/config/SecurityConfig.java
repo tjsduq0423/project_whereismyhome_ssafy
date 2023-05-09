@@ -3,6 +3,8 @@ package com.whereismyhome.config;
 
 import com.whereismyhome.jwt.JwtAuthenticationFilter;
 import com.whereismyhome.jwt.JwtProvider;
+import com.whereismyhome.jwt.exception.JwtAccessDeniedHandler;
+import com.whereismyhome.jwt.exception.JwtAuthenticationEntryPoint;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
@@ -20,6 +22,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     private final JwtProvider jwtProvider;
+    private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
+    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -29,6 +33,10 @@ public class SecurityConfig {
                 .and()
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .exceptionHandling()
+                .accessDeniedHandler(jwtAccessDeniedHandler)
+                .authenticationEntryPoint(jwtAuthenticationEntryPoint)
                 .and()
                 .authorizeHttpRequests()
                 .requestMatchers("/notice/write","board/answer").hasRole("ADMIN")

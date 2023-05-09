@@ -1,5 +1,7 @@
 package com.whereismyhome.member.service;
 
+import com.whereismyhome.exception.BusinessLogicException;
+import com.whereismyhome.exception.ExceptionCode;
 import com.whereismyhome.member.dto.MemberJoinDto;
 import com.whereismyhome.member.dto.MemberLoginDto;
 import com.whereismyhome.member.entity.Member;
@@ -47,21 +49,25 @@ public class MemberService {
     }
 
     //회원 id 중복 검사
-    public void verifiedMember(String id) throws IllegalAccessException {
+    public void verifiedMember(String id){
         Optional<Member> memberId = memberRepository.findById(id);
 
         if(memberId.isPresent()) {
-            throw new IllegalAccessException("중복된 아이디입니다.");
+            throw new BusinessLogicException(ExceptionCode.DUPLICATE_ID);
         }
     }
 
     public Member findUser(MemberLoginDto loginDto) {
         Member member = memberRepository.findById(loginDto.getId())
-                .orElseThrow(() -> new IllegalArgumentException("아이디 혹은 비밀번호가 잘 못 되었음 "));
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.BAD_PARAM));
         return member;
     }
 
-    public boolean checkPassWord(Member member, MemberLoginDto loginDto) {
-        return passwordEncoder.matches(loginDto.getPassword(), member.getPassword());
+    public void checkPassWord(Member member, MemberLoginDto loginDto) {
+        boolean matches = passwordEncoder.matches(loginDto.getPassword(), member.getPassword());
+
+        if(!matches){
+            throw new BusinessLogicException(ExceptionCode.BAD_PARAM);
+        }
     }
 }

@@ -1,7 +1,7 @@
 <template>
-  <nav class="navbar sticky-top navbar-expand-md bg-light">
-    <div class="container">
-      <RouterLink class="navbar-brand fs-3" to="/">
+  <nav class="navbar navbar-expand-md navbar-dark bg-transparent">
+    <div class="container p-0">
+      <RouterLink class="navbar-brand fs-3 ms-5 my-2" to="/">
         <i class="bi bi-house-heart-fill"></i>
         HappyHouse</RouterLink
       >
@@ -107,4 +107,13 @@ const logout = () => {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.navbar {
+  position: absolute;
+  z-index: 3;
+  min-width: 98vw;
+}
+.nav-link {
+  color: white;
+}
+</style>

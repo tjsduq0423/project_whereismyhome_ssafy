@@ -39,9 +39,10 @@ const goListPage = () => router.push({ name: 'Notice' });
 
 <style scoped>
 .img {
-  background-image: url('@/assets/img/notice02.jpg');
+  background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.5)),
+    url('@/assets/img/notice02.jpg');
 }
 .cardWidthPadding {
-  margin: 0rem 32rem 0rem 32rem;
+  margin: 0rem 28vw 0rem 28vw;
 }
 </style>

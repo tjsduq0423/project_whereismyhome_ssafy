@@ -155,6 +155,7 @@
         </div>
       </div>
     </div>
+    <!-- 맵 + 사이드 바 -->
     <div id="map" style="min-height: 30rem">
       <div v-show="sideBar" class="sidebar">
         <!-- 로드뷰 + 헤더 + 등등 들어갈 자리 -->
@@ -281,7 +282,8 @@ onMounted(() => {
 
 <style scoped>
 .img {
-  background-image: url('@/assets/img/apartment04jpg.jpg');
+  background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.5)),
+    url('@/assets/img/apartment04jpg.jpg');
 }
 .searchIcon {
   position: absolute;

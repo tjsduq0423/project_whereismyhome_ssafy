@@ -1,5 +1,8 @@
 <template>
-  <div class="viewBox d-flex justify-content-center">
+  <div
+    class="viewBox d-flex flex-column justify-content-center align-items-center"
+  >
+    <slot name="header"></slot>
     <div class="card p-5">
       <slot></slot>
     </div>
@@ -17,8 +20,6 @@
   position: relative;
 }
 .card {
-  box-shadow: 0px 32px 32px -16px rgba(0, 0, 0, 0.6);
-  margin-top: auto;
-  margin-bottom: auto;
+  margin-bottom: 5vh;
 }
 </style>

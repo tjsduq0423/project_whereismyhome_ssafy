@@ -58,6 +58,6 @@ const deleteNotice = () => {};
     url('@/assets/img/notice02.jpg');
 }
 .cardWidthPadding {
-  margin: 0rem 32rem 0rem 32rem;
+  margin: 0rem 28vw 0rem 28vw;
 }
 </style>

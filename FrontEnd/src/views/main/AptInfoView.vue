@@ -1,5 +1,6 @@
 <template>
   <AppContent class="img">
+    <!-- <template #header><div class=""></div> </template> -->
     <div class="container-fluid card-header">
       <div class="row bg-light p-2">
         <!-- 선택 taps -->

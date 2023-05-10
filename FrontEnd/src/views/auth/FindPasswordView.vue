@@ -23,7 +23,7 @@
         </div>
         <button
           type="button"
-          class="d-grid col-12 btn btn-primary text-truncate"
+          class="d-grid col-12 btn btn-success text-truncate"
         >
           비밀번호 찾기
         </button>

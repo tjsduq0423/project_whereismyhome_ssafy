@@ -1,6 +1,6 @@
 <template>
   <AppContent class="img">
-    <!-- <template #header><div class=""></div> </template> -->
+    <template #header><div class="aptInfoHeader"></div></template>
     <div class="container-fluid card-header">
       <div class="row bg-light p-2">
         <!-- 선택 taps -->
@@ -157,7 +157,7 @@
       </div>
     </div>
     <!-- 맵 + 사이드 바 -->
-    <div id="map" style="min-height: 30rem">
+    <div id="map" style="min-height: 80vh">
       <div v-show="sideBar" class="sidebar">
         <!-- 로드뷰 + 헤더 + 등등 들어갈 자리 -->
         <div class="accordion accordion-flush" id="accordionFlushExample">
@@ -301,5 +301,8 @@ onMounted(() => {
   height: 100%;
   background-color: white;
   overflow: auto;
+}
+.aptInfoHeader {
+  margin: 0px 0vw 15vh 0vw;
 }
 </style>

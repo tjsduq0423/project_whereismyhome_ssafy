@@ -17,7 +17,7 @@
         @input="$emit('update:content', $event.target.value)"
         class="form-control"
         id="content"
-        rows="3"
+        rows="9"
       ></textarea>
     </div>
     <div class="d-flex gap-2 mt-4">

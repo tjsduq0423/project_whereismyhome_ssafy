@@ -20,6 +20,7 @@
   position: relative;
 }
 .card {
+  margin-top: 86px;
   margin-bottom: 5vh;
 }
 </style>

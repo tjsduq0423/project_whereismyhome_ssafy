@@ -41,7 +41,7 @@
         </div>
         <button
           type="button"
-          class="d-grid col-12 btn btn-primary text-truncate mt-4"
+          class="d-grid col-12 btn btn-success text-truncate mt-4"
         >
           회원가입
         </button>

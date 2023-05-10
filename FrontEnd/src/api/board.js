@@ -1,7 +1,8 @@
 import http from '@/api/http';
 const boardApi = {
   board: theme => http.post('/board/articles', { theme }),
-  myboard: id => http.post('/board/myboard', { id }),
+  myboard: (id, title, content) =>
+    http.post(`/board/myboard`, { id, title, content }),
   deletearticle: boardId => http.post('/board/deletearticle', { boardId }),
 };
 

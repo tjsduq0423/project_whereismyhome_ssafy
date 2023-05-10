@@ -23,6 +23,6 @@ export const data = {
 };
 
 export const options = {
-  responsive: false,
+  responsive: true,
   maintainAspectRatio: true,
 };

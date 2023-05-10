@@ -13,11 +13,7 @@
       </div>
     </template>
     <h1 class="chartHeader text-center">Trend</h1>
-    <AppBarChart
-      class="chartBody"
-      :chart-data="chartData"
-      :chart-options="chartOptions"
-    >
+    <AppBarChart :chart-data="chartData" :chart-options="chartOptions">
     </AppBarChart>
     <h6 class="footerText">
       거래량이 어쩌구 조회수가 저쩌구 해서 나온 트렌드가 그렇다구~
@@ -39,7 +35,7 @@ const chartOptions = { ...options };
   background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.5)),
     url('@/assets/img/apartment03jpg.jpg');
   .cardOver {
-    margin-top: 30vh;
+    margin-top: 25vh;
     margin-bottom: 5vh;
     text-align: center;
     color: white;
@@ -53,10 +49,7 @@ const chartOptions = { ...options };
   }
 }
 .chartHeader {
-  margin: 0px 10vw 3vh 10vw;
-}
-.chartBody {
-  width: 50vw;
+  margin: 0px 0px 3vh 0px;
 }
 .footerText {
   text-align: end;

@@ -8,12 +8,13 @@ import java.time.LocalDateTime;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class BoardListResponseDto {
+public class BoardResponseDto {
     private int id;
     private String memberId;
     private String title;
     private String content;
     private LocalDateTime createtime;
+    private LocalDateTime modifiedtime;
     private String responseContent;
 
 }

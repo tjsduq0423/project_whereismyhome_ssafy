@@ -39,9 +39,10 @@ public class SecurityConfig {
                 .authenticationEntryPoint(jwtAuthenticationEntryPoint)
                 .and()
                 .authorizeHttpRequests()
-                .requestMatchers("/notice/write","board/answer").hasRole("ADMIN")
+                .requestMatchers("/notice/regist","board/answer","board/list").hasRole("ADMIN")
                 .requestMatchers("/h2/**").permitAll()
-                .anyRequest().permitAll()
+                .requestMatchers("/member/login","/member/join").permitAll()
+                .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(new JwtAuthenticationFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class);
 

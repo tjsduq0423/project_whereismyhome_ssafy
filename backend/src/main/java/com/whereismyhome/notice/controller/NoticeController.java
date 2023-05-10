@@ -46,13 +46,9 @@ public class NoticeController {
     }
 
     //공지사항 수정
-    @PutMapping("/{id}")
-    public ResponseEntity updateNotice(@PathVariable("id") int id,
-                                       @RequestBody NoticePutDto noticePutDto) {
-        noticePutDto.setId(id);
+    @PutMapping
+    public ResponseEntity updateNotice(@RequestBody NoticePutDto noticePutDto) {
         noticeService.updateNotice(noticePutDto);
         return ResponseEntity.ok().body("공지사항 수정 완료");
     }
-
-
 }

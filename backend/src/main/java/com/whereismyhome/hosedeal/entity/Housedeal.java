@@ -1,4 +1,4 @@
-package com.whereismyhome.hospital;
+package com.whereismyhome.hosedeal.entity;
 
 import com.whereismyhome.houseinfo.entity.HouseInfo;
 import jakarta.persistence.*;

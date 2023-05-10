@@ -4,7 +4,9 @@ package com.whereismyhome.member.controller;
 import com.whereismyhome.jwt.JwtProvider;
 import com.whereismyhome.member.dto.MemberJoinDto;
 import com.whereismyhome.member.dto.MemberLoginDto;
+import com.whereismyhome.member.dto.MemberResponseDto;
 import com.whereismyhome.member.entity.Member;
+import com.whereismyhome.member.mapper.MemberMapper;
 import com.whereismyhome.member.service.MemberService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
@@ -24,7 +26,7 @@ import java.nio.charset.StandardCharsets;
 @Slf4j
 @RequestMapping("/member")
 public class MemberController {
-
+    private final MemberMapper mapper;
     private final MemberService memberService;
     private final JwtProvider jwtProvider;
 
@@ -51,7 +53,9 @@ public class MemberController {
         cookie.setMaxAge(60 * 60);
         response.addCookie(cookie);
 
-        return ResponseEntity.ok().body("로그인 성공");
+        MemberResponseDto memberResponseDto = mapper.memberToMemberResponseDto(member);
+
+        return ResponseEntity.ok().body(memberResponseDto);
     }
 
     //로그아웃

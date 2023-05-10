@@ -4,6 +4,7 @@ import com.whereismyhome.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
 
@@ -26,6 +27,10 @@ public class Board {
     @CreatedDate
     @Column
     private LocalDateTime createtime = LocalDateTime.now();
+
+    @LastModifiedDate
+    @Column
+    private LocalDateTime modifiedtime;
 
     @Column
     private String responseContent;

@@ -1,14 +1,14 @@
 package com.whereismyhome.board.controller;
 
-import com.whereismyhome.board.dto.BoardListResponseDto;
+import com.whereismyhome.board.dto.BoardAnswerDto;
 import com.whereismyhome.board.dto.BoardPostDto;
+import com.whereismyhome.board.dto.BoardPutDto;
+import com.whereismyhome.board.dto.BoardResponseDto;
 import com.whereismyhome.board.entity.Board;
 import com.whereismyhome.board.mapper.BoardMapper;
 import com.whereismyhome.board.service.BoardService;
-import com.whereismyhome.member.entity.Member;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,11 +25,7 @@ public class BoardController {
     //게시글 등록
     @PostMapping("/regist")
     public ResponseEntity regist(@RequestBody BoardPostDto postDto) {
-        Board board = mapper.boardPostDtoToBoard(postDto);
-        Member member = new Member();
-        member.setId(postDto.getMemberId());
-        board.setMember(member);
-        boardService.regist(board);
+        boardService.regist(mapper.boardPostDtoToBoard(postDto));
         return ResponseEntity.ok().build();
     }
 
@@ -46,15 +42,45 @@ public class BoardController {
     @GetMapping("/{id}")
     public ResponseEntity boardList(@PathVariable("id") String id) {
         List<Board> boards = boardService.boardList(id);
-        List<BoardListResponseDto> boardListResponseDtos = mapper.boardListToBoardListResponseDto(boards);
-        List<BoardListResponseDto> boardList = boardService.setId(boardListResponseDtos, id);
-        return new ResponseEntity(boardList, HttpStatus.OK);
+        List<BoardResponseDto> boardResponseDtos = mapper.boardListToBoardListResponseDto(boards);
+
+        return ResponseEntity.ok().body(boardResponseDtos);
     }
 
-    //테스트
-    @GetMapping("/answer")
-    public ResponseEntity test(){
+    //게시글 수정
+    @PutMapping("/update")
+    public ResponseEntity boardUpdate(@RequestBody BoardPutDto boardPutDto) {
+        Board board = boardService.boardUpdate(mapper.boardPutDtoToBoard(boardPutDto));
+        BoardResponseDto boardResponseDto = mapper.boardToBoardResponseDto(board);
 
-        return ResponseEntity.ok().body("답변 작성 메서드 요청 성공");
+        return ResponseEntity.ok().body(boardResponseDto);
+    }
+
+    //게시글 답변 달기
+    //관리자만 권한 있음
+    @PostMapping("/answer")
+    public ResponseEntity boardAnswer(@RequestBody BoardAnswerDto boardAnswerDto) {
+        Board board = boardService.setAnswer(mapper.boardAnswerDtoToBoard(boardAnswerDto));
+        BoardResponseDto boardResponseDto = mapper.boardToBoardResponseDto(board);
+
+        return ResponseEntity.ok().body(boardResponseDto);
+    }
+
+    //게시글 상세 조회
+    @GetMapping("{id}")
+    public ResponseEntity detailBoard(@PathVariable("id") int id) {
+        BoardResponseDto boardResponseDto = mapper.boardToBoardResponseDto(boardService.boardDetail(id));
+
+        return ResponseEntity.ok().body(boardResponseDto);
+    }
+
+    //게시글 조회 - 답변이 달리지 않은 것만 조회
+    //관리자용
+    @GetMapping("/list")
+    public ResponseEntity boardList() {
+        List<Board> boardList = boardService.adminBoardList();
+        List<BoardResponseDto> boardResponseDtos = mapper.boardListToBoardListResponseDto(boardList);
+
+        return ResponseEntity.ok().body(boardResponseDtos);
     }
 }

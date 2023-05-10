@@ -1,4 +1,4 @@
-package com.whereismyhome.houseinfo.shool.entity;
+package com.whereismyhome.shool.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

@@ -66,6 +66,14 @@ public class BoardController {
         return ResponseEntity.ok().body(boardResponseDto);
     }
 
+    //게시글 상세 조회
+    @GetMapping("{id}")
+    public ResponseEntity detailBoard(@PathVariable("id") int id) {
+        BoardResponseDto boardResponseDto = mapper.boardToBoardResponseDto(boardService.boardDetail(id));
+
+        return ResponseEntity.ok().body(boardResponseDto);
+    }
+
     //게시글 조회 - 답변이 달리지 않은 것만 조회
     //관리자용
     @GetMapping("/list")

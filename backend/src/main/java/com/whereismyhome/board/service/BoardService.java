@@ -55,6 +55,12 @@ public class BoardService {
         return boardList;
     }
 
+    //게시글 상세조회
+    public Board boardDetail(int id) {
+        Board board = findBoard(id);
+        return board;
+    }
+
 
     //게시글에 답변 달기
     public Board setAnswer(Board board) {

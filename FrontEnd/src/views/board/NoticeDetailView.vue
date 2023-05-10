@@ -1,15 +1,27 @@
 <template>
   <AppContent class="img">
     <div class="cardWidthPadding"></div>
-    <h1 class="my-3 text-center">{{ item.title }}</h1>
+    <h2 class="" style="word-break: break-all; word-wrap: normal">
+      {{ item.title }}
+    </h2>
     <hr />
-    <div>{{ item.content }}</div>
+    <p
+      style="
+        height: 30vh;
+        max-width: 60vw;
+        word-break: break-all;
+        word-wrap: normal;
+      "
+      class="fs-4"
+    >
+      {{ item.content }}
+    </p>
     <hr />
     <div class="row g-2">
       <div class="col-auto me-auto">
         <button
           type="button"
-          class="btn btn-outline-primary btn-lg"
+          class="btn btn-outline-success btn-lg"
           @click="goListPage"
         >
           목록
@@ -19,7 +31,7 @@
       <div class="col-auto">
         <button
           type="button"
-          class="btn btn-outline-success btn-lg"
+          class="btn btn-outline-primary btn-lg"
           @click="goEditPage"
         >
           수정

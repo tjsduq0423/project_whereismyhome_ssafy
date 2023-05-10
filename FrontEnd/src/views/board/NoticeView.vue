@@ -55,8 +55,8 @@ const router = useRouter();
 
 const curPage = ref(1);
 const items = ref([...data]);
-const showContentCount = 5;
-const showPaginationBtnCount = 10;
+const showContentCount = 8;
+const showPaginationBtnCount = 8;
 const _items = computed(() => {
   const start = (curPage.value - 1) * showContentCount + 1;
   const end = start + showContentCount;

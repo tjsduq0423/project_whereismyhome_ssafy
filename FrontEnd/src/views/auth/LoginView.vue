@@ -23,7 +23,7 @@
         </div>
         <button
           type="button"
-          class="d-grid col-12 btn btn-primary text-truncate mb-4"
+          class="d-grid col-12 btn btn-success text-truncate mb-4"
         >
           로그인
         </button>
@@ -37,7 +37,7 @@
           </button>
           <button
             type="button"
-            class="btn btn-outline-primary text-truncate"
+            class="btn btn-outline-success text-truncate"
             @click="goSignup"
           >
             회원 가입

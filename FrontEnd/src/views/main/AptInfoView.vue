@@ -162,7 +162,9 @@
         </div>
       </div>
     </div>
+
     <button @click="showSideBar = !showSideBar">사이드바 on/off</button>
+
     <!-- 맵 + 사이드 바 -->
     <div id="map" style="min-height: 80vh">
       <AppSideBar v-if="showSideBar"></AppSideBar>

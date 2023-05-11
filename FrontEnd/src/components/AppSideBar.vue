@@ -33,12 +33,42 @@
           data-bs-parent="#accordionFlushExample"
         >
           <div class="container-fluid p-3">
-            <div>매매 정보</div>
-            <!-- 차트 -->
-            <AppLineChart
-              :chart-data="chartData"
-              :chart-options="chartOptions"
-            ></AppLineChart>
+            <div class="row">
+              <div>매매 정보</div>
+            </div>
+            <div class="row">
+              <AppLineChart
+                :chart-data="chartData"
+                :chart-options="chartOptions"
+              ></AppLineChart>
+            </div>
+            <div class="row">
+              <table class="table text-center text-truncate">
+                <thead>
+                  <tr>
+                    <th scope="col">번호</th>
+                    <th scope="col">제목</th>
+                    <th scope="col">작성자</th>
+                    <th scope="col">작성시간</th>
+                  </tr>
+                </thead>
+                <tbody class="table-group-divider">
+                  <tr v-for="item in _items" :key="item.id">
+                    <th>{{ item.id }}</th>
+                    <td>
+                      <a
+                        href=""
+                        class="text-decoration-none text-success"
+                        @click.prevent="goDetailPage(item.id)"
+                        >{{ item.title }}</a
+                      >
+                    </td>
+                    <td>{{ item.author }}</td>
+                    <td>{{ item.createTime }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>

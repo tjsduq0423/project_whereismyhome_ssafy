@@ -163,7 +163,7 @@
       </div>
     </div>
 
-    <button @click="showSideBar = !showSideBar">사이드바 on/off</button>
+    <button @click="testFunction">사이드바 on/off</button>
 
     <!-- 맵 + 사이드 바 -->
     <div id="map" style="min-height: 80vh">
@@ -179,6 +179,9 @@ import sidoGugunData from '@/assets/data/sido_gugun';
 import { computed, onMounted, ref } from 'vue';
 // 아파트 매매 정보 관련 사이드바 제어
 const showSideBar = ref(false);
+const testFunction = async () => {
+  showSideBar.value = !showSideBar.value;
+};
 
 // 시도 구군 셀렉트 바
 const selectedSido = ref(null);

@@ -39,8 +39,8 @@ public class BoardController {
 
     //게시글 목록 조회
     //자신이 쓴 게시글만 조회
-    @GetMapping("/{id}")
-    public ResponseEntity boardList(@PathVariable("id") String id) {
+    @GetMapping("/{member-id}")
+    public ResponseEntity boardList(@PathVariable("member-id") String id) {
         List<Board> boards = boardService.boardList(id);
         List<BoardResponseDto> boardResponseDtos = mapper.boardListToBoardListResponseDto(boards);
 
@@ -67,7 +67,7 @@ public class BoardController {
     }
 
     //게시글 상세 조회
-    @GetMapping("{id}")
+    @GetMapping("/detail/{id}")
     public ResponseEntity detailBoard(@PathVariable("id") int id) {
         BoardResponseDto boardResponseDto = mapper.boardToBoardResponseDto(boardService.boardDetail(id));
 

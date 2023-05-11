@@ -34,6 +34,7 @@
         >
           <div class="container-fluid p-3">
             <div>매매 정보</div>
+            <!-- 차트 -->
             <AppLineChart
               :chart-data="chartData"
               :chart-options="chartOptions"

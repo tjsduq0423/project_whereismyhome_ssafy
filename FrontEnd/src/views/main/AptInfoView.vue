@@ -18,7 +18,7 @@
         <div class="col-auto d-flex align-items-center gap-2">
           <div class="dropdown-center">
             <button
-              class="btn btn-outline-dark dropdown-toggle my-1"
+              class="btn btn-outline-dark dropdown-toggle"
               type="button"
               data-bs-toggle="dropdown"
               aria-expanded="false"
@@ -50,7 +50,7 @@
               type="button"
               data-bs-toggle="dropdown"
               aria-expanded="false"
-              style="min-width: 10rem"
+              style="min-width: 10vw"
             >
               {{ selectedGugun === null ? '구군 선택' : selectedGugun }}
             </button>

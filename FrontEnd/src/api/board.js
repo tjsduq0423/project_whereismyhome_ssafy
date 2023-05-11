@@ -1,9 +1,18 @@
-import http from '@/api/http';
-const boardApi = {
-  board: theme => http.post('/board/articles', { theme }),
-  myboard: (id, title, content) =>
-    http.post(`/board/myboard`, { id, title, content }),
-  deletearticle: boardId => http.post('/board/deletearticle', { boardId }),
-};
+import { board } from '.';
 
-export default boardApi;
+export const putBoard = (id, title, content) =>
+  board.put('/update', { id, title, content });
+
+export const registBoard = (memberId, title, content) =>
+  board.post('/regist', { memberId, title, content });
+
+export const answerBoard = (id, responseContent) =>
+  board.post('/answer', { id, responseContent });
+
+export const getBoardById = memberId => board.get(`/${memberId}`);
+
+export const getBoardList = () => board.get('/list');
+
+export const getBoardDetail = id => board.get(`/detail/${id}`);
+
+export const deleteBoard = id => board.delete(`/${id}`);

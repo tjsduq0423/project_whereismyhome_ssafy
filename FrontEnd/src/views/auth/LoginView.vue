@@ -54,10 +54,10 @@ import AppContent from '@/components/AppContent.vue';
 import router from '@/router';
 
 const goFindPW = () => {
-  router.push('/FindPassword');
+  router.push({ name: 'FindPassword' });
 };
 const goSignup = () => {
-  router.push('/SignUp');
+  router.push({ name: 'SignUp' });
 };
 </script>
 

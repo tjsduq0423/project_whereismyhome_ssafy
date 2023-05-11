@@ -1,7 +1,7 @@
 <template>
   <nav class="navbar navbar-expand-md navbar-dark bg-transparent">
-    <div class="container p-0">
-      <RouterLink class="navbar-brand fs-3 ms-5 my-2" to="/">
+    <div class="container">
+      <RouterLink class="navbar-brand fs-3" to="/">
         <i class="bi bi-house-heart-fill"></i>
         HappyHouse</RouterLink
       >
@@ -111,7 +111,7 @@ const logout = () => {
 .navbar {
   position: absolute;
   z-index: 3;
-  min-width: 98vw;
+  min-width: 100%;
 }
 .nav-link {
   color: white;

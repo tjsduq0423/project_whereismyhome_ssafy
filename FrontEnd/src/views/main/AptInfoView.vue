@@ -1,9 +1,10 @@
 <template>
   <AppContent class="img">
     <template #header><div class="aptInfoHeader"></div></template>
+
     <div class="container-fluid card-header">
       <div class="row bg-light p-2">
-        <!-- 선택 taps -->
+        <!-- 아파트 북마크 선택 탭 taps -->
         <div class="col-auto d-flex align-items-center">
           <a class="nav-link fs-4" aria-current="page" href="#"
             >아파트 매매 정보</a
@@ -12,15 +13,16 @@
         <div class="col-auto d-flex align-items-center">
           <a class="nav-link fs-4" href="#">북마크 매매 정보</a>
         </div>
-        <!-- 시도 select -->
+
+        <!-- 시도 select box -->
         <div class="col-auto d-flex align-items-center gap-2">
           <div class="dropdown-center">
             <button
-              class="btn btn-outline-dark dropdown-toggle my-1"
+              class="btn btn-outline-dark dropdown-toggle"
               type="button"
               data-bs-toggle="dropdown"
               aria-expanded="false"
-              style="min-width: 10rem"
+              style="min-width: 10vw"
             >
               {{ selectedSido === null ? '시도선택' : selectedSido }}
             </button>
@@ -40,14 +42,15 @@
               </li>
             </ul>
           </div>
-          <!-- 구군 셀렉트 -->
+
+          <!-- 구군 select box -->
           <div class="dropdown-center">
             <button
               class="btn btn-outline-dark dropdown-toggle"
               type="button"
               data-bs-toggle="dropdown"
               aria-expanded="false"
-              style="min-width: 10rem"
+              style="min-width: 10vw"
             >
               {{ selectedGugun === null ? '구군 선택' : selectedGugun }}
             </button>
@@ -67,6 +70,7 @@
             </ul>
           </div>
         </div>
+
         <!-- 학교, 병원, 버정, 지하철, CCTV checkBoxes -->
         <div class="col-auto gap-2 d-flex align-items-center fs-6">
           <div class="form-check">
@@ -125,6 +129,7 @@
             </label>
           </div>
         </div>
+
         <!-- 금액, 면적 필터 dropdown -->
         <div
           class="dropdown-center col-auto d-flex align-items-center justify-content-center"
@@ -142,6 +147,7 @@
             아직 아무것도
           </ul>
         </div>
+
         <!-- 지역, 아파트, 지하철 검색 filter(input box) -->
         <div class="col d-flex align-items-center">
           <form class="position-relative">
@@ -156,95 +162,23 @@
         </div>
       </div>
     </div>
+
+    <button @click="showSideBar = !showSideBar">사이드바 on/off</button>
+
     <!-- 맵 + 사이드 바 -->
     <div id="map" style="min-height: 80vh">
-      <div v-show="sideBar" class="sidebar">
-        <!-- 로드뷰 + 헤더 + 등등 들어갈 자리 -->
-        <div class="accordion accordion-flush" id="accordionFlushExample">
-          <div class="accordion-item">
-            <h2 class="accordion-header" id="flush-headingOne">
-              <button
-                class="accordion-button collapsed"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#flush-collapseOne"
-                aria-expanded="false"
-                aria-controls="flush-collapseOne"
-              >
-                Accordion Item #1
-              </button>
-            </h2>
-            <div
-              id="flush-collapseOne"
-              class="accordion-collapse collapse"
-              aria-labelledby="flush-headingOne"
-              data-bs-parent="#accordionFlushExample"
-            >
-              <div class="accordion-body">
-                Placeholder content for this accordion, which is intended to
-                demonstrat
-              </div>
-            </div>
-          </div>
-          <div class="accordion-item">
-            <h2 class="accordion-header" id="flush-headingTwo">
-              <button
-                class="accordion-button collapsed"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#flush-collapseTwo"
-                aria-expanded="false"
-                aria-controls="flush-collapseTwo"
-              >
-                Accordion Item #2
-              </button>
-            </h2>
-            <div
-              id="flush-collapseTwo"
-              class="accordion-collapse collapse"
-              aria-labelledby="flush-headingTwo"
-              data-bs-parent="#accordionFlushExample"
-            >
-              <div class="accordion-body">Placeholder conte</div>
-            </div>
-          </div>
-          <div class="accordion-item">
-            <h2 class="accordion-header" id="flush-headingThree">
-              <button
-                class="accordion-button collapsed"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#flush-collapseThree"
-                aria-expanded="false"
-                aria-controls="flush-collapseThree"
-              >
-                Accordion Item #3
-              </button>
-            </h2>
-            <div
-              id="flush-collapseThree"
-              class="accordion-collapse collapse"
-              aria-labelledby="flush-headingThree"
-              data-bs-parent="#accordionFlushExample"
-            >
-              <div class="accordion-body">
-                Placeholder content for this accordion, which is intended to
-                demonstra
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <AppSideBar v-if="showSideBar"></AppSideBar>
     </div>
   </AppContent>
 </template>
 
 <script setup>
 import AppContent from '@/components/AppContent.vue';
+import AppSideBar from '@/components/AppSideBar.vue';
 import sidoGugunData from '@/assets/data/sido_gugun';
 import { computed, onMounted, ref } from 'vue';
 // 아파트 매매 정보 관련 사이드바 제어
-const sideBar = ref(true);
+const showSideBar = ref(false);
 
 // 시도 구군 셀렉트 바
 const selectedSido = ref(null);
@@ -254,14 +188,14 @@ const gugunList = computed(() => {
   return sidoGugunData[selectedSido.value];
 });
 
-// kakao map 제어
+// kakao map 생성.
 const map = ref(null);
 
 const initMap = () => {
   const container = document.getElementById('map');
   const options = {
     center: new kakao.maps.LatLng(33.450701, 126.570667),
-    level: 3,
+    level: 5,
   };
   map.value = new kakao.maps.Map(container, options);
 };
@@ -276,7 +210,7 @@ onMounted(() => {
   script.onload = () => kakao.maps.load(initMap);
   script.src = `//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=${
     import.meta.env.VITE_APP_KAKAOMAP_KEY
-  }`;
+  }&libraries=services,clusterer`;
   document.head.appendChild(script);
 });
 </script>
@@ -294,14 +228,7 @@ onMounted(() => {
   font-size: 20px;
   font-weight: bolder;
 }
-.sidebar {
-  position: absolute;
-  z-index: 3;
-  width: 365px;
-  height: 100%;
-  background-color: white;
-  overflow: auto;
-}
+
 .aptInfoHeader {
   margin: 0px 0vw 15vh 0vw;
 }

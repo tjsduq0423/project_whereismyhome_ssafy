@@ -43,6 +43,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests()
                 .requestMatchers("/notice/regist","board/answer","board/list").hasRole("ADMIN")
                 .requestMatchers("/h2/**").permitAll()
+                .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-resources/**").permitAll()
                 .requestMatchers("/member/login","/member/join").permitAll()
                 .anyRequest().authenticated()
                 .and()

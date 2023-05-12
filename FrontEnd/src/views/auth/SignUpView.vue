@@ -63,15 +63,17 @@ import AppCardHeader from '@/components/AppCardHeader.vue';
 import AppContent from '@/components/AppContent.vue';
 import { join } from '@/api/member';
 import { ref } from 'vue';
-
+import { useRouter } from 'vue-router';
 const id = ref('');
 const password = ref('');
 const name = ref('');
 const email = ref('');
 
+const router = useRouter();
 const signUP = async () => {
   try {
     await join(id.value, password.value, name.value, email.value);
+    router.push({ name: 'Home' });
   } catch (err) {
     console.error(err);
   }

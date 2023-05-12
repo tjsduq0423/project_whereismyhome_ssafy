@@ -94,15 +94,24 @@
 
 <script setup>
 import { useRouter } from 'vue-router';
-import { ref } from 'vue';
+import { useAuthStore } from '../stores/auth';
+import { storeToRefs } from 'pinia';
+import { computed } from 'vue';
 
 const router = useRouter();
-const userPosition = ref('관리자');
-const accessToken = ref(true);
+
+const store = useAuthStore();
+const { userInfo } = storeToRefs(store);
+const accessToken = computed(() => {
+  return userInfo.value === null ? false : true;
+});
+const userPosition = computed(() => {
+  return userInfo.id === 'admin1' ? 'Admin' : 'Guest';
+});
 
 // logout
 const logout = () => {
-  accessToken.value = false;
+  store.invalidateMember();
   router.push({ name: 'Home' });
 };
 </script>

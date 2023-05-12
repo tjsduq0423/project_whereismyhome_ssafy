@@ -221,7 +221,7 @@ onMounted(() => {
 <style scoped>
 .img {
   background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.5)),
-    url('@/assets/img/apartment04jpg.jpg');
+    url('@/assets/img/apartment00.jpg');
 }
 .searchIcon {
   position: absolute;

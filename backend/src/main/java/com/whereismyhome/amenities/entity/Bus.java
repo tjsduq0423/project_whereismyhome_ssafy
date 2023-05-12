@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.geolatte.geom.Point;
 
 @Entity
 @Table(name = "bus")
@@ -29,5 +30,7 @@ public class Bus {
     @Column
     private String lng;
 
+    @Column
+    private Point localPoint;
 
 }

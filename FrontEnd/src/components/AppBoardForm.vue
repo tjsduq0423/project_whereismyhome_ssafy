@@ -1,7 +1,7 @@
 <template>
   <form>
     <div class="mb-3">
-      <label for="title" class="form-label">제목</label>
+      <label for="title" class="form-label fs-4">제목</label>
       <input
         :value="title"
         @input="$emit('update:title', $event.target.value)"
@@ -11,7 +11,7 @@
       />
     </div>
     <div class="mb-3">
-      <label for="content" class="form-label">내용</label>
+      <label for="content" class="form-label fs-4">내용</label>
       <textarea
         :value="content"
         @input="$emit('update:content', $event.target.value)"

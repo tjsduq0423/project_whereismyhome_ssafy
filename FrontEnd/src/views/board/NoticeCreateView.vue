@@ -8,7 +8,7 @@
       @submit.prevent="createNotice"
     >
       <template #actions>
-        <button type="button" class="btn btn-outline-success btn-lg ms-auto">
+        <button type="submit" class="btn btn-outline-success btn-lg ms-auto">
           저장
         </button>
         <button
@@ -26,12 +26,24 @@
 <script setup>
 import AppContent from '@/components/AppContent.vue';
 import AppBoardForm from '@/components/AppBoardForm.vue';
-import { useRouter } from 'vue-router';
+
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { registNotice } from '@/api/notice.js';
 
 const router = useRouter();
 const title = ref('');
 const content = ref('');
+
+const createNotice = async () => {
+  try {
+    await registNotice(title.value, content.value);
+    router.push({ name: 'Notice' });
+    // 알림 처리
+  } catch (err) {
+    console.error(err);
+  }
+};
 
 const goListPage = () => router.push({ name: 'Notice' });
 </script>

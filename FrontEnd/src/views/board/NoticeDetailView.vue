@@ -33,17 +33,9 @@
           type="button"
           class="btn btn-outline-primary btn-lg"
           @click="goEditPage"
+          v-if="userInfo !== null && userInfo.name === '관리자'"
         >
           수정
-        </button>
-      </div>
-      <div class="col-auto">
-        <button
-          type="button"
-          class="btn btn-outline-danger btn-lg"
-          @click="deleteNotice"
-        >
-          삭제
         </button>
       </div>
     </div>
@@ -54,14 +46,18 @@
 import { useRoute, useRouter } from 'vue-router';
 import AppContent from '@/components/AppContent.vue';
 import data from '@/assets/data/noticeData.js';
+import { useAuthStore } from '@/stores/auth';
+import { storeToRefs } from 'pinia';
+
 const route = useRoute();
 const router = useRouter();
-const id = route.params.id;
+const authStore = useAuthStore();
+const { userInfo } = storeToRefs(authStore);
 
+const id = route.params.id;
 const item = { ...data[id] };
 const goListPage = () => router.push({ name: 'Notice' });
 const goEditPage = () => router.push({ name: 'NoticeEdit', params: { id } });
-const deleteNotice = () => {};
 </script>
 
 <style scoped>

@@ -49,7 +49,7 @@
             </ul>
           </li>
           <!-- 로그인. 마이 페이지 -->
-          <li v-if="accessToken === false" class="nav-item">
+          <li v-if="userInfo === null" class="nav-item">
             <button
               class="nav-link fs-5 fw-bold border-0 bg-transparent"
               @click="$router.push({ name: 'Login' })"
@@ -66,7 +66,7 @@
               aria-expanded="false"
             >
               <i class="bi bi-person-circle"></i>
-              {{ userPosition }}
+              {{ userInfo.name }}
             </a>
             <ul class="dropdown-menu text-right m-0">
               <li>
@@ -96,18 +96,11 @@
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '../stores/auth';
 import { storeToRefs } from 'pinia';
-import { computed } from 'vue';
 
 const router = useRouter();
 
 const store = useAuthStore();
 const { userInfo } = storeToRefs(store);
-const accessToken = computed(() => {
-  return userInfo.value === null ? false : true;
-});
-const userPosition = computed(() => {
-  return userInfo.id === 'admin1' ? 'Admin' : 'Guest';
-});
 
 // logout
 const logout = () => {

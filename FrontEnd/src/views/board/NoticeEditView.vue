@@ -3,12 +3,12 @@
     <div class="cardWidthPadding"></div>
     <h1 class="text-center text-truncate mb-5">공지수정</h1>
     <AppBoardForm
-      v-model:title="item.title"
-      v-model:content="item.content"
+      v-model:title="title"
+      v-model:content="content"
       @submit.prevent="updateNotice"
     >
       <template #actions>
-        <button type="button" class="btn btn-outline-success btn-lg ms-auto">
+        <button type="submit" class="btn btn-outline-success btn-lg ms-auto">
           수정
         </button>
         <button
@@ -26,14 +26,37 @@
 <script setup>
 import AppContent from '@/components/AppContent.vue';
 import AppBoardForm from '@/components/AppBoardForm.vue';
-import data from '@/assets/data/noticeData.js';
-
+import { ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import { putNotice, getNoticeById } from '@/api/notice.js';
+
 const route = useRoute();
 const router = useRouter();
 const id = route.params.id;
+const title = ref('');
+const content = ref('');
 
-const item = { ...data[id] };
+const updateNotice = async () => {
+  try {
+    console.log('test');
+    await putNotice(id, title.value, content.value);
+    router.push({ name: 'NoticeDetail', params: { id } });
+    // 알림 처리
+  } catch (err) {
+    console.error(err);
+  }
+};
+const getItem = async () => {
+  try {
+    const response = await getNoticeById(id);
+    title.value = response.data.title;
+    content.value = response.data.content;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+getItem();
 const goListPage = () => router.push({ name: 'Notice' });
 </script>
 

@@ -10,6 +10,6 @@ import java.util.List;
 
 public interface CctvRepository extends JpaRepository<Cctv,Integer> {
 
-    @Query("select new com.whereismyhome.amenities.dto.response.CctvResponseDto(c.id, c.usage, c.lat, c.lng) from Cctv c where st_distance_sphere(Point(c.lng,c.lat),Point(:lng,:lat)) <= 1000")
+    @Query("select new com.whereismyhome.amenities.dto.response.CctvResponseDto(c.id, c.usage, c.lat, c.lng) from Cctv c where st_contains(st_buffer(Point(:lng,:lat),0.01),c.localPoint)")
     List<CctvResponseDto> findByCctv(@Param("lng") String lng, @Param("lat") String lat);
 }

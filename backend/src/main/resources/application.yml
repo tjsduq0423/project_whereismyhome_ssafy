@@ -1,7 +1,7 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/whereismyhome2?serverTimezone=UTC&characterEncoding=UTF-8
+    url: jdbc:mysql://localhost:3306/whereismyhome3?serverTimezone=UTC&characterEncoding=UTF-8
     username: ssafy
     password: ssafy
 

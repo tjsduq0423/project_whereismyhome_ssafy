@@ -5,8 +5,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.geolatte.geom.Point;
 
-@Entity(name = "cctv")
+@Entity
+@Table(name = "cctv")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -24,4 +26,7 @@ public class Cctv {
 
     @Column
     private String lng;
+
+    @Column
+    private Point localPoint;
 }

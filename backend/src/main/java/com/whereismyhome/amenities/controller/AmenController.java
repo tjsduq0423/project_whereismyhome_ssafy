@@ -1,11 +1,13 @@
 package com.whereismyhome.amenities.controller;
 
-import com.whereismyhome.amenities.dto.*;
-import com.whereismyhome.amenities.mapper.AmenMapper;
+import com.whereismyhome.amenities.dto.response.*;
 import com.whereismyhome.amenities.service.AmenService;
+import com.whereismyhome.amenities.dto.post.GeoPostDto;
+import com.whereismyhome.houseinfo.dto.HouseResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -15,41 +17,51 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/amen")
 public class AmenController {
-
     private final AmenService amenService;
 
-    private final AmenMapper mapper;
-    @GetMapping("/subway")
-    public ResponseEntity findSubway(){
-        List<SubwayResponseDto> subwayResponseDtos = mapper.subwayListToSubwayResponseDto(amenService.findSubway());
-
-        return ResponseEntity.ok().body(subwayResponseDtos);
+    //반경 내 아파트 조회
+    @PostMapping("/house")
+    public ResponseEntity findApt(@RequestBody GeoPostDto geoPostDto) {
+        List<HouseResponseDto> aptList = amenService.findApt(geoPostDto.getLng(), geoPostDto.getLat());
+        return ResponseEntity.ok().body(aptList);
     }
 
-    @GetMapping("/school")
-    public ResponseEntity findSchool() {
-        List<SchoolResponseDto> schoolResponseDtos = mapper.schoolListToSchoolResponseDtos(amenService.findSchool());
+    //반경 내 cctv 조회
+    @PostMapping("/cctv")
+    public ResponseEntity findCctv(@RequestBody GeoPostDto geoPostDto) {
+        List<CctvResponseDto> cctvList = amenService.findCctv(geoPostDto.getLng(), geoPostDto.getLat());
 
-        return ResponseEntity.ok().body(schoolResponseDtos);
+        return ResponseEntity.ok().body(cctvList);
     }
 
-    @GetMapping("/bus")
-    public ResponseEntity findBus(){
-        List<BusResponseDto> busResponseDtos = mapper.busListToBusResponseDtos(amenService.findBus());
+    //반경 내 hospital 조회
+    @PostMapping("/hospital")
+    public ResponseEntity findHospital(@RequestBody GeoPostDto geoPostDto) {
+        List<HospitalResponseDto> hospitalList = amenService.findHospital(geoPostDto.getLng(), geoPostDto.getLat());
 
-        return ResponseEntity.ok().body(busResponseDtos);
+        return ResponseEntity.ok().body(hospitalList);
     }
 
-    @GetMapping("/hospital")
-    public ResponseEntity findHospital(){
-        List<HospitalResponseDto> hospitalResponseDtos = mapper.hospitalListToHospitalResponseDtos(amenService.findHospital());
-        return ResponseEntity.ok().body(hospitalResponseDtos);
+    //반경 내 school 조회
+    @PostMapping("/school")
+    public ResponseEntity findSchool(@RequestBody GeoPostDto geoPostDto) {
+        List<SchoolResponseDto> schoolList = amenService.findSchool(geoPostDto.getLng(), geoPostDto.getLat());
+
+        return ResponseEntity.ok().body(schoolList);
     }
 
-    @GetMapping("/cctv")
-    public ResponseEntity findCctv(){
-        List<CctvResponseDto> cctvResponseDtos = mapper.cctvListToCctvResponseDtos(amenService.findCctv());
+    //반경 내 bus 조회
+    @PostMapping("/bus")
+    public ResponseEntity findBus(@RequestBody GeoPostDto geoPostDto) {
+        List<BusResponseDto> busList = amenService.findBus(geoPostDto.getLng(), geoPostDto.getLat());
+        return ResponseEntity.ok().body(busList);
+    }
 
-        return ResponseEntity.ok().body(cctvResponseDtos);
+    //반경 내 subway조회
+    @PostMapping("/subway")
+    public ResponseEntity findSubway(@RequestBody GeoPostDto geoPostDto) {
+        List<SubwayResponseDto> subwayList = amenService.findSubway(geoPostDto.getLng(), geoPostDto.getLat());
+
+        return ResponseEntity.ok().body(subwayList);
     }
 }

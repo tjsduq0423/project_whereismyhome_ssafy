@@ -6,8 +6,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.geolatte.geom.Point;
 
-@Entity(name = "houseinfo")
+
+@Entity
+@Table(name = "houseinfo")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -66,6 +69,9 @@ public class HouseInfo {
 
     @Column
     private int viewcount;
+
+    @Column
+    private Point localPoint;
 
     @ManyToOne
     @JoinColumn(name = "dong_code")

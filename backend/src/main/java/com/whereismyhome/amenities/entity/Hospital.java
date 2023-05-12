@@ -5,8 +5,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.geolatte.geom.Point;
 
 @Entity
+@Table(name = "hospital")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -28,4 +30,7 @@ public class Hospital {
 
     @Column
     private String lat;
+
+    @Column
+    private Point localPoint;
 }

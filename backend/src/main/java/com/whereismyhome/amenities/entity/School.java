@@ -5,8 +5,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.geolatte.geom.Point;
 
-@Entity(name = "school")
+@Entity
+@Table(name = "school")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -24,4 +26,7 @@ public class School {
 
     @Column
     private String lng;
+
+    @Column
+    private Point localPoint;
 }

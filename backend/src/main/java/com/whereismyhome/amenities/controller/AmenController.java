@@ -2,6 +2,7 @@ package com.whereismyhome.amenities.controller;
 
 import com.whereismyhome.amenities.dto.response.BusResponseDto;
 import com.whereismyhome.amenities.dto.response.CctvResponseDto;
+import com.whereismyhome.amenities.dto.response.SchoolResponseDto;
 import com.whereismyhome.amenities.service.AmenService;
 import com.whereismyhome.amenities.dto.post.GeoPostDto;
 import com.whereismyhome.houseinfo.dto.HouseResponseDto;
@@ -37,7 +38,12 @@ public class AmenController {
     //반경 내 hospital 조회
 
     //반경 내 school 조회
+    @PostMapping("/school")
+    public ResponseEntity findSchool(@RequestBody GeoPostDto geoPostDto) {
+        List<SchoolResponseDto> schoolList = amenService.findSchool(geoPostDto.getLng(), geoPostDto.getLat());
 
+        return ResponseEntity.ok().body(schoolList);
+    }
     //반경 내 bus 조회
     @PostMapping("/bus")
     public ResponseEntity findBus(@RequestBody GeoPostDto geoPostDto) {

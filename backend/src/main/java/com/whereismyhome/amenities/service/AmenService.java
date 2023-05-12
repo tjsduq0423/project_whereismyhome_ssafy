@@ -2,8 +2,10 @@ package com.whereismyhome.amenities.service;
 
 import com.whereismyhome.amenities.dto.response.BusResponseDto;
 import com.whereismyhome.amenities.dto.response.CctvResponseDto;
+import com.whereismyhome.amenities.dto.response.SchoolResponseDto;
 import com.whereismyhome.amenities.repository.BusRepository;
 import com.whereismyhome.amenities.repository.CctvRepository;
+import com.whereismyhome.amenities.repository.SchoolRepository;
 import com.whereismyhome.houseinfo.dto.HouseResponseDto;
 import com.whereismyhome.houseinfo.repository.HouseInfoRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +19,7 @@ public class AmenService {
     private final HouseInfoRepository houseInfoRepository;
     private final BusRepository busRepository;
     private final CctvRepository cctvRepository;
-
+    private final SchoolRepository schoolRepository;
     //반경 내 아파트 정보 조회
     public List<HouseResponseDto> findApt(String lng, String lat) {
         List<HouseResponseDto> aptList = houseInfoRepository.findByApt(lng, lat);
@@ -37,5 +39,12 @@ public class AmenService {
         List<CctvResponseDto> cctvList = cctvRepository.findByCctv(lng, lat);
 
         return cctvList;
+    }
+
+    //변경 내 학교 정보 조회
+    public List<SchoolResponseDto> findSchool(String lng, String lat) {
+        List<SchoolResponseDto> schoolList = schoolRepository.findBySchool(lng, lat);
+
+        return schoolList;
     }
 }

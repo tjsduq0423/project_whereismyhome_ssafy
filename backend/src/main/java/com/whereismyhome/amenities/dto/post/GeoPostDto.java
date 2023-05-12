@@ -1,4 +1,4 @@
-package com.whereismyhome.houseinfo.dto;
+package com.whereismyhome.amenities.dto.post;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class HousePostDto {
+public class GeoPostDto {
     private String lng;
     private String lat;
 }

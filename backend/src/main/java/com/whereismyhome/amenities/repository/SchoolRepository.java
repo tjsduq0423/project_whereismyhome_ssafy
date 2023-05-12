@@ -10,6 +10,6 @@ import java.util.List;
 
 public interface SchoolRepository extends JpaRepository<School,Integer> {
 
-    @Query("select new com.whereismyhome.amenities.dto.response.SchoolResponseDto(s.id, s.name, s.lat, s.lng) from School s where st_distance_sphere(Point(s.lng,s.lat),Point(:lng,:lat)) <= 1000")
+    @Query("select new com.whereismyhome.amenities.dto.response.SchoolResponseDto(s.id, s.name, s.lat, s.lng) from School s where st_contains(st_buffer(Point(:lng,:lat),0.01),s.localPoint)")
     List<SchoolResponseDto> findBySchool(@Param("lng") String lng, @Param("lat") String lat);
 }

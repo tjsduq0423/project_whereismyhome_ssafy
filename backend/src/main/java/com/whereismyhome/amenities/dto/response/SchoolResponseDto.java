@@ -1,12 +1,11 @@
-package com.whereismyhome.amenities.dto;
+package com.whereismyhome.amenities.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class SubwayResponseDto {
-
+public class SchoolResponseDto {
     private Integer id;
 
     private String name;
@@ -14,6 +13,4 @@ public class SubwayResponseDto {
     private String lat;
 
     private String lng;
-
-    private String phoneNumber;
 }

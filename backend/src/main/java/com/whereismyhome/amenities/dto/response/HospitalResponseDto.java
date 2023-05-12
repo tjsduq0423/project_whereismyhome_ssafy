@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
-@AllArgsConstructor
 public class HospitalResponseDto {
 
     private Integer id;
@@ -20,5 +19,13 @@ public class HospitalResponseDto {
 
 
     private String lat;
+
+    public HospitalResponseDto(Integer id, String name, String phoneNumber, String lng, String lat) {
+        this.id = id;
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+        this.lng = lng;
+        this.lat = lat;
+    }
 }
 

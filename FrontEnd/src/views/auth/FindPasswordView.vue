@@ -9,6 +9,7 @@
             type="text"
             class="form-control"
             id="id"
+            v-model="id"
             placeholder="Enter your ID"
           />
         </div>
@@ -18,6 +19,7 @@
             type="email"
             class="form-control"
             id="email"
+            v-model="email"
             placeholder="Ex - example@naver.com"
           />
         </div>
@@ -35,6 +37,9 @@
 <script setup>
 import AppContent from '@/components/AppContent.vue';
 import AppCardHeader from '@/components/AppCardHeader.vue';
+import { ref } from 'vue';
+const id = ref('');
+const email = ref('');
 </script>
 
 <style scoped>

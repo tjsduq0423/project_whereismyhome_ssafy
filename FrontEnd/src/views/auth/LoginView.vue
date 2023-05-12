@@ -9,6 +9,7 @@
             type="text"
             class="form-control"
             id="id"
+            v-model="id"
             placeholder="Enter your ID"
           />
         </div>
@@ -18,12 +19,14 @@
             type="password"
             class="form-control"
             id="Password"
+            v-model="password"
             placeholder="Enter your Password"
           />
         </div>
         <button
           type="button"
           class="d-grid col-12 btn btn-success text-truncate mb-4"
+          @click="login"
         >
           로그인
         </button>
@@ -51,8 +54,20 @@
 <script setup>
 import AppCardHeader from '@/components/AppCardHeader.vue';
 import AppContent from '@/components/AppContent.vue';
-import router from '@/router';
+import { useRouter } from 'vue-router';
+import { useAuthStore } from '@/stores/auth.js';
+import { ref } from 'vue';
 
+const { validateMember } = useAuthStore();
+const id = ref('');
+const password = ref('');
+
+const router = useRouter();
+
+const login = () => {
+  validateMember(id.value, password.value);
+  router.push({ name: 'Home' });
+};
 const goFindPW = () => {
   router.push({ name: 'FindPassword' });
 };
@@ -65,5 +80,11 @@ const goSignup = () => {
 .img {
   background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.5)),
     url('@/assets/img/aprtments01.jpg');
+}
+input[type='password']::placeholder {
+  font-family: 'BMFonts';
+}
+input[type='password'] {
+  font-family: sans-serif;
 }
 </style>

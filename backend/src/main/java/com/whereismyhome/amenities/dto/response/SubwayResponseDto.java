@@ -1,10 +1,8 @@
 package com.whereismyhome.amenities.dto.response;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
-@AllArgsConstructor
 public class SubwayResponseDto {
 
     private Integer id;
@@ -16,4 +14,12 @@ public class SubwayResponseDto {
     private String lng;
 
     private String phoneNumber;
+
+    public SubwayResponseDto(Integer id, String name, String lat, String lng, String phoneNumber) {
+        this.id = id;
+        this.name = name;
+        this.lat = lat;
+        this.lng = lng;
+        this.phoneNumber = phoneNumber;
+    }
 }

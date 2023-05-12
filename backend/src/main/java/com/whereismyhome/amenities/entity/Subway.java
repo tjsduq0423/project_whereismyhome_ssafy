@@ -5,8 +5,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.geolatte.geom.Point;
 
-@Entity(name = "subway")
+@Entity
+@Table(name = "subway")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -27,4 +29,7 @@ public class Subway {
 
     @Column
     private String phoneNumber;
+
+    @Column
+    private Point localPoint;
 }

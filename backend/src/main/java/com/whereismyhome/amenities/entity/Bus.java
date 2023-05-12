@@ -6,7 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity(name = "bus")
+@Entity
+@Table(name = "bus")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -27,4 +28,6 @@ public class Bus {
 
     @Column
     private String lng;
+
+
 }

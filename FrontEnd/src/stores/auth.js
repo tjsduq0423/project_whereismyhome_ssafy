@@ -16,22 +16,14 @@ export const useAuthStore = defineStore('auth', () => {
   );
 
   const validateMember = async (id, password) => {
-    try {
-      const response = await login(id, password);
-      userInfo.value = { ...response.data };
-    } catch (err) {
-      console.error(err);
-    }
+    const response = await login(id, password);
+    userInfo.value = { ...response.data };
   };
 
   const invalidateMember = async () => {
-    try {
-      await logout();
-      localStorage.clear();
-      userInfo.value = null;
-    } catch (err) {
-      console.error(err);
-    }
+    await logout();
+    localStorage.clear();
+    userInfo.value = null;
   };
 
   return { userInfo, validateMember, invalidateMember };

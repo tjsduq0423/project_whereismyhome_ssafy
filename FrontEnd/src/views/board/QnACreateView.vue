@@ -1,7 +1,7 @@
 <template>
   <AppContent class="img">
     <div class="cardWidthPadding"></div>
-    <h1 class="text-center text-truncate mb-5">공지작성</h1>
+    <h1 class="text-center text-truncate mb-5">QnA작성</h1>
     <AppBoardForm
       v-model:title="title"
       v-model:content="content"

@@ -30,7 +30,9 @@ import AppBoardForm from '@/components/AppBoardForm.vue';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { registNotice } from '@/api/notice.js';
+import { useAlert } from '@/composables/alert';
 
+const { vAlert, vSuccess } = useAlert();
 const router = useRouter();
 const title = ref('');
 const content = ref('');
@@ -39,8 +41,9 @@ const createNotice = async () => {
   try {
     await registNotice(title.value, content.value);
     router.push({ name: 'Notice' });
-    // 알림 처리
+    vSuccess('공지 등록 성공');
   } catch (err) {
+    vAlert('공지 등록 실패');
     console.error(err);
   }
 };

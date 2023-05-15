@@ -38,6 +38,8 @@
 import AppContent from '@/components/AppContent.vue';
 import AppCardHeader from '@/components/AppCardHeader.vue';
 import { ref } from 'vue';
+// import { useAlert } from '@/composables/alert';
+// const { vAlert, vSuccess } = useAlert();
 const id = ref('');
 const email = ref('');
 </script>

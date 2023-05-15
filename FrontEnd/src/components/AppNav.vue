@@ -10,7 +10,7 @@
           <li class="nav-item">
             <button
               class="nav-link fs-5 fw-bold border-0 bg-transparent"
-              @click="$router.push({ name: 'AptInfo' })"
+              @click="router.push({ name: 'AptInfo' })"
             >
               <i class="bi bi-buildings pe-2"></i>아파트 매매 정보
             </button>
@@ -31,7 +31,7 @@
                 <a
                   class="dropdown-item fs-5"
                   href=""
-                  @click.prevent="$router.push({ name: 'Notice' })"
+                  @click.prevent="router.push({ name: 'Notice' })"
                 >
                   <i class="bi bi-megaphone pe-2"></i>공지사항
                 </a>
@@ -41,7 +41,7 @@
                 <a
                   class="dropdown-item fs-5"
                   href=""
-                  @click.prevent="$router.push({ name: 'QnA' })"
+                  @click.prevent="router.push({ name: 'QnA' })"
                 >
                   <i class="bi bi-clipboard"></i> 질의응답
                 </a>
@@ -49,10 +49,10 @@
             </ul>
           </li>
           <!-- 로그인. 마이 페이지 -->
-          <li v-if="accessToken === false" class="nav-item">
+          <li v-if="userInfo === null" class="nav-item">
             <button
               class="nav-link fs-5 fw-bold border-0 bg-transparent"
-              @click="$router.push({ name: 'Login' })"
+              @click="router.push({ name: 'Login' })"
             >
               <i class="bi bi-box-arrow-in-right pe-1"></i> 로그인
             </button>
@@ -66,11 +66,11 @@
               aria-expanded="false"
             >
               <i class="bi bi-person-circle"></i>
-              {{ userPosition }}
+              {{ userInfo.name }}
             </a>
             <ul class="dropdown-menu text-right m-0">
               <li>
-                <RouterLink class="dropdown-item fs-5" to="/notice">
+                <RouterLink class="dropdown-item fs-5" to="/notFound">
                   <i class="bi bi-info-square pe-2"></i>내 정보
                 </RouterLink>
               </li>
@@ -96,23 +96,20 @@
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '../stores/auth';
 import { storeToRefs } from 'pinia';
-import { computed } from 'vue';
 
 const router = useRouter();
 
 const store = useAuthStore();
 const { userInfo } = storeToRefs(store);
-const accessToken = computed(() => {
-  return userInfo.value === null ? false : true;
-});
-const userPosition = computed(() => {
-  return userInfo.id === 'admin1' ? 'Admin' : 'Guest';
-});
 
 // logout
 const logout = () => {
-  store.invalidateMember();
-  router.push({ name: 'Home' });
+  try {
+    store.invalidateMember();
+    router.push({ name: 'Home' });
+  } catch (err) {
+    console.error(err);
+  }
 };
 </script>
 

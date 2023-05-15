@@ -13,7 +13,7 @@
       </thead>
       <tbody class="table-group-divider">
         <tr v-for="item in _items" :key="item.id" class="text-truncate">
-          <th>{{ item.isAnswered ? '답변완료' : '미답변' }}</th>
+          <th>{{ item.responseContent == null ? '답변완료' : '미답변' }}</th>
           <td>
             <a
               href=""
@@ -22,8 +22,8 @@
               >{{ item.title }}</a
             >
           </td>
-          <td>{{ item.author }}</td>
-          <td>{{ item.createTime }}</td>
+          <td>{{ item.memberId }}</td>
+          <td>{{ formatDate(item.createtime) }}</td>
         </tr>
       </tbody>
     </table>
@@ -35,6 +35,7 @@
       @page="page => (curPage = page)"
     ></AppPaginationBar>
     <button
+      v-if="userInfo !== null && userInfo.name !== '관리자'"
       type="button"
       class="btn btn-outline-success ms-auto me-2 btn-lg"
       @click="goCreatePage"
@@ -49,15 +50,31 @@ import AppContent from '@/components/AppContent.vue';
 import AppPaginationBar from '@/components/AppPaginationBar.vue';
 import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
-import data from '@/assets/data/QnAData.js';
-
+import { useAuthStore } from '@/stores/auth';
+import { storeToRefs } from 'pinia';
+import { getBoardList } from '@/api/board';
 const router = useRouter();
+const authStore = useAuthStore();
+const { userInfo } = storeToRefs(authStore);
+
+// 페이지 items
+const items = ref([]);
+const selectAll = async () => {
+  try {
+    const response = await getBoardList();
+    items.value = [...response.data];
+  } catch (err) {
+    console.error(err);
+  }
+};
+selectAll();
+// pagination 제어
 const curPage = ref(1);
-const items = ref([...data]);
-const showContentCount = 8;
-const showPaginationBtnCount = 8;
+const showContentCount = 10;
+const showPaginationBtnCount = 10;
+
 const _items = computed(() => {
-  const start = (curPage.value - 1) * showContentCount + 1;
+  const start = (curPage.value - 1) * showContentCount;
   const end = start + showContentCount;
   return items.value.slice(start, end);
 });
@@ -69,6 +86,15 @@ const goDetailPage = id => {
 // 문의하기 이동
 const goCreatePage = () => {
   router.push({ name: 'QnACreate' });
+};
+// 날짜 제어
+const formatDate = date => {
+  const originalDate = new Date(date);
+  const year = originalDate.getFullYear();
+  const month = String(originalDate.getMonth() + 1).padStart(2, '0');
+  const day = String(originalDate.getDate()).padStart(2, '0');
+
+  return `${year}-${month}-${day}`;
 };
 </script>
 

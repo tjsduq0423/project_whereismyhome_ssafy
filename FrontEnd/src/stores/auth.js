@@ -23,6 +23,7 @@ export const useAuthStore = defineStore('auth', () => {
       console.error(err);
     }
   };
+
   const invalidateMember = async () => {
     try {
       await logout();

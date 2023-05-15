@@ -56,21 +56,25 @@ const props = defineProps({
     default: 10,
   },
 });
+
 defineEmits(['page']);
 
-const maxPage = Math.ceil(props.totalContentCount / props.showContentCount);
+const maxPage = computed(() => {
+  return Math.ceil(props.totalContentCount / props.showContentCount);
+});
+
 const PaginationPageList = computed(() => {
   const start =
     (Math.ceil(props.currentPage / props.showPaginationBtnCount) - 1) *
       props.showPaginationBtnCount +
     1;
-  const end = Math.min(maxPage, start + props.showPaginationBtnCount - 1);
+  const end = Math.min(maxPage.value, start + props.showPaginationBtnCount - 1);
   return Array.from({ length: end - start + 1 }, (_, i) => start + i);
 });
 
 const isPrevPage = computed(() => ({ disabled: !(props.currentPage > 1) }));
 const isNextPage = computed(() => ({
-  disabled: !(props.currentPage < maxPage),
+  disabled: !(props.currentPage < maxPage.value),
 }));
 </script>
 

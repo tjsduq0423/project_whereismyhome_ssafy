@@ -11,8 +11,8 @@
           <th scope="col">작성시간</th>
         </tr>
       </thead>
-      <tbody class="table-group-divider">
-        <tr v-for="item in _items" :key="item.id">
+      <tbody class="table-group-divider text-truncate">
+        <tr v-for="item in _items || []" :key="item.id">
           <th>{{ item.id }}</th>
           <td>
             <a
@@ -22,11 +22,12 @@
               >{{ item.title }}</a
             >
           </td>
-          <td>{{ item.author }}</td>
-          <td>{{ item.createTime }}</td>
+          <td>admin</td>
+          <td>{{ formatDate(item.createtime) }}</td>
         </tr>
       </tbody>
     </table>
+
     <AppPaginationBar
       :current-page="curPage"
       :total-content-count="items.length"
@@ -35,6 +36,7 @@
       @page="page => (curPage = page)"
     ></AppPaginationBar>
     <button
+      v-if="userInfo !== null && userInfo.name === '관리자'"
       type="button"
       class="btn btn-outline-success ms-auto me-2 btn-lg"
       @click="goCreatePage"
@@ -47,18 +49,35 @@
 <script setup>
 import AppContent from '@/components/AppContent.vue';
 import AppPaginationBar from '@/components/AppPaginationBar.vue';
-import { useRouter } from 'vue-router';
 import { computed, ref } from 'vue';
-import data from '@/assets/data/noticeData.js';
+import { useRouter } from 'vue-router';
+import { useAuthStore } from '@/stores/auth';
+import { getNoticeAll } from '@/api/notice';
+import { storeToRefs } from 'pinia';
 
 const router = useRouter();
+const authStore = useAuthStore();
+const { userInfo } = storeToRefs(authStore);
 
+// 페이지 items
+const items = ref([]);
+const selectAll = async () => {
+  try {
+    const response = await getNoticeAll();
+    items.value = [...response.data];
+  } catch (err) {
+    console.error(err);
+  }
+};
+selectAll();
+
+//pagination 제어
 const curPage = ref(1);
-const items = ref([...data]);
-const showContentCount = 8;
-const showPaginationBtnCount = 8;
+const showContentCount = 10;
+const showPaginationBtnCount = 10;
+
 const _items = computed(() => {
-  const start = (curPage.value - 1) * showContentCount + 1;
+  const start = (curPage.value - 1) * showContentCount;
   const end = start + showContentCount;
   return items.value.slice(start, end);
 });
@@ -67,9 +86,20 @@ const _items = computed(() => {
 const goDetailPage = id => {
   router.push({ name: 'NoticeDetail', params: { id } });
 };
+
 // 공지작성 이동
 const goCreatePage = () => {
   router.push({ name: 'NoticeCreate' });
+};
+
+// 날짜 제어
+const formatDate = date => {
+  const originalDate = new Date(date);
+  const year = originalDate.getFullYear();
+  const month = String(originalDate.getMonth() + 1).padStart(2, '0');
+  const day = String(originalDate.getDate()).padStart(2, '0');
+
+  return `${year}-${month}-${day}`;
 };
 </script>
 

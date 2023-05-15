@@ -8,7 +8,7 @@
       @submit.prevent="createQnA"
     >
       <template #actions>
-        <button type="button" class="btn btn-outline-success btn-lg ms-auto">
+        <button type="submit" class="btn btn-outline-success btn-lg ms-auto">
           저장
         </button>
         <button
@@ -26,15 +26,31 @@
 <script setup>
 import AppContent from '@/components/AppContent.vue';
 import AppBoardForm from '@/components/AppBoardForm.vue';
-import { useRouter } from 'vue-router';
+
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { useAuthStore } from '@/stores/auth';
+import { storeToRefs } from 'pinia';
+import { registBoard } from '@/api/board';
 
 const router = useRouter();
+const authStore = useAuthStore();
+const { userInfo } = storeToRefs(authStore);
+
 const title = ref('');
 const content = ref('');
 
+const createQnA = async () => {
+  try {
+    await registBoard(userInfo.value.id, title.value, content.value);
+    router.push({ name: 'QnA' });
+    // 알림 처리
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 const goListPage = () => router.push({ name: 'QnA' });
-const createQnA = () => {};
 </script>
 
 <style scoped>

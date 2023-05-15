@@ -59,7 +59,9 @@ import AppContent from '@/components/AppContent.vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth.js';
 import { ref } from 'vue';
+import { useAlert } from '@/composables/alert';
 
+const { vAlert, vSuccess } = useAlert();
 const { validateMember } = useAuthStore();
 const id = ref('');
 const password = ref('');
@@ -69,9 +71,10 @@ const router = useRouter();
 const login = () => {
   try {
     validateMember(id.value, password.value);
-    // 알람
+    vSuccess('로그인 성공');
     router.push({ name: 'Home' });
   } catch (err) {
+    vAlert('ID와 비밀번호를 다시 확인해주세요');
     console.error(err);
   }
 };

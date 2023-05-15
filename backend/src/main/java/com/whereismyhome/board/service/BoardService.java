@@ -37,9 +37,9 @@ public class BoardService {
     public Board boardUpdate(Board board) {
         Board findBoard = findBoard(board.getId());
 
-        Optional.ofNullable(findBoard.getTitle())
+        Optional.ofNullable(board.getTitle())
                 .ifPresent(findBoard::setTitle);
-        Optional.ofNullable(findBoard.getContent())
+        Optional.ofNullable(board.getContent())
                 .ifPresent(findBoard::setContent);
 
         findBoard.setModifiedtime(LocalDateTime.now());

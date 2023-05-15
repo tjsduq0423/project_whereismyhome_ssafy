@@ -32,7 +32,9 @@ import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
 import { storeToRefs } from 'pinia';
 import { registBoard } from '@/api/board';
+import { useAlert } from '@/composables/alert';
 
+const { vAlert, vSuccess } = useAlert();
 const router = useRouter();
 const authStore = useAuthStore();
 const { userInfo } = storeToRefs(authStore);
@@ -44,8 +46,9 @@ const createQnA = async () => {
   try {
     await registBoard(userInfo.value.id, title.value, content.value);
     router.push({ name: 'QnA' });
-    // 알림 처리
+    vSuccess('QnA 등록 성공');
   } catch (err) {
+    vAlert('QnA 등록 실패');
     console.error(err);
   }
 };

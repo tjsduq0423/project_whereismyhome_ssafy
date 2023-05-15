@@ -5,6 +5,7 @@ import com.whereismyhome.notice.entity.Notice;
 import com.whereismyhome.notice.repository.NoticeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -23,7 +24,7 @@ public class NoticeService {
 
     //공지사항 전체 조회
     public List<Notice> noticeList() {
-        List<Notice> list = noticeRepository.findAll();
+        List<Notice> list = noticeRepository.findAll(Sort.by(Sort.Direction.DESC,"id"));
         return list;
     }
 

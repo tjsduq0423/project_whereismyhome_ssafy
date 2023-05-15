@@ -58,6 +58,8 @@ import { useAuthStore } from '@/stores/auth';
 import { getBoardDetail, deleteBoard } from '@/api/board';
 import { storeToRefs } from 'pinia';
 import { ref } from 'vue';
+import { useAlert } from '@/composables/alert';
+const { vAlert, vSuccess } = useAlert();
 
 const authStore = useAuthStore();
 const { userInfo } = storeToRefs(authStore);
@@ -72,8 +74,8 @@ const getItem = async () => {
   try {
     const response = await getBoardDetail(id);
     item.value = { ...response.data };
-    // 알람
   } catch (err) {
+    vAlert('데이터를 가져오지 못했습니다.');
     console.error(err);
   }
 };
@@ -83,8 +85,9 @@ const deleteQnA = async () => {
   try {
     await deleteBoard(id);
     router.push({ name: 'QnA' });
-    // 알람
+    vSuccess('QnA 삭제 성공');
   } catch (err) {
+    vAlert('QnA 삭제 실패');
     console.error(err);
   }
 };

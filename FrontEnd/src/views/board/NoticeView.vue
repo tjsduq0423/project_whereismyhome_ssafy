@@ -54,7 +54,9 @@ import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
 import { getNoticeAll } from '@/api/notice';
 import { storeToRefs } from 'pinia';
+import { useAlert } from '@/composables/alert';
 
+const { vAlert } = useAlert();
 const router = useRouter();
 const authStore = useAuthStore();
 const { userInfo } = storeToRefs(authStore);
@@ -66,6 +68,7 @@ const selectAll = async () => {
     const response = await getNoticeAll();
     items.value = [...response.data];
   } catch (err) {
+    vAlert('데이터를 가져오지 못했습니다.');
     console.error(err);
   }
 };

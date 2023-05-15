@@ -29,6 +29,8 @@ import AppBoardForm from '@/components/AppBoardForm.vue';
 import { ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { putNotice, getNoticeById } from '@/api/notice.js';
+import { useAlert } from '@/composables/alert';
+const { vAlert, vSuccess } = useAlert();
 
 const route = useRoute();
 const router = useRouter();
@@ -41,8 +43,8 @@ const getItem = async () => {
     const response = await getNoticeById(id);
     title.value = response.data.title;
     content.value = response.data.content;
-    // 알람
   } catch (err) {
+    vAlert('데이터를 가져오지 못했습니다.');
     console.error(err);
   }
 };
@@ -51,9 +53,10 @@ getItem();
 const updateNotice = async () => {
   try {
     await putNotice(id, title.value, content.value);
+    vSuccess('수정 성공했습니다.');
     router.push({ name: 'NoticeDetail', params: { id } });
-    // 알람
   } catch (err) {
+    vAlert('수정 실패했습니다.');
     console.error(err);
   }
 };

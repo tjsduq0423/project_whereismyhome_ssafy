@@ -49,6 +49,8 @@ import { useAuthStore } from '@/stores/auth';
 import { storeToRefs } from 'pinia';
 import { getNoticeById } from '@/api/notice';
 import { ref } from 'vue';
+import { useAlert } from '@/composables/alert';
+const { vAlert } = useAlert();
 
 const route = useRoute();
 const router = useRouter();
@@ -61,8 +63,8 @@ const fetchData = async () => {
   try {
     const response = await getNoticeById(id);
     item.value = response.data;
-    // 알림 처리
   } catch (err) {
+    vAlert('데이터를 가져오지 못했습니다.');
     console.error(err);
   }
 };

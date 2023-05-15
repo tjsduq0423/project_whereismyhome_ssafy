@@ -25,6 +25,10 @@ public class HouseInfoService {
         HouseInfo houseInfo = houseInfoRepository.findById(aptCode)
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.HOUSE_NOT_FOUND));
 
+        //정보 조회 되었을 때 조회수 1증가
+        houseInfo.setViewcount(houseInfo.getViewcount() + 1);
+        houseInfoRepository.save(houseInfo);
+
         return houseInfo;
     }
 

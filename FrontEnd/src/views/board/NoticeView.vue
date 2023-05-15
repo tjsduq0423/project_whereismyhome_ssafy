@@ -11,8 +11,8 @@
           <th scope="col">작성시간</th>
         </tr>
       </thead>
-      <tbody class="table-group-divider">
-        <tr v-for="item in _items" :key="item.id">
+      <tbody class="table-group-divider text-truncate">
+        <tr v-for="item in _items || []" :key="item.id">
           <th>{{ item.id }}</th>
           <td>
             <a
@@ -27,19 +27,19 @@
         </tr>
       </tbody>
     </table>
+
     <AppPaginationBar
-      v-if="items !== null"
       :current-page="curPage"
-      :total-content-count="length"
+      :total-content-count="items.length"
       :show-content-count="showContentCount"
       :show-pagination-btn-count="showPaginationBtnCount"
       @page="page => (curPage = page)"
     ></AppPaginationBar>
     <button
+      v-if="userInfo !== null && userInfo.name === '관리자'"
       type="button"
       class="btn btn-outline-success ms-auto me-2 btn-lg"
       @click="goCreatePage"
-      v-if="userInfo !== null && userInfo.name === '관리자'"
     >
       공지작성
     </button>
@@ -59,12 +59,12 @@ const router = useRouter();
 const authStore = useAuthStore();
 const { userInfo } = storeToRefs(authStore);
 
-//현재 페이지 items
-const items = ref(null);
+// 페이지 items
+const items = ref([]);
 const selectAll = async () => {
   try {
     const response = await getNoticeAll();
-    items.value = response.data;
+    items.value = [...response.data];
   } catch (err) {
     console.error(err);
   }
@@ -73,9 +73,9 @@ selectAll();
 
 //pagination 제어
 const curPage = ref(1);
+const showContentCount = 10;
+const showPaginationBtnCount = 10;
 
-const showContentCount = 8;
-const showPaginationBtnCount = 8;
 const _items = computed(() => {
   const start = (curPage.value - 1) * showContentCount;
   const end = start + showContentCount;

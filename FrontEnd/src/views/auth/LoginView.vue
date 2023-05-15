@@ -11,6 +11,7 @@
             id="id"
             v-model="id"
             placeholder="Enter your ID"
+            @keydown.enter="login"
           />
         </div>
         <div class="mb-4">
@@ -21,6 +22,7 @@
             id="Password"
             v-model="password"
             placeholder="Enter your Password"
+            @keydown.enter="login"
           />
         </div>
         <button
@@ -65,8 +67,13 @@ const password = ref('');
 const router = useRouter();
 
 const login = () => {
-  validateMember(id.value, password.value);
-  router.push({ name: 'Home' });
+  try {
+    validateMember(id.value, password.value);
+    // 알람
+    router.push({ name: 'Home' });
+  } catch (err) {
+    console.error(err);
+  }
 };
 const goFindPW = () => {
   router.push({ name: 'FindPassword' });

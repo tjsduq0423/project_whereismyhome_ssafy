@@ -33,30 +33,30 @@ import { putNotice, getNoticeById } from '@/api/notice.js';
 const route = useRoute();
 const router = useRouter();
 const id = route.params.id;
+
 const title = ref('');
 const content = ref('');
-
-const updateNotice = async () => {
-  try {
-    console.log('test');
-    await putNotice(id, title.value, content.value);
-    router.push({ name: 'NoticeDetail', params: { id } });
-    // 알림 처리
-  } catch (err) {
-    console.error(err);
-  }
-};
 const getItem = async () => {
   try {
     const response = await getNoticeById(id);
     title.value = response.data.title;
     content.value = response.data.content;
+    // 알람
   } catch (err) {
     console.error(err);
   }
 };
-
 getItem();
+
+const updateNotice = async () => {
+  try {
+    await putNotice(id, title.value, content.value);
+    router.push({ name: 'NoticeDetail', params: { id } });
+    // 알람
+  } catch (err) {
+    console.error(err);
+  }
+};
 const goListPage = () => router.push({ name: 'Notice' });
 </script>
 

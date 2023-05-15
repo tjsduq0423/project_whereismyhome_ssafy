@@ -1,14 +1,14 @@
 <template>
   <AppContent class="img">
     <div class="cardWidthPadding"></div>
-    <h1 class="text-center text-truncate mb-5">공지수정</h1>
+    <h1 class="text-center text-truncate mb-5">QnA수정</h1>
     <AppBoardForm
-      v-model:title="item.title"
-      v-model:content="item.content"
+      v-model:title="title"
+      v-model:content="content"
       @submit.prevent="updateQnA"
     >
       <template #actions>
-        <button type="button" class="btn btn-outline-success btn-lg ms-auto">
+        <button type="submit" class="btn btn-outline-success btn-lg ms-auto">
           수정
         </button>
         <button
@@ -26,16 +26,39 @@
 <script setup>
 import AppContent from '@/components/AppContent.vue';
 import AppBoardForm from '@/components/AppBoardForm.vue';
-import data from '@/assets/data/QnAData.js';
-
+import { ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import { putBoard, getBoardDetail } from '@/api/board';
 const route = useRoute();
 const router = useRouter();
 const id = route.params.id;
 
-const item = { ...data[id] };
+// detail content api call
+const title = ref('');
+const content = ref('');
+
+const getItem = async () => {
+  try {
+    const response = await getBoardDetail(id);
+    title.value = response.data.title;
+    content.value = response.data.content;
+    // 알람
+  } catch (err) {
+    console.error(err);
+  }
+};
+getItem();
+
+const updateQnA = async () => {
+  try {
+    await putBoard(id, title.value, content.value);
+    router.push({ name: 'QnA' });
+    // 알람
+  } catch (err) {
+    console.error(err);
+  }
+};
 const goListPage = () => router.push({ name: 'QnA' });
-const updateQnA = () => {};
 </script>
 
 <style scoped>

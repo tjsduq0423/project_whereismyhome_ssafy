@@ -43,19 +43,30 @@
 </template>
 
 <script setup>
-import { useRoute, useRouter } from 'vue-router';
 import AppContent from '@/components/AppContent.vue';
-import data from '@/assets/data/noticeData.js';
+import { useRoute, useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
 import { storeToRefs } from 'pinia';
+import { getNoticeById } from '@/api/notice';
+import { ref } from 'vue';
 
 const route = useRoute();
 const router = useRouter();
 const authStore = useAuthStore();
 const { userInfo } = storeToRefs(authStore);
-
 const id = route.params.id;
-const item = { ...data[id] };
+const item = ref({});
+
+const fetchData = async () => {
+  try {
+    const response = await getNoticeById(id);
+    item.value = response.data;
+    // 알림 처리
+  } catch (err) {
+    console.error(err);
+  }
+};
+fetchData();
 const goListPage = () => router.push({ name: 'Notice' });
 const goEditPage = () => router.push({ name: 'NoticeEdit', params: { id } });
 </script>

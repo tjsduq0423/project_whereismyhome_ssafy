@@ -14,7 +14,7 @@
       "
       class="fs-4"
     >
-      {{ item.content }}asdasdsads
+      {{ item.content }}
     </p>
     <div class="row g-2">
       <div class="col-auto me-auto">
@@ -27,40 +27,70 @@
         </button>
       </div>
       <!-- 관리자 권한 v-if 필요 -->
-      <div class="col-auto">
-        <button
-          type="button"
-          class="btn btn-outline-primary btn-lg"
-          @click="goEditPage"
-        >
-          수정
-        </button>
-      </div>
-      <div class="col-auto">
-        <button
-          type="button"
-          class="btn btn-outline-danger btn-lg"
-          @click="deleteQnA"
-        >
-          삭제
-        </button>
-      </div>
+      <template v-if="userInfo.id === item.memberId">
+        <div class="col-auto">
+          <button
+            type="button"
+            class="btn btn-outline-primary btn-lg"
+            @click="goEditPage"
+          >
+            수정
+          </button>
+        </div>
+        <div class="col-auto">
+          <button
+            type="button"
+            class="btn btn-outline-danger btn-lg"
+            @click="deleteQnA"
+          >
+            삭제
+          </button>
+        </div>
+      </template>
     </div>
   </AppContent>
 </template>
 
 <script setup>
-import { useRoute, useRouter } from 'vue-router';
 import AppContent from '@/components/AppContent.vue';
-import data from '@/assets/data/QnAData.js';
+import { useRoute, useRouter } from 'vue-router';
+import { useAuthStore } from '@/stores/auth';
+import { getBoardDetail, deleteBoard } from '@/api/board';
+import { storeToRefs } from 'pinia';
+import { ref } from 'vue';
+
+const authStore = useAuthStore();
+const { userInfo } = storeToRefs(authStore);
+
 const route = useRoute();
 const router = useRouter();
 const id = route.params.id;
 
-const item = { ...data[id] };
+// detail content api call
+const item = ref({});
+const getItem = async () => {
+  try {
+    const response = await getBoardDetail(id);
+    item.value = { ...response.data };
+    // 알람
+  } catch (err) {
+    console.error(err);
+  }
+};
+getItem();
+
+const deleteQnA = async () => {
+  try {
+    await deleteBoard(id);
+    router.push({ name: 'QnA' });
+    // 알람
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 const goListPage = () => router.push({ name: 'QnA' });
 const goEditPage = () => router.push({ name: 'QnAEdit', params: { id } });
-const deleteQnA = () => {};
 </script>
 
 <style scoped>

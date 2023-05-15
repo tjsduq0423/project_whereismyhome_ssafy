@@ -1,15 +1,14 @@
 package com.whereismyhome.amenities.controller;
 
+import com.whereismyhome.amenities.dto.post.GeoPostDto;
 import com.whereismyhome.amenities.dto.response.*;
 import com.whereismyhome.amenities.service.AmenService;
-import com.whereismyhome.amenities.dto.post.GeoPostDto;
+import com.whereismyhome.houseinfo.dto.HousePointDto;
 import com.whereismyhome.houseinfo.dto.HouseResponseDto;
+import com.whereismyhome.houseinfo.service.HouseInfoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -18,6 +17,7 @@ import java.util.List;
 @RequestMapping("/amen")
 public class AmenController {
     private final AmenService amenService;
+    private final HouseInfoService houseInfoService;
 
     //반경 내 아파트 조회
     @PostMapping("/house")
@@ -63,5 +63,49 @@ public class AmenController {
         List<SubwayResponseDto> subwayList = amenService.findSubway(geoPostDto.getLng(), geoPostDto.getLat());
 
         return ResponseEntity.ok().body(subwayList);
+    }
+
+    //아파트 중심으로 반경 이내
+    //버스
+    @GetMapping("/bus/{apt-code}")
+    public ResponseEntity aptBus(@PathVariable("apt-code") long aptCode) {
+        HousePointDto point = houseInfoService.getPoint(aptCode);
+        List<BusResponseDto> busList = amenService.findBus(point.getLng(), point.getLat());
+
+        return ResponseEntity.ok().body(busList);
+    }
+
+    //cctv
+    @GetMapping("/cctv/{apt-code}")
+    public ResponseEntity aptCctv(@PathVariable("apt-code") long aptCode) {
+        HousePointDto point = houseInfoService.getPoint(aptCode);
+        List<CctvResponseDto> cctvList = amenService.findCctv(point.getLng(), point.getLat());
+
+        return ResponseEntity.ok().body(cctvList);
+    }
+    //병원
+    @GetMapping("/hospital/{apt-code}")
+    public ResponseEntity aptHospital(@PathVariable("apt-code") long aptCode) {
+        HousePointDto point = houseInfoService.getPoint(aptCode);
+        List<HospitalResponseDto> hospitalList = amenService.findHospital(point.getLng(), point.getLat());
+
+        return ResponseEntity.ok().body(hospitalList);
+    }
+    //학교
+    @GetMapping("/school/{apt-code}")
+    public ResponseEntity aptSchool(@PathVariable("apt-code") long aptCode) {
+        HousePointDto point = houseInfoService.getPoint(aptCode);
+        List<SchoolResponseDto> schoolList = amenService.findSchool(point.getLng(), point.getLat());
+
+        return ResponseEntity.ok().body(schoolList);
+    }
+
+    //지하철
+    @GetMapping("/subway/{apt-code}")
+    public ResponseEntity aptSubway(@PathVariable("apt-code") long aptCode) {
+        HousePointDto point = houseInfoService.getPoint(aptCode);
+        List<HospitalResponseDto> hospitalList = amenService.findHospital(point.getLng(), point.getLat());
+
+        return ResponseEntity.ok().body(hospitalList);
     }
 }

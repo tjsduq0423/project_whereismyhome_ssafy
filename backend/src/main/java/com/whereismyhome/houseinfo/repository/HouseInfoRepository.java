@@ -1,5 +1,6 @@
 package com.whereismyhome.houseinfo.repository;
 
+import com.whereismyhome.houseinfo.dto.HousePointDto;
 import com.whereismyhome.houseinfo.dto.HouseResponseDto;
 import com.whereismyhome.houseinfo.entity.HouseInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,4 +12,7 @@ import java.util.List;
 public interface HouseInfoRepository extends JpaRepository<HouseInfo, Long> {
     @Query("select new com.whereismyhome.houseinfo.dto.HouseResponseDto(h.aptCode,h.apartmentName,h.lng,h.lat) from HouseInfo h where st_contains(st_buffer(Point(:lng,:lat),0.01),h.localPoint)")
     List<HouseResponseDto> findByApt(@Param("lng") String lng, @Param("lat") String lat);
+
+    @Query("select new com.whereismyhome.houseinfo.dto.HousePointDto(h.lng, h.lat) from HouseInfo h where h.aptCode = :aptCode")
+    HousePointDto findByPoint(@Param("aptCode") long aptCode);
 }

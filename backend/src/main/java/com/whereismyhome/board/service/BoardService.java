@@ -28,7 +28,8 @@ public class BoardService {
 
     //게시글 조회
     public List<Board> boardList(String id) {
-        List<Board> boardList = boardRepository.findByMember_Id(id);
+        List<Board> boardList = boardRepository.findByMember_IdOrderByIdDesc(id);
+
 
         return boardList;
     }
@@ -50,7 +51,7 @@ public class BoardService {
     //게시글 조회 - 관리자용
     //답변이 안달린 모든 게시글
     public List<Board> adminBoardList(){
-        List<Board> boardList = boardRepository.findByResponseContentNull();
+        List<Board> boardList = boardRepository.findByResponseContentNullOrderByIdDesc();
 
         return boardList;
     }

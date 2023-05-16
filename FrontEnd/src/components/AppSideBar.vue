@@ -52,7 +52,7 @@
                     <th scope="col">작성시간</th>
                   </tr>
                 </thead>
-                <tbody class="table-group-divider">
+                <!-- <tbody class="table-group-divider">
                   <tr v-for="item in _items" :key="item.id">
                     <th>{{ item.id }}</th>
                     <td>
@@ -66,7 +66,7 @@
                     <td>{{ item.author }}</td>
                     <td>{{ item.createTime }}</td>
                   </tr>
-                </tbody>
+                </tbody> -->
               </table>
             </div>
           </div>
@@ -187,5 +187,13 @@ onMounted(() => {
   height: 100%;
   background-color: white;
   overflow: auto;
+}
+.sidebar::-webkit-scrollbar {
+  width: 8px; /* 스크롤바의 너비 */
+}
+.sidebar::-webkit-scrollbar-thumb {
+  height: 30%; /* 스크롤바의 길이 */
+  background: #d1d1d1; /* 스크롤바의 색상 */
+  border-radius: 10px;
 }
 </style>

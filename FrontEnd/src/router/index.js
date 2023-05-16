@@ -86,7 +86,21 @@ const router = createRouter({
       path: '/myPage',
       name: 'MyPage',
       meta: { requiresAuth: true },
-      component: () => import('@/views/main/MyPageView.vue'),
+      component: () => import('@/views/main/my/MypageView.vue'),
+      children: [
+        {
+          path: '/myPage/myQnA',
+          name: 'MyQnA',
+          meta: { requiresAuth: true },
+          component: () => import('@/views/main/my/MyQnAView.vue'),
+        },
+        {
+          path: '/myPage/myBookMark',
+          name: 'MyBookMark',
+          meta: { requiresAuth: true },
+          component: () => import('@/views/main/my/MyBookMarkView.vue'),
+        },
+      ],
     },
     {
       path: '/:pathMatch(.*)*',

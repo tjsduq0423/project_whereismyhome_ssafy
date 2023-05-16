@@ -33,7 +33,7 @@
                   href=""
                   @click.prevent="router.push({ name: 'Notice' })"
                 >
-                  <i class="bi bi-megaphone pe-2"></i>공지사항
+                  <i class="bi bi-megaphone"></i> 공지사항
                 </a>
               </li>
               <hr class="dropdown-divider" />
@@ -71,12 +71,12 @@
             <ul class="dropdown-menu text-right m-0">
               <template v-if="userInfo.name !== '관리자'">
                 <li>
-                  <RouterLink
-                    class="dropdown-item fs-5"
-                    :to="{ name: 'MyPage' }"
+                  <a
+                    class="dropdown-item fs-5 me"
+                    @click.prevent="router.push({ name: 'MyPage' })"
                   >
-                    <i class="bi bi-info-square pe-2"></i>프로필 관리
-                  </RouterLink>
+                    <i class="bi bi-info-square"></i> Profile
+                  </a>
                 </li>
                 <hr class="dropdown-divider" />
               </template>
@@ -86,7 +86,7 @@
                   type="button"
                   @click.prevent="logout"
                 >
-                  <i class="bi bi-x-circle pe-1"></i> 로그아웃
+                  <i class="bi bi-x-circle"></i> Logout
                 </a>
               </li>
             </ul>

@@ -11,10 +11,7 @@ import com.whereismyhome.houseinfo.mapper.HouseInfoMapper;
 import com.whereismyhome.houseinfo.service.HouseInfoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -36,11 +33,20 @@ public class InfoController {
         return ResponseEntity.ok().body(houseInfoResponseDto);
     }
 
+    //아파트 매매정보 조회
     @GetMapping("/deal/{apt-code}")
     public ResponseEntity findDeal(@PathVariable("apt-code") long aptCode) {
         List<HouseDeal> houseDeal = houseDealService.findHouseDeal(aptCode);
         List<HouseDealResponseDto> houseDealResponseDtos = houseDealMapper.listToHouseDealResponseDtos(houseDeal);
 
         return ResponseEntity.ok().body(houseDealResponseDtos);
+    }
+
+    //랭킹 정보 조회
+    @GetMapping("/rank/{apt-code}")
+    public ResponseEntity findRank(@PathVariable("apt-code") long aptCode) {
+        long rank = houseInfoService.getRank(aptCode);
+
+        return ResponseEntity.ok().body(rank + "등");
     }
 }

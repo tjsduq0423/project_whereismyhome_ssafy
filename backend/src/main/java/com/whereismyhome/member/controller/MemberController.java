@@ -8,15 +8,13 @@ import com.whereismyhome.member.dto.MemberResponseDto;
 import com.whereismyhome.member.entity.Member;
 import com.whereismyhome.member.mapper.MemberMapper;
 import com.whereismyhome.member.service.MemberService;
+import jakarta.mail.MessagingException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -29,6 +27,7 @@ public class MemberController {
     private final MemberMapper mapper;
     private final MemberService memberService;
     private final JwtProvider jwtProvider;
+
 
     //회원 가입
     @PostMapping("/join")
@@ -69,4 +68,13 @@ public class MemberController {
 
         return ResponseEntity.noContent().build();
     }
+
+    //회원가입 시 이메일 인증
+    @GetMapping("/{email}")
+    public ResponseEntity senMail(@PathVariable("email") String email) throws MessagingException {
+        String key = memberService.sendMail(email);
+
+        return ResponseEntity.ok().body(key);
+    }
+
 }

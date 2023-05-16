@@ -44,7 +44,7 @@ public class SecurityConfig {
                 .requestMatchers("/notice/regist","board/answer").hasRole("ADMIN")
                 .requestMatchers("/h2/**").permitAll()
                 .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-resources/**").permitAll()
-                .requestMatchers("/member/login","/member/join").permitAll()
+                .requestMatchers("/member/login","/member/join","member/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(new JwtAuthenticationFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class);

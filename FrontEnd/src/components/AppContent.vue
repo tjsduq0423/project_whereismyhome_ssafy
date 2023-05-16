@@ -3,9 +3,16 @@
     class="viewBox d-flex flex-column justify-content-center align-items-center"
   >
     <slot name="header"></slot>
-    <div class="card p-5">
-      <slot></slot>
-    </div>
+    <transition
+      appear
+      mode="out-in"
+      enter-active-class="animate__animated animate__slideInRight"
+      leave-active-class="animate__animated animate__slideOutLeft"
+    >
+      <div class="card p-5">
+        <slot></slot>
+      </div>
+    </transition>
   </div>
 </template>
 

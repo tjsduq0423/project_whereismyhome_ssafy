@@ -2,7 +2,7 @@
   <AppContent class="img">
     <AppCardHeader>회원가입</AppCardHeader>
     <div class="card-body d-flex flex-column justify-content-center">
-      <form @click.prevent>
+      <form @submit.prevent="signUP">
         <div class="form-group mb-4">
           <label for="id" class="form-label">ID</label>
           <input
@@ -47,9 +47,8 @@
           />
         </div>
         <button
-          type="button"
+          type="submit"
           class="d-grid col-12 btn btn-success text-truncate mt-4"
-          @click="signUP"
         >
           회원가입
         </button>
@@ -61,9 +60,12 @@
 <script setup>
 import AppCardHeader from '@/components/AppCardHeader.vue';
 import AppContent from '@/components/AppContent.vue';
+
 import { join } from '@/api/member';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { useAlert } from '@/composables/alert';
+const { vAlert, vSuccess } = useAlert();
 const id = ref('');
 const password = ref('');
 const name = ref('');
@@ -73,9 +75,15 @@ const router = useRouter();
 const signUP = async () => {
   try {
     await join(id.value, password.value, name.value, email.value);
+    vSuccess('회원 가입 성공');
     router.push({ name: 'Home' });
   } catch (err) {
     console.error(err);
+    vAlert('회원 가입 실패');
+    id.value = '';
+    password.value = '';
+    name.value = '';
+    email.value = '';
   }
 };
 </script>

@@ -1,14 +1,16 @@
 <template>
   <AppNav></AppNav>
 
-  <RouterView></RouterView>
+  <RouterView> </RouterView>
 
   <AppFooter></AppFooter>
+  <AppAlert></AppAlert>
 </template>
 <script setup>
 import { RouterView } from 'vue-router';
-import AppNav from './components/AppNav.vue';
-import AppFooter from './components/AppFooter.vue';
+import AppNav from '@/components/AppNav.vue';
+import AppFooter from '@/components/AppFooter.vue';
+import AppAlert from '@/components/AppAlert.vue';
 </script>
 
 <style scoped>

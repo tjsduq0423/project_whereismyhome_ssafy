@@ -96,7 +96,9 @@
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '../stores/auth';
 import { storeToRefs } from 'pinia';
+import { useAlert } from '@/composables/alert';
 
+const { vAlert, vSuccess } = useAlert();
 const router = useRouter();
 
 const store = useAuthStore();
@@ -106,8 +108,10 @@ const { userInfo } = storeToRefs(store);
 const logout = () => {
   try {
     store.invalidateMember();
+    vSuccess('로그아웃 되었습니다.');
     router.push({ name: 'Home' });
   } catch (err) {
+    vAlert('로그아웃 실패?!..');
     console.error(err);
   }
 };

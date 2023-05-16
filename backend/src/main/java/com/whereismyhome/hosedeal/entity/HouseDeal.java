@@ -7,12 +7,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity(name = "housedeal")
+@Table(name = "housedeal")
+@Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Housedeal {
+public class HouseDeal {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long no;

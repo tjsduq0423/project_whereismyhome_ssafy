@@ -10,6 +10,6 @@ import java.util.List;
 
 public interface BusRepository extends JpaRepository<Bus,Integer> {
 
-    @Query("select new com.whereismyhome.amenities.dto.response.BusResponseDto(b.id, b.name, b.lat, b.lng) from Bus b where st_contains(st_buffer(Point(:lng,:lat),0.01),b.localPoint)")
+    @Query("select new com.whereismyhome.amenities.dto.response.BusResponseDto(b.id, b.name, b.lat, b.lng) from Bus b where st_contains(st_buffer(Point(:lng,:lat),0.01),b.localPoint)  order by ST_Distance_Sphere(Point(:lng,:lat),b.localPoint)")
     List<BusResponseDto> findByBus(@Param("lng") String lng, @Param("lat") String lat);
 }

@@ -4,6 +4,18 @@ spring:
     url: jdbc:mysql://localhost:3306/whereismyhome3?serverTimezone=UTC&characterEncoding=UTF-8
     username: ssafy
     password: ssafy
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: project534900
+    password: vufykbyvgkxxlrkm
+    properties:
+      mail:
+        smtp:
+          auth: true
+          timeout: 5000
+          starttls:
+            enable: true
 
   jpa:
     properties:

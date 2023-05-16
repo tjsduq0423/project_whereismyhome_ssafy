@@ -69,12 +69,17 @@
               {{ userInfo.name }}
             </a>
             <ul class="dropdown-menu text-right m-0">
-              <li>
-                <RouterLink class="dropdown-item fs-5" to="/notFound">
-                  <i class="bi bi-info-square pe-2"></i>내 정보
-                </RouterLink>
-              </li>
-              <hr class="dropdown-divider" />
+              <template v-if="userInfo.name !== '관리자'">
+                <li>
+                  <RouterLink
+                    class="dropdown-item fs-5"
+                    :to="{ name: 'MyPage' }"
+                  >
+                    <i class="bi bi-info-square pe-2"></i>프로필 관리
+                  </RouterLink>
+                </li>
+                <hr class="dropdown-divider" />
+              </template>
               <li>
                 <a
                   class="dropdown-item fs-5"
@@ -101,13 +106,12 @@ import { useAlert } from '@/composables/alert';
 const { vAlert, vSuccess } = useAlert();
 const router = useRouter();
 
-const store = useAuthStore();
-const { userInfo } = storeToRefs(store);
-
+const authStore = useAuthStore();
+const { userInfo } = storeToRefs(authStore);
 // logout
 const logout = () => {
   try {
-    store.invalidateMember();
+    authStore.invalidateMember();
     vSuccess('로그아웃 되었습니다.');
     router.push({ name: 'Home' });
   } catch (err) {

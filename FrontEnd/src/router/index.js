@@ -83,6 +83,12 @@ const router = createRouter({
       component: () => import('@/views/board/QnAEditView.vue'),
     },
     {
+      path: '/myPage',
+      name: 'MyPage',
+      meta: { requiresAuth: true },
+      component: () => import('@/views/main/MyPageView.vue'),
+    },
+    {
       path: '/:pathMatch(.*)*',
       component: NotFound,
       meta: { requiresAuth: false },

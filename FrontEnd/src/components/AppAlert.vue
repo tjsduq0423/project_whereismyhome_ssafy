@@ -1,6 +1,11 @@
 <template>
   <div class="app-alert">
-    <TransitionGroup name="slide-fade">
+    <TransitionGroup
+      appear
+      mode="out-in"
+      enter-active-class="animate__animated animate__bounceInDown animate__faster"
+      leave-active-class="animate__animated animate__zoomOutRight"
+    >
       <div
         v-for="({ message, type }, index) in alerts"
         :key="index"
@@ -32,7 +37,7 @@ const iconStyle = type =>
   right: 16px;
   font-size: 1.5rem;
 }
-.slide-fade-enter-active {
+/* .slide-fade-enter-active {
   transition: all 0.3s ease-out;
 }
 
@@ -44,5 +49,5 @@ const iconStyle = type =>
 .slide-fade-leave-to {
   transform: translateX(20px);
   opacity: 0;
-}
+} */
 </style>

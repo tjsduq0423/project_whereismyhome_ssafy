@@ -1,7 +1,7 @@
 <template>
   <AppNav></AppNav>
 
-  <RouterView></RouterView>
+  <RouterView> </RouterView>
 
   <AppFooter></AppFooter>
   <AppAlert></AppAlert>

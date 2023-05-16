@@ -10,6 +10,7 @@
             class="form-control"
             id="id"
             v-model="id"
+            autoComplete="username"
             placeholder="Enter your ID"
             @keydown.enter="login"
           />
@@ -21,6 +22,7 @@
             class="form-control"
             id="Password"
             v-model="password"
+            autoComplete="current-password"
             placeholder="Enter your Password"
             @keydown.enter="login"
           />

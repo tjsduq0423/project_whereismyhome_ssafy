@@ -8,7 +8,7 @@ export const useAlertStore = defineStore('alert', () => {
     alerts.value.push({ message, type });
     setTimeout(() => {
       alerts.value.shift();
-    }, 2500);
+    }, 1600);
   };
   const vSuccess = message => {
     vAlert(message, 'success');

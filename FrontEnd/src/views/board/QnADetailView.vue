@@ -5,46 +5,20 @@
       {{ item.title }}
     </h2>
     <hr />
-    <p
-      style="
-        height: 33vh;
-        word-break: break-all;
-        word-wrap: normal;
-        max-width: 60vw;
-      "
-      class="fs-4"
-    >
+    <p style="height: 33vh; word-break: break-all; word-wrap: normal; max-width: 60vw" class="fs-4">
       {{ item.content }}
     </p>
     <div class="row g-2">
       <div class="col-auto me-auto">
-        <button
-          type="button"
-          class="btn btn-outline-success btn-lg"
-          @click="goListPage"
-        >
-          목록
-        </button>
+        <button type="button" class="btn btn-outline-success btn-lg" @click="goListPage">목록</button>
       </div>
       <!-- 관리자 권한 v-if 필요 -->
       <template v-if="userInfo.id === item.memberId">
         <div class="col-auto">
-          <button
-            type="button"
-            class="btn btn-outline-primary btn-lg"
-            @click="goEditPage"
-          >
-            수정
-          </button>
+          <button type="button" class="btn btn-outline-primary btn-lg" @click="goEditPage">수정</button>
         </div>
         <div class="col-auto">
-          <button
-            type="button"
-            class="btn btn-outline-danger btn-lg"
-            @click="deleteQnA"
-          >
-            삭제
-          </button>
+          <button type="button" class="btn btn-outline-danger btn-lg" @click="deleteQnA">삭제</button>
         </div>
       </template>
     </div>
@@ -98,8 +72,7 @@ const goEditPage = () => router.push({ name: 'QnAEdit', params: { id } });
 
 <style scoped>
 .img {
-  background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.5)),
-    url('@/assets/img/Qna01.jpg');
+  background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.5)), url('@/assets/img/Qna01.jpg');
 }
 .cardWidthPadding {
   margin: 0rem 28vw 0rem 28vw;

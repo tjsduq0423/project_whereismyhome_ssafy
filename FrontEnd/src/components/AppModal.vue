@@ -5,12 +5,7 @@
         <div class="container">
           <slot></slot>
           <div class="row">
-            <button
-              class="btn btn-success text-truncate"
-              @click="$emit('closeModal')"
-            >
-              닫기
-            </button>
+            <button class="btn btn-success text-truncate" @click="$emit('closeModal')">닫기</button>
           </div>
         </div>
       </div>

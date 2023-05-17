@@ -27,28 +27,10 @@
             @keydown.enter="login"
           />
         </div>
-        <button
-          type="button"
-          class="d-grid col-12 btn btn-success text-truncate mb-4"
-          @click="login"
-        >
-          로그인
-        </button>
+        <button type="button" class="d-grid col-12 btn btn-success text-truncate mb-4" @click="login">로그인</button>
         <div class="d-flex justify-content-between mt-3">
-          <button
-            type="button"
-            class="btn btn-outline-danger text-truncate"
-            @click="goFindPW"
-          >
-            비밀번호 찾기
-          </button>
-          <button
-            type="button"
-            class="btn btn-outline-success text-truncate"
-            @click="goSignup"
-          >
-            회원 가입
-          </button>
+          <button type="button" class="btn btn-outline-danger text-truncate" @click="goFindPW">비밀번호 찾기</button>
+          <button type="button" class="btn btn-outline-success text-truncate" @click="goSignup">회원 가입</button>
         </div>
       </form>
     </div>
@@ -100,8 +82,7 @@ const goSignup = () => {
 
 <style scoped>
 .img {
-  background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.5)),
-    url('@/assets/img/aprtments01.jpg');
+  background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.5)), url('@/assets/img/aprtments01.jpg');
 }
 input[type='password']::placeholder {
   font-family: 'BMFonts';

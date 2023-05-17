@@ -8,10 +8,7 @@
       <div class="collapse navbar-collapse">
         <ul class="navbar-nav ms-auto">
           <li class="nav-item">
-            <button
-              class="nav-link fs-5 fw-bold border-0 bg-transparent"
-              @click="router.push({ name: 'AptInfo' })"
-            >
+            <button class="nav-link fs-5 fw-bold border-0 bg-transparent" @click="router.push({ name: 'AptInfo' })">
               <i class="bi bi-buildings pe-2"></i>아파트 매매 정보
             </button>
           </li>
@@ -28,21 +25,13 @@
             </a>
             <ul class="dropdown-menu text-right m-0">
               <li>
-                <a
-                  class="dropdown-item fs-5"
-                  href=""
-                  @click.prevent="router.push({ name: 'Notice' })"
-                >
+                <a class="dropdown-item fs-5" href="" @click.prevent="router.push({ name: 'Notice' })">
                   <i class="bi bi-megaphone"></i> 공지사항
                 </a>
               </li>
               <hr class="dropdown-divider" />
               <li>
-                <a
-                  class="dropdown-item fs-5"
-                  href=""
-                  @click.prevent="router.push({ name: 'QnA' })"
-                >
+                <a class="dropdown-item fs-5" href="" @click.prevent="router.push({ name: 'QnA' })">
                   <i class="bi bi-clipboard"></i> 질의응답
                 </a>
               </li>
@@ -50,10 +39,7 @@
           </li>
           <!-- 로그인. 마이 페이지 -->
           <li v-if="userInfo === null" class="nav-item">
-            <button
-              class="nav-link fs-5 fw-bold border-0 bg-transparent"
-              @click="router.push({ name: 'Login' })"
-            >
+            <button class="nav-link fs-5 fw-bold border-0 bg-transparent" @click="router.push({ name: 'Login' })">
               <i class="bi bi-box-arrow-in-right pe-1"></i> 로그인
             </button>
           </li>
@@ -71,21 +57,14 @@
             <ul class="dropdown-menu text-right m-0">
               <template v-if="userInfo.name !== '관리자'">
                 <li>
-                  <a
-                    class="dropdown-item fs-5 me"
-                    @click.prevent="router.push({ name: 'MyPage' })"
-                  >
+                  <a class="dropdown-item fs-5 me" @click.prevent="router.push({ name: 'MyPage' })">
                     <i class="bi bi-info-square"></i> Profile
                   </a>
                 </li>
                 <hr class="dropdown-divider" />
               </template>
               <li>
-                <a
-                  class="dropdown-item fs-5"
-                  type="button"
-                  @click.prevent="logout"
-                >
+                <a class="dropdown-item fs-5" type="button" @click.prevent="logout">
                   <i class="bi bi-x-circle"></i> Logout
                 </a>
               </li>

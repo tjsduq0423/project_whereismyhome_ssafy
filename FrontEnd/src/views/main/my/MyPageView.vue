@@ -40,8 +40,7 @@ const { userInfo } = storeToRefs(authStore);
 
 <style lang="scss" scoped>
 .img {
-  background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.5)),
-    url('@/assets/img/apartment04jpg.jpg');
+  background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.5)), url('@/assets/img/apartment04jpg.jpg');
 }
 .headRow {
   text-align: center;

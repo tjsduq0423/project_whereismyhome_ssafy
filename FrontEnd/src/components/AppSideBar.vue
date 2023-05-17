@@ -2,7 +2,7 @@
   <!-- 로드뷰 + 헤더 + 등등 들어갈 자리 -->
   <div class="sidebar">
     <div class="aptInfo">
-      <div id="roadViewContainer" style="width: 100%; height: 30vh"></div>
+      <KaKaoLoadview></KaKaoLoadview>
       <div class="container-fluid p-3">
         <div class="fs-3">삼성동중앙하이츠 빌리지</div>
         <div style="color: rgba(172, 172, 172, 0.976)">2004년 건설</div>
@@ -143,46 +143,19 @@
 
 <script setup>
 import AppLineChart from './AppLineChart.vue';
-import { onMounted, ref, watch } from 'vue';
+import KaKaoLoadview from './KaKaoLoadview.vue';
+import { ref } from 'vue';
 
-import { data, options } from '@/assets/data/homeChart';
 // 차트 데이터.
+import { data, options } from '@/assets/data/homeChart';
 const chartData = ref({ ...data });
 const chartOptions = ref({ ...options });
 
 //kakao.value 로드 뷰
-import { useKakaoStore } from '@/stores/kakao';
-import { storeToRefs } from 'pinia';
-const kakaoStore = useKakaoStore();
-const { kakao } = storeToRefs(kakaoStore);
-
-const createLoadView = (lat = '33.450701', lng = '126.570667') => {
-  const roadViewContainer = document.getElementById('roadViewContainer');
-  const roadview = new kakao.value.maps.Roadview(roadViewContainer);
-  const roadviewClient = new kakao.value.maps.RoadviewClient();
-  const position = new kakao.value.maps.LatLng(lat, lng);
-  // 특정 위치의 좌표와 가까운 로드뷰의 panoId를 추출하여 로드뷰를 띄운다.
-  roadviewClient.getNearestPanoId(position, 50, function (panoId) {
-    roadview.setPanoId(panoId, position); //panoId와 중심좌표를 통해 로드뷰 실행
-  });
-};
-
-onMounted(() => {
-  try {
-    if (kakao.value === null) return;
-    kakao.value.maps.load(createLoadView);
-  } catch (err) {
-    console.error(err);
-  }
-});
-
-watch(
-  kakao,
-  newValue => {
-    newValue.maps.load(createLoadView);
-  },
-  { deep: true },
-);
+// import { useKakaoStore } from '@/stores/kakao';
+// import { storeToRefs } from 'pinia';
+// const kakaoStore = useKakaoStore();
+// const { kakao } = storeToRefs(kakaoStore);
 </script>
 
 <style lang="scss" scoped>

@@ -20,11 +20,11 @@
               type="button"
               data-bs-toggle="dropdown"
               aria-expanded="false"
-              style="min-width: 10vw"
+              style="min-width: 8vw"
             >
               {{ selectedSido === null ? '시도선택' : selectedSido }}
             </button>
-            <ul class="dropdown-menu text-center m-0" style="min-width: 10vw">
+            <ul class="dropdown-menu text-center m-0" style="min-width: 8vw">
               <li v-for="sido in sidoList" :key="sido">
                 <a
                   class="dropdown-item"
@@ -48,14 +48,14 @@
               type="button"
               data-bs-toggle="dropdown"
               aria-expanded="false"
-              style="min-width: 10vw"
+              style="min-width: 8vw"
             >
               {{ selectedGugun === null ? '구군 선택' : selectedGugun }}
             </button>
             <ul
               v-show="gugunList !== undefined"
               class="dropdown-menu text-center overflow-auto m-0"
-              style="height: 30rem; min-width: 10vw"
+              style="max-height: 30rem; min-width: 8vw"
             >
               <li v-for="gugun in gugunList" :key="gugun">
                 <a class="dropdown-item" href="" @click.prevent="selectedGugun = gugun">{{ gugun }}</a>
@@ -113,11 +113,9 @@
         </div>
       </div>
     </div>
-
     <button @click="showSideBar = !showSideBar">사이드바 on/off</button>
-
     <!-- 맵 + 사이드 바 -->
-    <div id="map" style="min-height: 80vh">
+    <KaKaoMap>
       <transition
         appear
         mode="out-in"
@@ -126,19 +124,18 @@
       >
         <AppSideBar v-show="showSideBar"></AppSideBar>
       </transition>
-    </div>
+    </KaKaoMap>
   </AppContent>
 </template>
 
 <script setup>
-import AppContent from '@/components/AppContent.vue';
+import KaKaoMap from '@/components/KaKaoMap.vue';
 import AppSideBar from '@/components/AppSideBar.vue';
+import AppContent from '@/components/AppContent.vue';
 import sidoGugunData from '@/assets/data/sido_gugun';
-import { computed, onMounted, ref, watch } from 'vue';
-import { debounce } from 'lodash';
-// 아파트 매매 정보 관련 사이드바 제어
-const showSideBar = ref(false);
+import { computed, ref } from 'vue';
 
+const showSideBar = ref(false);
 // 시도 구군 셀렉트 바
 const selectedSido = ref(null);
 const selectedGugun = ref(null);
@@ -146,51 +143,9 @@ const sidoList = [...Object.keys(sidoGugunData)];
 const gugunList = computed(() => {
   return sidoGugunData[selectedSido.value];
 });
-
-// kakao map 생성.
-import { useKakaoStore } from '@/stores/kakao';
-import { storeToRefs } from 'pinia';
-const kakaoStore = useKakaoStore();
-const { kakao } = storeToRefs(kakaoStore);
-
-const mapCenterLatLng = ref([]);
-
-const initMap = () => {
-  const container = document.getElementById('map');
-  const options = {
-    center: new kakao.value.maps.LatLng(36.35536036402348, 127.29840381673439),
-    level: 5,
-  };
-  const map = new kakao.value.maps.Map(container, options);
-  kakao.value.maps.event.addListener(
-    map,
-    'center_changed',
-    debounce(() => {
-      const latlng = map.getCenter();
-      mapCenterLatLng.value = [latlng.getLat(), latlng.getLng()];
-    }, 500),
-  );
-};
-
-onMounted(() => {
-  try {
-    if (kakao.value) {
-      kakao.value.maps.load(initMap);
-    }
-  } catch (err) {
-    console.error(err);
-  }
-});
-watch(
-  kakao,
-  newValue => {
-    newValue.maps.load(initMap);
-  },
-  { deep: true },
-);
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .img {
   background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.5)), url('@/assets/img/apartment00.jpg');
 }
@@ -205,5 +160,30 @@ watch(
 
 .aptInfoHeader {
   margin: 0px 0vw 15vh 0vw;
+}
+
+.dropdown-menu {
+  &::-webkit-scrollbar {
+    width: 8px; /* 스크롤바의 너비 */
+  }
+  &::-webkit-scrollbar-thumb {
+    height: 30%; /* 스크롤바의 길이 */
+    background: #d1d1d1; /* 스크롤바의 색상 */
+    border-radius: 10px;
+  }
+  &::-webkit-scrollbar-track {
+    background-color: #ececec;
+  }
+}
+div > a {
+  font-weight: bold;
+  text-decoration: none;
+  color: black;
+  &:hover {
+    border-bottom: 0.35rem solid black;
+  }
+  &.router-link-active {
+    border-bottom: 0.35rem solid black;
+  }
 }
 </style>

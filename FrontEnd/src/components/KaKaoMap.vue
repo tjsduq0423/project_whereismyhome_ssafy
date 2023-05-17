@@ -1,26 +1,16 @@
 <template>
   <div id="map" style="min-height: 80vh">
-    <transition
-      appear
-      mode="out-in"
-      enter-active-class="animate__animated animate__slideInLeft"
-      leave-active-class="animate__animated animate__slideOutLeft"
-    >
-      <AppSideBar v-show="showSideBar"></AppSideBar>
-    </transition>
+    <slot></slot>
   </div>
 </template>
 
 <script setup>
-import AppSideBar from './AppSideBar.vue';
-import { debounce } from 'lodash';
-
 // kakao map 생성.
-
-import { useKakaoStore } from '@/stores/kakao';
+import { debounce } from 'lodash';
 import { storeToRefs } from 'pinia';
-import { onMounted, ref, watch } from 'vue';
-const showSideBar = ref(false);
+import { useKakaoStore } from '@/stores/kakao';
+import { onMounted, ref, watch, watchEffect } from 'vue';
+import { getHouseMarkers } from '@/api/amen';
 
 const kakaoStore = useKakaoStore();
 const { kakao } = storeToRefs(kakaoStore);
@@ -53,6 +43,13 @@ onMounted(() => {
   } catch (err) {
     console.error(err);
   }
+});
+
+watchEffect(async () => {
+  const [lat, lng] = mapCenterLatLng.value;
+  const response = await getHouseMarkers(lng, lat);
+  console.log(response);
+  console.log(response.data);
 });
 
 watch(

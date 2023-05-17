@@ -109,6 +109,8 @@ const router = createRouter({
     },
   ],
 });
+
+// 라우터 가드
 import { useAlert } from '@/composables/alert';
 import { useAuthStore } from '@/stores/auth';
 import { storeToRefs } from 'pinia';

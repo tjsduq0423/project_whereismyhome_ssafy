@@ -3,17 +3,14 @@ package com.whereismyhome.oauth2.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.whereismyhome.oauth2.dto.TokenDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.BodyInserters;
+import org.springframework.web.reactive.function.client.WebClient;
 
 @Service
 @RequiredArgsConstructor
@@ -25,9 +22,8 @@ public class Oauth2Service {
         //추후 값 yml로 이동
         String client_id = "6c779f7199f5aa77f349e6165df482bc";
         String redirect_uri = "http://localhost:8080/oauth2/kakao";
-        RestTemplate restTemplate = new RestTemplate();
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Type", "application/x-www-form-urlencoded;charset=utf-8");
+
+        WebClient webClient = WebClient.create();
 
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
         body.add("client_id", client_id);
@@ -35,50 +31,47 @@ public class Oauth2Service {
         body.add("code", code);
         body.add("grant_type","authorization_code");
 
-        HttpEntity<MultiValueMap<String,String>> kakaoTokenRequest = new HttpEntity<>(body,headers);
+        String response = webClient.post()
+                .uri("https://kauth.kakao.com/oauth/token")
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(BodyInserters.fromFormData(body))
+                .retrieve()
+                .bodyToMono(String.class)
+                .block();
 
-        ResponseEntity<String> result = restTemplate.exchange(
-                "https://kauth.kakao.com/oauth/token",
-                HttpMethod.POST,
-                kakaoTokenRequest,
-                String.class
-        );
-        
-        return result.getBody();
+        return response;
     }
 
     //카카오에서 받은 토큰으로 사용자 정보 요청
-    public ResponseEntity<String> kakaoUser(String body) throws JsonProcessingException {
+    public String kakaoUser(String body) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
 
-        TokenDto token = mapper.readValue(body, TokenDto.class);
+        String token = mapper.readTree(body).get("access_token").asText();
 
-        log.info("카카오 엑세스 토큰 {}",token.getAccess_token());
-        RestTemplate restTemplate = new RestTemplate();
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Type", "application/x-www-form-urlencoded;charset=utf-8");
-        headers.add("Authorization","Bearer "+token.getAccess_token());
+        log.info("카카오 엑세스 토큰 {}",token);
 
-        HttpEntity<MultiValueMap<String,String>> kakaoUserInfoRequest = new HttpEntity<>(headers);
+        WebClient webClient = WebClient.create();
 
-        ResponseEntity<String> result = restTemplate.exchange(
-                "https://kapi.kakao.com/v2/user/me",
-                HttpMethod.POST,
-                kakaoUserInfoRequest,
-                String.class
-        );
+        log.info("카카오 사용자 정보 요청");
+        String response = webClient.post()
+                .uri("https://kapi.kakao.com/v2/user/me")
+                .header("Content-Type", "application/x-www-form-urlencoded;charset=utf-8")
+                .header("Authorization", "Bearer " + token)
+                .retrieve()
+                .bodyToMono(String.class)
+                .block();
+        log.info("사용자 정보 받아옴");
 
-        JsonNode jsonNode = mapper.readTree(result.getBody());
-
+        JsonNode jsonNode = mapper.readTree(response);
         String nickName = jsonNode.get("properties").get("nickname").asText();
         String email = jsonNode.get("kakao_account").get("email").asText();
-        log.info("nickname {}", nickName);
-        log.info("email {}", email);
+        log.info("nickname : {}", nickName);
+        log.info("email : {}", email);
 
         int idx = email.indexOf("@");
         String mail = email.substring(0, idx);
 //        memberService.findUser(mail);
 
-        return result;
+        return response;
     }
 }

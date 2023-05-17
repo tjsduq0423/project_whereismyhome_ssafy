@@ -21,8 +21,7 @@ public class Oauth2Controller {
     public ResponseEntity kakaoOauth(@RequestParam("code") String code) throws JsonProcessingException {
         log.info("code {}", code);
         String body = oauth2Service.kakaoLogin(code);
-        ResponseEntity<String> kakaoUser = oauth2Service.kakaoUser(body);
 
-        return ResponseEntity.ok().body(kakaoUser);
+        return ResponseEntity.ok().body(oauth2Service.kakaoUser(body));
     }
 }

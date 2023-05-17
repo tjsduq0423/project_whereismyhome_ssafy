@@ -70,9 +70,10 @@ const password = ref('');
 
 const router = useRouter();
 
-const login = () => {
+const login = async () => {
+  if (!validate()) return;
   try {
-    validateMember(id.value, password.value);
+    await validateMember(id.value, password.value);
     vSuccess('로그인 성공');
     router.push({ name: 'Home' });
   } catch (err) {
@@ -80,6 +81,15 @@ const login = () => {
     console.error(err);
   }
 };
+
+const validate = () => {
+  if (!id.value || !password.value) {
+    vAlert('입력 형식을 맞춰주세요');
+    return false;
+  }
+  return true;
+};
+
 const goFindPW = () => {
   router.push({ name: 'FindPassword' });
 };

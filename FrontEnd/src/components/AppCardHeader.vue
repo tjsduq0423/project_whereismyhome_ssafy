@@ -12,8 +12,8 @@
   font-size: 2em;
   position: absolute;
   z-index: 1;
-  background: white;
   text-align: center;
-  min-width: 60%;
+  min-width: 50%;
+  background-color: white;
 }
 </style>

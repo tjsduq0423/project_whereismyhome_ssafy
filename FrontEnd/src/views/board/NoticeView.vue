@@ -15,12 +15,9 @@
         <tr v-for="item in _items || []" :key="item.id">
           <th>{{ item.id }}</th>
           <td>
-            <a
-              href=""
-              class="text-decoration-none text-success"
-              @click.prevent="goDetailPage(item.id)"
-              >{{ item.title }}</a
-            >
+            <a href="" class="text-decoration-none text-success" @click.prevent="goDetailPage(item.id)">{{
+              item.title
+            }}</a>
           </td>
           <td>admin</td>
           <td>{{ formatDate(item.createtime) }}</td>
@@ -108,8 +105,7 @@ const formatDate = date => {
 
 <style scoped>
 .img {
-  background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.5)),
-    url('@/assets/img/notice02.jpg');
+  background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.5)), url('@/assets/img/notice02.jpg');
 }
 .cardWidthPadding {
   margin: 0rem 28vw 0rem 28vw;

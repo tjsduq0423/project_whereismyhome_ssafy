@@ -6,8 +6,8 @@
           <h3>SSAFY</h3>
           <ul class="list-unstyled small">
             <li class="mb-2">
-              Designed and built with all the love in the world by the SAFFY 08
-              Class team with the help of our contributors.
+              Designed and built with all the love in the world by the SAFFY 08 Class team with the help of our
+              contributors.
             </li>
             <li class="mb-2">Code licensed MIT, docs By MJH, HSH</li>
           </ul>
@@ -49,9 +49,7 @@
           </ul>
         </div>
       </div>
-      <div
-        class="d-flex flex-column flex-sm-row justify-content-between pt-2 mt-4 border-top"
-      >
+      <div class="d-flex flex-column flex-sm-row justify-content-between pt-2 mt-4 border-top">
         <div>
           <i class="bi bi-c-circle"></i>
           2023 SSAFY, 9, DaeJeon, 08 Class. All rights reserved.

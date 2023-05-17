@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="viewBox d-flex flex-column justify-content-center align-items-center"
-  >
+  <div class="viewBox d-flex flex-column justify-content-center align-items-center">
     <slot name="header"></slot>
     <transition
       appear

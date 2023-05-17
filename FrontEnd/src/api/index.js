@@ -22,6 +22,10 @@ export const amen = create(`${import.meta.env.VITE_APP_API_URL}/amen`, {
   withCredentials: true,
 });
 
+export const info = create(`${import.meta.env.VITE_APP_API_URL}/info`, {
+  withCredentials: true,
+});
+
 // development : http://localhost:8080/posts/
 // production : http://productionDomainURL/posts/
 

@@ -6,12 +6,10 @@
       <div class="row bg-light p-2">
         <!-- 아파트 북마크 선택 탭 taps -->
         <div class="col-auto d-flex align-items-center">
-          <a class="nav-link fs-4" aria-current="page" href="#"
-            >아파트 매매 정보</a
-          >
+          <RouterLink class="fs-4" :to="{ name: 'AptInfo' }">아파트 매매 정보</RouterLink>
         </div>
         <div class="col-auto d-flex align-items-center">
-          <a class="nav-link fs-4" href="#">북마크 매매 정보</a>
+          <RouterLink class="fs-4" :to="{ name: 'MyBookMarkInMapView' }">북마크 매매 정보</RouterLink>
         </div>
 
         <!-- 시도 select box -->
@@ -26,7 +24,7 @@
             >
               {{ selectedSido === null ? '시도선택' : selectedSido }}
             </button>
-            <ul class="dropdown-menu text-center m-0">
+            <ul class="dropdown-menu text-center m-0" style="min-width: 10vw">
               <li v-for="sido in sidoList" :key="sido">
                 <a
                   class="dropdown-item"
@@ -57,15 +55,10 @@
             <ul
               v-show="gugunList !== undefined"
               class="dropdown-menu text-center overflow-auto m-0"
-              style="height: 30rem"
+              style="height: 30rem; min-width: 10vw"
             >
               <li v-for="gugun in gugunList" :key="gugun">
-                <a
-                  class="dropdown-item"
-                  href=""
-                  @click.prevent="selectedGugun = gugun"
-                  >{{ gugun }}</a
-                >
+                <a class="dropdown-item" href="" @click.prevent="selectedGugun = gugun">{{ gugun }}</a>
               </li>
             </ul>
           </div>
@@ -74,66 +67,29 @@
         <!-- 학교, 병원, 버정, 지하철, CCTV checkBoxes -->
         <div class="col-auto gap-2 d-flex align-items-center fs-6">
           <div class="form-check">
-            <input
-              class="form-check-input"
-              type="checkbox"
-              value=""
-              id="flexCheckDefault"
-            />
-            <label class="form-check-label" for="flexCheckDefault">
-              학교
-            </label>
+            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
+            <label class="form-check-label" for="flexCheckDefault"> 학교 </label>
           </div>
           <div class="form-check">
-            <input
-              class="form-check-input"
-              type="checkbox"
-              value=""
-              id="flexCheckDefault"
-            />
-            <label class="form-check-label" for="flexCheckDefault">
-              병원
-            </label>
+            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
+            <label class="form-check-label" for="flexCheckDefault"> 병원 </label>
           </div>
           <div class="form-check">
-            <input
-              class="form-check-input"
-              type="checkbox"
-              value=""
-              id="flexCheckDefault"
-            />
-            <label class="form-check-label" for="flexCheckDefault">
-              버스
-            </label>
+            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
+            <label class="form-check-label" for="flexCheckDefault"> 버스 </label>
           </div>
           <div class="form-check">
-            <input
-              class="form-check-input"
-              type="checkbox"
-              value=""
-              id="flexCheckDefault"
-            />
-            <label class="form-check-label" for="flexCheckDefault">
-              지하철
-            </label>
+            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
+            <label class="form-check-label" for="flexCheckDefault"> 지하철 </label>
           </div>
           <div class="form-check">
-            <input
-              class="form-check-input"
-              type="checkbox"
-              value=""
-              id="flexCheckDefault"
-            />
-            <label class="form-check-label" for="flexCheckDefault">
-              CCTV
-            </label>
+            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
+            <label class="form-check-label" for="flexCheckDefault"> CCTV </label>
           </div>
         </div>
 
         <!-- 금액, 면적 필터 dropdown -->
-        <div
-          class="dropdown-center col-auto d-flex align-items-center justify-content-center"
-        >
+        <div class="dropdown-center col-auto d-flex align-items-center justify-content-center">
           <button
             class="btn btn-outline-dark dropdown-toggle"
             type="button"
@@ -152,12 +108,7 @@
         <div class="col d-flex align-items-center">
           <form class="position-relative">
             <i class="searchIcon bi bi-search"></i>
-            <input
-              class="form-control me-2"
-              type="search"
-              placeholder="Search"
-              aria-label="Search"
-            />
+            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
           </form>
         </div>
       </div>
@@ -214,8 +165,7 @@ onMounted(() => {
 
 <style scoped>
 .img {
-  background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.5)),
-    url('@/assets/img/apartment00.jpg');
+  background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.5)), url('@/assets/img/apartment00.jpg');
 }
 .searchIcon {
   position: absolute;

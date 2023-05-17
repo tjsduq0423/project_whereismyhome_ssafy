@@ -5,32 +5,14 @@
       <form @submit.prevent>
         <div class="mb-4">
           <label for="id" class="form-label">ID</label>
-          <input
-            type="text"
-            class="form-control"
-            id="id"
-            v-model="id"
-            placeholder="Enter your ID"
-          />
+          <input type="text" class="form-control" id="id" v-model="id" placeholder="Enter your ID" />
         </div>
         <div class="mb-4">
           <label for="email" class="form-label">Email</label>
-          <input
-            type="email"
-            class="form-control"
-            id="email"
-            v-model="email"
-            placeholder="Ex - example@naver.com"
-          />
+          <input type="email" class="form-control" id="email" v-model="email" placeholder="Ex - example@naver.com" />
         </div>
         <div class="row m-0">
-          <button
-            class="btn btn-success text-truncate"
-            type="button"
-            @click="sendEmail"
-          >
-            비밀번호 찾기
-          </button>
+          <button class="btn btn-success text-truncate" type="button" @click="sendEmail">비밀번호 찾기</button>
           <AppModal
             :is-open="modalOpen"
             @close-modal="
@@ -48,18 +30,10 @@
                 v-model="code"
                 placeholder="Enter your Authentication code"
               />
-              <small id="codeHelp" class="form-text text-muted"
-                >이메일로 전송된 코드를 입력해주세요</small
-              >
+              <small id="codeHelp" class="form-text text-muted">이메일로 전송된 코드를 입력해주세요</small>
             </div>
             <div class="row">
-              <button
-                type="button"
-                @click="showPassword"
-                class="btn btn-success text-truncate my-3"
-              >
-                인증
-              </button>
+              <button type="button" @click="showPassword" class="btn btn-success text-truncate my-3">인증</button>
             </div>
           </AppModal>
         </div>
@@ -102,7 +76,6 @@ const validate = () => {
 
 <style scoped>
 .img {
-  background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.5)),
-    url('@/assets/img/aprtments01.jpg');
+  background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.5)), url('@/assets/img/aprtments01.jpg');
 }
 </style>

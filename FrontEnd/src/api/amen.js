@@ -1,11 +1,21 @@
 import { amen } from '.';
 
-export const getSubway = () => amen.get('/subway');
+export const getSubwayMarkers = (lng, lat) => amen.post('/subway', { lng, lat });
 
-export const getSchool = () => amen.get('/school');
+export const getSchoolMarkers = (lng, lat) => amen.post('/school', { lng, lat });
 
-export const getHospital = () => amen.get('/hospital');
+export const getHospitalMarkers = (lng, lat) => amen.post('/hospital', { lng, lat });
 
-export const getCCTV = () => amen.get('/cctv');
+export const getCCTVMarkers = (lng, lat) => amen.post('/cctv', { lng, lat });
 
-export const getBus = () => amen.get('/bus');
+export const getBusMarkers = (lng, lat) => amen.post('/bus', { lng, lat });
+
+export const getSubwayDistance = aptCode => amen.get(`/subway${aptCode}`);
+
+export const getSchoolDistance = aptCode => amen.get(`/school${aptCode}`);
+
+export const getHospitalDistance = aptCode => amen.get(`/hospital${aptCode}`);
+
+export const getCCTVDistance = aptCode => amen.get(`/cctv${aptCode}`);
+
+export const getBusDistance = aptCode => amen.get(`/bus${aptCode}`);

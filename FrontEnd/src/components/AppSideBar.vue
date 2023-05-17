@@ -37,10 +37,7 @@
               <div>매매 정보</div>
             </div>
             <div class="row">
-              <AppLineChart
-                :chart-data="chartData"
-                :chart-options="chartOptions"
-              ></AppLineChart>
+              <AppLineChart :chart-data="chartData" :chart-options="chartOptions"></AppLineChart>
             </div>
             <div class="row">
               <table class="table text-center text-truncate">
@@ -91,9 +88,7 @@
           aria-labelledby="flush-headingTwo"
           data-bs-parent="#accordionFlushExample"
         >
-          <div class="accordion-body">
-            단지 조회수, 북마크, 거래량 기반 인기도 in 지역구
-          </div>
+          <div class="accordion-body">단지 조회수, 북마크, 거래량 기반 인기도 in 지역구</div>
         </div>
       </div>
       <div class="accordion-item">
@@ -116,8 +111,7 @@
           data-bs-parent="#accordionFlushExample"
         >
           <div class="accordion-body">
-            학교 , 병원 ,버스 , 지하철 등등 편의 시설 현 아파트 위치 기준 반경
-            500 m 내 tab으로 가까운 순으로 표시
+            학교 , 병원 ,버스 , 지하철 등등 편의 시설 현 아파트 위치 기준 반경 500 m 내 tab으로 가까운 순으로 표시
           </div>
         </div>
       </div>
@@ -140,9 +134,7 @@
           aria-labelledby="flush-headingFour"
           data-bs-parent="#accordionFlushExample"
         >
-          <div class="accordion-body">
-            해당 아파트를 검색했을 때 나오는 화면 insert
-          </div>
+          <div class="accordion-body">해당 아파트를 검색했을 때 나오는 화면 insert</div>
         </div>
       </div>
     </div>

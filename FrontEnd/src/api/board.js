@@ -1,13 +1,10 @@
 import { board } from '.';
 
-export const putBoard = (id, title, content) =>
-  board.put('/update', { id, title, content });
+export const putBoard = (id, title, content) => board.put('/update', { id, title, content });
 
-export const registBoard = (memberId, title, content) =>
-  board.post('/regist', { memberId, title, content });
+export const registBoard = (memberId, title, content) => board.post('/regist', { memberId, title, content });
 
-export const answerBoard = (id, responseContent) =>
-  board.post('/answer', { id, responseContent });
+export const answerBoard = (id, responseContent) => board.post('/answer', { id, responseContent });
 
 export const getBoardById = memberId => board.get(`/${memberId}`);
 

@@ -23,10 +23,7 @@
 import { useAlert } from '@/composables/alert';
 const { alerts } = useAlert();
 const typeStyle = type => (type === 'error' ? 'alert-danger' : 'alert-success');
-const iconStyle = type =>
-  type === 'error'
-    ? 'bi bi-exclamation-triangle-fill'
-    : 'bi bi-check-circle-fill';
+const iconStyle = type => (type === 'error' ? 'bi bi-exclamation-triangle-fill' : 'bi bi-check-circle-fill');
 </script>
 
 <style scoped>

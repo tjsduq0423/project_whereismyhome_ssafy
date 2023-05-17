@@ -13,8 +13,14 @@ const router = createRouter({
     {
       path: '/aptInfo',
       name: 'AptInfo',
-      meta: { requiresAuth: false },
+      meta: { requiresAuth: true },
       component: () => import('@/views/main/AptInfoView.vue'),
+    },
+    {
+      path: '/myBookMarkInMapView',
+      name: 'MyBookMarkInMapView',
+      meta: { requiresAuth: true },
+      component: () => import('@/views/main/my/MyBookMarkInMapView.vue'),
     },
     {
       path: '/login',

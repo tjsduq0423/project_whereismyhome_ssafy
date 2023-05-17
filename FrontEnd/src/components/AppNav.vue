@@ -33,7 +33,7 @@
                   href=""
                   @click.prevent="router.push({ name: 'Notice' })"
                 >
-                  <i class="bi bi-megaphone pe-2"></i>공지사항
+                  <i class="bi bi-megaphone"></i> 공지사항
                 </a>
               </li>
               <hr class="dropdown-divider" />
@@ -69,19 +69,24 @@
               {{ userInfo.name }}
             </a>
             <ul class="dropdown-menu text-right m-0">
-              <li>
-                <RouterLink class="dropdown-item fs-5" to="/notFound">
-                  <i class="bi bi-info-square pe-2"></i>내 정보
-                </RouterLink>
-              </li>
-              <hr class="dropdown-divider" />
+              <template v-if="userInfo.name !== '관리자'">
+                <li>
+                  <a
+                    class="dropdown-item fs-5 me"
+                    @click.prevent="router.push({ name: 'MyPage' })"
+                  >
+                    <i class="bi bi-info-square"></i> Profile
+                  </a>
+                </li>
+                <hr class="dropdown-divider" />
+              </template>
               <li>
                 <a
                   class="dropdown-item fs-5"
                   type="button"
                   @click.prevent="logout"
                 >
-                  <i class="bi bi-x-circle pe-1"></i> 로그아웃
+                  <i class="bi bi-x-circle"></i> Logout
                 </a>
               </li>
             </ul>
@@ -101,13 +106,12 @@ import { useAlert } from '@/composables/alert';
 const { vAlert, vSuccess } = useAlert();
 const router = useRouter();
 
-const store = useAuthStore();
-const { userInfo } = storeToRefs(store);
-
+const authStore = useAuthStore();
+const { userInfo } = storeToRefs(authStore);
 // logout
 const logout = () => {
   try {
-    store.invalidateMember();
+    authStore.invalidateMember();
     vSuccess('로그아웃 되었습니다.');
     router.push({ name: 'Home' });
   } catch (err) {

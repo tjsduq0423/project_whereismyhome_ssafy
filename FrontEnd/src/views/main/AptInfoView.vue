@@ -192,8 +192,8 @@ const gugunList = computed(() => {
 });
 
 // kakao map 생성.
+/* global kakao */
 const map = ref(null);
-
 const initMap = () => {
   const container = document.getElementById('map');
   const options = {
@@ -204,17 +204,11 @@ const initMap = () => {
 };
 
 onMounted(() => {
-  if (window.kakao && window.kakao.maps) {
-    initMap();
-    return;
+  try {
+    kakao.maps.load(initMap);
+  } catch (err) {
+    console.error(err);
   }
-  const script = document.createElement('script');
-  /* global kakao */
-  script.onload = () => kakao.maps.load(initMap);
-  script.src = `//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=${
-    import.meta.env.VITE_APP_KAKAOMAP_KEY
-  }&libraries=services,clusterer`;
-  document.head.appendChild(script);
 });
 </script>
 

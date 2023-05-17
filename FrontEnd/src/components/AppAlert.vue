@@ -2,7 +2,6 @@
   <div class="app-alert">
     <TransitionGroup
       appear
-      mode="out-in"
       enter-active-class="animate__animated animate__bounceInDown animate__faster"
       leave-active-class="animate__animated animate__zoomOutRight"
     >
@@ -37,17 +36,4 @@ const iconStyle = type =>
   right: 16px;
   font-size: 1.5rem;
 }
-/* .slide-fade-enter-active {
-  transition: all 0.3s ease-out;
-}
-
-.slide-fade-leave-active {
-  transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
-}
-
-.slide-fade-enter-from,
-.slide-fade-leave-to {
-  transform: translateX(20px);
-  opacity: 0;
-} */
 </style>

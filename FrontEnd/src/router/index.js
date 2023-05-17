@@ -83,12 +83,34 @@ const router = createRouter({
       component: () => import('@/views/board/QnAEditView.vue'),
     },
     {
+      path: '/myPage',
+      name: 'MyPage',
+      meta: { requiresAuth: true },
+      component: () => import('@/views/main/my/MypageView.vue'),
+      children: [
+        {
+          path: '/myPage/myQnA',
+          name: 'MyQnA',
+          meta: { requiresAuth: true },
+          component: () => import('@/views/main/my/MyQnAView.vue'),
+        },
+        {
+          path: '/myPage/myBookMark',
+          name: 'MyBookMark',
+          meta: { requiresAuth: true },
+          component: () => import('@/views/main/my/MyBookMarkView.vue'),
+        },
+      ],
+    },
+    {
       path: '/:pathMatch(.*)*',
       component: NotFound,
       meta: { requiresAuth: false },
     },
   ],
 });
+
+// 라우터 가드
 import { useAlert } from '@/composables/alert';
 import { useAuthStore } from '@/stores/auth';
 import { storeToRefs } from 'pinia';

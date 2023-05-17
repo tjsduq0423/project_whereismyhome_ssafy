@@ -1,8 +1,10 @@
 package com.whereismyhome.oauth2.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.whereismyhome.oauth2.dto.TokenDto;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -14,6 +16,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 @Service
+@RequiredArgsConstructor
 @Slf4j
 public class Oauth2Service {
 
@@ -64,6 +67,17 @@ public class Oauth2Service {
                 kakaoUserInfoRequest,
                 String.class
         );
+
+        JsonNode jsonNode = mapper.readTree(result.getBody());
+
+        String nickName = jsonNode.get("properties").get("nickname").asText();
+        String email = jsonNode.get("kakao_account").get("email").asText();
+        log.info("nickname {}", nickName);
+        log.info("email {}", email);
+
+        int idx = email.indexOf("@");
+        String mail = email.substring(0, idx);
+//        memberService.findUser(mail);
 
         return result;
     }

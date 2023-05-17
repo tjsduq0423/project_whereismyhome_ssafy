@@ -4,6 +4,7 @@
   <RouterView></RouterView>
 
   <AppFooter></AppFooter>
+
   <AppAlert></AppAlert>
 </template>
 <script setup>

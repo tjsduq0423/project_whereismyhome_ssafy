@@ -114,11 +114,18 @@
       </div>
     </div>
 
-    <button @click="testFunction">사이드바 on/off</button>
+    <button @click="showSideBar = !showSideBar">사이드바 on/off</button>
 
     <!-- 맵 + 사이드 바 -->
     <div id="map" style="min-height: 80vh">
-      <AppSideBar v-if="showSideBar"></AppSideBar>
+      <transition
+        appear
+        mode="out-in"
+        enter-active-class="animate__animated animate__slideInLeft"
+        leave-active-class="animate__animated animate__slideOutLeft"
+      >
+        <AppSideBar v-show="showSideBar"></AppSideBar>
+      </transition>
     </div>
   </AppContent>
 </template>
@@ -127,12 +134,10 @@
 import AppContent from '@/components/AppContent.vue';
 import AppSideBar from '@/components/AppSideBar.vue';
 import sidoGugunData from '@/assets/data/sido_gugun';
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
+import { debounce } from 'lodash';
 // 아파트 매매 정보 관련 사이드바 제어
 const showSideBar = ref(false);
-const testFunction = async () => {
-  showSideBar.value = !showSideBar.value;
-};
 
 // 시도 구군 셀렉트 바
 const selectedSido = ref(null);
@@ -143,24 +148,46 @@ const gugunList = computed(() => {
 });
 
 // kakao map 생성.
-/* global kakao */
-const map = ref(null);
+import { useKakaoStore } from '@/stores/kakao';
+import { storeToRefs } from 'pinia';
+const kakaoStore = useKakaoStore();
+const { kakao } = storeToRefs(kakaoStore);
+
+const mapCenterLatLng = ref([]);
+
 const initMap = () => {
   const container = document.getElementById('map');
   const options = {
-    center: new kakao.maps.LatLng(33.450701, 126.570667),
+    center: new kakao.value.maps.LatLng(36.35536036402348, 127.29840381673439),
     level: 5,
   };
-  map.value = new kakao.maps.Map(container, options);
+  const map = new kakao.value.maps.Map(container, options);
+  kakao.value.maps.event.addListener(
+    map,
+    'center_changed',
+    debounce(() => {
+      const latlng = map.getCenter();
+      mapCenterLatLng.value = [latlng.getLat(), latlng.getLng()];
+    }, 500),
+  );
 };
 
 onMounted(() => {
   try {
-    kakao.maps.load(initMap);
+    if (kakao.value) {
+      kakao.value.maps.load(initMap);
+    }
   } catch (err) {
     console.error(err);
   }
 });
+watch(
+  kakao,
+  newValue => {
+    newValue.maps.load(initMap);
+  },
+  { deep: true },
+);
 </script>
 
 <style scoped>

@@ -1,6 +1,8 @@
 <template>
   <div class="viewBox d-flex flex-column justify-content-center align-items-center">
-    <slot name="header"></slot>
+    <transition appear enter-active-class="animate__animated animate__bounceInDown ">
+      <slot name="header"></slot>
+    </transition>
     <transition
       appear
       mode="out-in"

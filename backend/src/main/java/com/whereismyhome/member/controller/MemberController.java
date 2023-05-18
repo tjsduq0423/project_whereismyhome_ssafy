@@ -32,13 +32,14 @@ public class MemberController {
     //회원 가입
     @PostMapping("/join")
     public ResponseEntity join(@RequestBody MemberJoinDto memberJoinDto) throws IllegalAccessException {
-        memberService.join(memberJoinDto);
+
+        memberService.join(mapper.memberJoinDtoToMember(memberJoinDto));
         return ResponseEntity.ok().body("회원가입을 축하합니다.");
     }
 
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody MemberLoginDto loginDto, HttpServletResponse response) {
-        Member member = memberService.findUser(loginDto);
+        Member member = memberService.findUser(loginDto.getId());
         memberService.checkPassWord(member, loginDto);
 
         String accessToken = jwtProvider.createAccessToken(member.getId(), member.getRoles().getRole());

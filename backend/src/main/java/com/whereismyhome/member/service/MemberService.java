@@ -2,7 +2,6 @@ package com.whereismyhome.member.service;
 
 import com.whereismyhome.exception.BusinessLogicException;
 import com.whereismyhome.exception.ExceptionCode;
-import com.whereismyhome.member.dto.MemberJoinDto;
 import com.whereismyhome.member.dto.MemberLoginDto;
 import com.whereismyhome.member.entity.Member;
 import com.whereismyhome.member.repository.MemberRepository;
@@ -32,18 +31,13 @@ public class MemberService {
 
 
     //회원가입
-    public void join(MemberJoinDto postDto) throws IllegalAccessException {
-        verifiedMember(postDto.getId());
+    public Member join(Member member) throws IllegalAccessException {
+        verifiedMember(member.getId());
 
-        Member member = Member.builder()
-                .id(postDto.getId())
-                .password(passwordEncoder.encode(postDto.getPassword()))
-                .email(postDto.getEmail())
-                .name(postDto.getName())
-                .build();
+        member.setPassword(passwordEncoder.encode(member.getPassword()));
 
         String autho = "ROLE_USER";
-        if(postDto.getId().contains("admin")){
+        if(member.getId().contains("admin")){
             autho = "ROLE_ADMIN";
         }
 
@@ -53,6 +47,8 @@ public class MemberService {
 
         memberRepository.save(member);
         memberRoleRepository.save(role);
+
+        return member;
     }
 
     //회원 id 중복 검사
@@ -64,10 +60,9 @@ public class MemberService {
         }
     }
 
-    public Member findUser(MemberLoginDto loginDto) {
-        Member member = memberRepository.findById(loginDto.getId())
+    public Member findUser(String id) {
+        return memberRepository.findById(id)
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.BAD_PARAM));
-        return member;
     }
 
     //비밀번호 확인

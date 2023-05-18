@@ -122,7 +122,7 @@
         enter-active-class="animate__animated animate__slideInLeft"
         leave-active-class="animate__animated animate__slideOutLeft"
       >
-        <AppSideBar v-show="showSideBar"></AppSideBar>
+        <AptInfoSideBar v-show="showSideBar"></AptInfoSideBar>
       </transition>
     </KaKaoMap>
 
@@ -135,9 +135,9 @@
 </template>
 
 <script setup>
-import KaKaoMap from '@/components/KaKaoMap.vue';
-import AppSideBar from '@/components/AppSideBar.vue';
-import AppContent from '@/components/AppContent.vue';
+import KaKaoMap from '@/components/kakao/KaKaoMap.vue';
+import AptInfoSideBar from '@/components/features/AptInfoSideBar.vue';
+import AppContent from '@/components/layouts/AppContent.vue';
 import sidoGugunData from '@/data/sido_gugun';
 import { computed, ref } from 'vue';
 

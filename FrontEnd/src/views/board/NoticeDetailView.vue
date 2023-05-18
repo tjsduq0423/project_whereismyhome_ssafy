@@ -29,7 +29,7 @@
 </template>
 
 <script setup>
-import AppContent from '@/components/AppContent.vue';
+import AppContent from '@/components/layouts/AppContent.vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
 import { storeToRefs } from 'pinia';

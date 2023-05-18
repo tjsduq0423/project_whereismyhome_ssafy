@@ -9,9 +9,9 @@
 </template>
 <script setup>
 import { RouterView } from 'vue-router';
-import AppNav from '@/components/AppNav.vue';
-import AppFooter from '@/components/AppFooter.vue';
-import AppAlert from '@/components/AppAlert.vue';
+import AppNav from '@/components/layouts/AppNav.vue';
+import AppFooter from '@/components/layouts/AppFooter.vue';
+import AppAlert from '@/components/features/AppAlert.vue';
 </script>
 
 <style lang="scss">

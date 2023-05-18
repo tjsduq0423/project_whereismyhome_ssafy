@@ -12,8 +12,8 @@
 </template>
 
 <script setup>
-import AppContent from '@/components/AppContent.vue';
-import AppBoardForm from '@/components/AppBoardForm.vue';
+import AppContent from '@/components/layouts/AppContent.vue';
+import AppBoardForm from '@/components/layouts/AppBoardForm.vue';
 
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';

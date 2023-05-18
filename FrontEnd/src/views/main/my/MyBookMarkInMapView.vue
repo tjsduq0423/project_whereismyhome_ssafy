@@ -15,7 +15,7 @@
       </div>
     </div>
     <button @click="showSideBar = !showSideBar">사이드바 on/off</button>
-    <KaKaoMap>
+    <!-- <KaKaoMap v-if="delayMap">
       <transition
         appear
         mode="out-in"
@@ -25,14 +25,24 @@
         <AppSideBar v-show="showSideBar"></AppSideBar>
       </transition>
     </KaKaoMap>
+
+    <div v-else class="d-flex align-items-center justify-content-center" style="min-height: 80vh">
+      <div class="spinner-border" role="status" style="height: 10vh; width: 10vh; border-width: 0.5rem">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div> -->
   </AppContent>
 </template>
 
 <script setup>
-import AppSideBar from '@/components/AppSideBar.vue';
-import KaKaoMap from '@/components/KaKaoMap.vue';
-import AppContent from '@/components/AppContent.vue';
+import AppContent from '@/components/layouts/AppContent.vue';
 import { ref } from 'vue';
+
+//delay sninner
+const delayMap = ref(false);
+setTimeout(() => {
+  delayMap.value = true;
+}, 1000);
 
 const showSideBar = ref(false);
 </script>

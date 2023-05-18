@@ -29,8 +29,8 @@
 </template>
 
 <script setup>
-import AppContent from '@/components/AppContent.vue';
-import AppCardHeader from '@/components/AppCardHeader.vue';
+import AppContent from '@/components/layouts/AppContent.vue';
+import AppCardHeader from '@/components/layouts/AppCardHeader.vue';
 import { useAuthStore } from '@/stores/auth';
 import { storeToRefs } from 'pinia';
 

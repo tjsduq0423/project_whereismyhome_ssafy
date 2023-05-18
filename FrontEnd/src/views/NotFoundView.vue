@@ -9,7 +9,7 @@
 </template>
 
 <script setup>
-import AppContent from '@/components/AppContent.vue';
+import AppContent from '@/components/layouts/AppContent.vue';
 </script>
 
 <style scoped>

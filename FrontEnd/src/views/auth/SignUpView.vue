@@ -61,9 +61,9 @@
 </template>
 
 <script setup>
-import AppCardHeader from '@/components/AppCardHeader.vue';
-import AppContent from '@/components/AppContent.vue';
-import AppModal from '@/components/AppModal.vue';
+import AppCardHeader from '@/components/layouts/AppCardHeader.vue';
+import AppContent from '@/components/layouts/AppContent.vue';
+import AppModal from '@/components/features/AppModal.vue';
 
 import { join } from '@/api/member';
 import { ref } from 'vue';

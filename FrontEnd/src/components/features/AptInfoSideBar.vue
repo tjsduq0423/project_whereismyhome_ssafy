@@ -142,8 +142,8 @@
 </template>
 
 <script setup>
-import AppLineChart from './AppLineChart.vue';
-import KaKaoLoadview from './KaKaoLoadview.vue';
+import AppLineChart from '../chart/AppLineChart.vue';
+import KaKaoLoadview from '../kakao/KaKaoLoadview.vue';
 import { ref } from 'vue';
 
 // 차트 데이터.

@@ -43,8 +43,8 @@
 </template>
 
 <script setup>
-import AppContent from '@/components/AppContent.vue';
-import AppPaginationBar from '@/components/AppPaginationBar.vue';
+import AppContent from '@/components/layouts/AppContent.vue';
+import AppPaginationBar from '@/components/features/AppPaginationBar.vue';
 import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';

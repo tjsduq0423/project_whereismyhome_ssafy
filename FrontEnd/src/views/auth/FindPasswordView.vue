@@ -43,9 +43,9 @@
 </template>
 
 <script setup>
-import AppModal from '@/components/AppModal.vue';
-import AppContent from '@/components/AppContent.vue';
-import AppCardHeader from '@/components/AppCardHeader.vue';
+import AppModal from '@/components/features/AppModal.vue';
+import AppContent from '@/components/layouts/AppContent.vue';
+import AppCardHeader from '@/components/layouts/AppCardHeader.vue';
 import { ref } from 'vue';
 import { useAlert } from '@/composables/alert';
 const { vAlert } = useAlert();

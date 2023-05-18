@@ -9,7 +9,7 @@
 import { debounce } from 'lodash';
 import { storeToRefs } from 'pinia';
 import { useKakaoStore } from '@/stores/kakao';
-import { onMounted, ref, watch, watchEffect } from 'vue';
+import { onMounted, ref, watchEffect } from 'vue';
 import { getHouseMarkers } from '@/api/amen';
 
 const kakaoStore = useKakaoStore();
@@ -36,29 +36,19 @@ const initMap = () => {
 };
 
 onMounted(() => {
+  kakao.value.maps.load(initMap);
+});
+
+watchEffect(async () => {
   try {
-    if (kakao.value) {
-      kakao.value.maps.load(initMap);
-    }
+    const [lat, lng] = mapCenterLatLng.value;
+    const response = await getHouseMarkers(lng, lat);
+    console.log(response);
+    console.log(response.data);
   } catch (err) {
     console.error(err);
   }
 });
-
-watchEffect(async () => {
-  const [lat, lng] = mapCenterLatLng.value;
-  const response = await getHouseMarkers(lng, lat);
-  console.log(response);
-  console.log(response.data);
-});
-
-watch(
-  kakao,
-  newValue => {
-    newValue.maps.load(initMap);
-  },
-  { deep: true },
-);
 </script>
 
 <style lang="scss" scoped></style>

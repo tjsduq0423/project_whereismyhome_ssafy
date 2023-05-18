@@ -19,8 +19,8 @@
 </template>
 
 <script setup>
-import AppContent from '@/components/AppContent.vue';
-import AppBarChart from '@/components/AppBarChart.vue';
+import AppContent from '@/components/layouts/AppContent.vue';
+import AppBarChart from '@/components/chart/AppBarChart.vue';
 import { data, options } from '@/data/homeChart';
 
 const chartData = { ...data };

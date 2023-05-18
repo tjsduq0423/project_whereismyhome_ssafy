@@ -29,7 +29,7 @@ logging:
   level:
     org:
       hibernate:
-        SQL: DEBUG
+        SQL:
         type:
           descriptor:
             sql:

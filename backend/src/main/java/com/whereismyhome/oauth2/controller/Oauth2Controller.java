@@ -1,6 +1,8 @@
 package com.whereismyhome.oauth2.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.whereismyhome.member.dto.MemberResponseDto;
+import com.whereismyhome.member.mapper.MemberMapper;
 import com.whereismyhome.oauth2.service.Oauth2Service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,12 +18,12 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class Oauth2Controller {
     private final Oauth2Service oauth2Service;
-
+    private final MemberMapper mapper;
     @GetMapping("/kakao")
-    public ResponseEntity kakaoOauth(@RequestParam("code") String code) throws JsonProcessingException {
+    public ResponseEntity kakaoOauth(@RequestParam("code") String code) throws JsonProcessingException, IllegalAccessException {
         log.info("code {}", code);
         String body = oauth2Service.kakaoLogin(code);
-
-        return ResponseEntity.ok().body(oauth2Service.kakaoUser(body));
+        MemberResponseDto memberResponseDto = mapper.memberToMemberResponseDto(oauth2Service.kakaoUser(body));
+        return ResponseEntity.ok().body(memberResponseDto);
     }
 }

@@ -32,18 +32,13 @@ public class MemberService {
 
 
     //회원가입
-    public void join(MemberJoinDto postDto) throws IllegalAccessException {
-        verifiedMember(postDto.getId());
+    public void join(Member member) throws IllegalAccessException {
+        verifiedMember(member.getId());
 
-        Member member = Member.builder()
-                .id(postDto.getId())
-                .password(passwordEncoder.encode(postDto.getPassword()))
-                .email(postDto.getEmail())
-                .name(postDto.getName())
-                .build();
+        member.setPassword(passwordEncoder.encode(member.getPassword()));
 
         String autho = "ROLE_USER";
-        if(postDto.getId().contains("admin")){
+        if(member.getId().contains("admin")){
             autho = "ROLE_ADMIN";
         }
 
@@ -64,10 +59,9 @@ public class MemberService {
         }
     }
 
-    public Member findUser(MemberLoginDto loginDto) {
-        Member member = memberRepository.findById(loginDto.getId())
+    public Member findUser(String id) {
+        return memberRepository.findById(id)
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.BAD_PARAM));
-        return member;
     }
 
     //비밀번호 확인

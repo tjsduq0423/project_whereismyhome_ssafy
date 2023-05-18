@@ -1,7 +1,7 @@
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import { defineStore } from 'pinia';
 import {
-  getHouseMarkers,
+  getApartMarkers,
   getSubwayMarkers,
   getSchoolMarkers,
   getHospitalMarkers,
@@ -10,17 +10,41 @@ import {
 } from '@/api/amen';
 
 export const useMarkersStore = defineStore('markers', () => {
-  const houseMarkers = ref([]);
+  const isShowCCTV = ref(false);
+  const isShowSchool = ref(false);
+  const isShowHospital = ref(false);
+  const isShowSubway = ref(false);
+  const isShowBus = ref(false);
+
+  const apartMarkers = ref([]);
   const schoolMarkers = ref([]);
   const cctvMarkers = ref([]);
   const hospitalMarkers = ref([]);
   const subwayMarkers = ref([]);
   const busMarkers = ref([]);
 
-  const setHouseMarkers = async (lng, lat) => {
+  const sidoGugun = ref([]);
+
+  const _schoolMarkers = computed(() => {
+    return isShowSchool.value ? [...schoolMarkers.value] : [];
+  });
+  const _cctvMarkers = computed(() => {
+    return isShowCCTV.value ? [...cctvMarkers.value] : [];
+  });
+  const _hospitalMarkers = computed(() => {
+    return isShowHospital.value ? [...hospitalMarkers.value] : [];
+  });
+  const _subwayMarkers = computed(() => {
+    return isShowSubway.value ? [...subwayMarkers.value] : [];
+  });
+  const _busMarkers = computed(() => {
+    return isShowBus.value ? [...busMarkers.value] : [];
+  });
+
+  const setApartMarkers = async (lng, lat) => {
     try {
-      const response = await getHouseMarkers(lng, lat);
-      houseMarkers.value = [...response.data];
+      const response = await getApartMarkers(lng, lat);
+      apartMarkers.value = [...response.data];
     } catch (err) {
       console.error(err);
     }
@@ -67,17 +91,28 @@ export const useMarkersStore = defineStore('markers', () => {
   };
 
   return {
-    houseMarkers,
+    apartMarkers,
     schoolMarkers,
     cctvMarkers,
     hospitalMarkers,
     subwayMarkers,
     busMarkers,
-    setHouseMarkers,
+    setApartMarkers,
     setSubwayMarkers,
     setSchoolMarkers,
     setCCTVMarkers,
     setHospitalMarkers,
     setBusMarkers,
+    sidoGugun,
+    isShowCCTV,
+    isShowSchool,
+    isShowHospital,
+    isShowSubway,
+    isShowBus,
+    _schoolMarkers,
+    _cctvMarkers,
+    _hospitalMarkers,
+    _subwayMarkers,
+    _busMarkers,
   };
 });

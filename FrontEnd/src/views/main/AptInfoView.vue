@@ -139,7 +139,7 @@ import KaKaoMap from '@/components/kakao/KaKaoMap.vue';
 import AptInfoSideBar from '@/components/features/AptInfoSideBar.vue';
 import AppContent from '@/components/layouts/AppContent.vue';
 import sidoGugunData from '@/data/sido_gugun';
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 
 //delay sninner
 const delayMap = ref(false);
@@ -151,9 +151,18 @@ const showSideBar = ref(false);
 // 시도 구군 셀렉트 바
 const selectedSido = ref(null);
 const selectedGugun = ref(null);
+
 const sidoList = [...Object.keys(sidoGugunData)];
 const gugunList = computed(() => {
   return sidoGugunData[selectedSido.value];
+});
+
+import { useMarkersStore } from '@/stores/markers';
+import { storeToRefs } from 'pinia';
+const markerStrore = useMarkersStore();
+const { sidoGugun } = storeToRefs(markerStrore);
+watch(selectedGugun, v => {
+  sidoGugun.value = [selectedSido.value, v];
 });
 </script>
 

@@ -2,7 +2,6 @@ package com.whereismyhome.member.service;
 
 import com.whereismyhome.exception.BusinessLogicException;
 import com.whereismyhome.exception.ExceptionCode;
-import com.whereismyhome.member.dto.MemberJoinDto;
 import com.whereismyhome.member.dto.MemberLoginDto;
 import com.whereismyhome.member.entity.Member;
 import com.whereismyhome.member.repository.MemberRepository;

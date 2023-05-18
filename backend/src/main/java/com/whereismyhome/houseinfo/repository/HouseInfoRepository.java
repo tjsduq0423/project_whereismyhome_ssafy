@@ -33,4 +33,19 @@ public interface HouseInfoRepository extends JpaRepository<HouseInfo, Long> {
             ,nativeQuery = true)
     List<Object[]> makeRank(@Param("sidoName") String sidoName, @Param("gugunName") String gugunName);
 
+    @Query(value = "SELECT d.gugun_name, " +
+            "       count(distinct b.houseinfo_aptcode) AS markCount, " +
+            "       CAST(sum(distinct h.viewcount)AS SIGNED) AS viewcount, " +
+            "       count(hd.apt_code) AS dealAmount, " +
+            "       (sum(distinct h.viewcount) + count(hd.apt_code) + count(distinct b.houseinfo_aptcode)) as total " +
+            "FROM houseinfo h " +
+            "         JOIN dongcode d ON h.dong_code = d.dong_code " +
+            "         LEFT JOIN bookmark b ON h.apt_code = b.houseinfo_aptcode " +
+            "         LEFT JOIN housedeal hd ON h.apt_code = hd.apt_code " +
+            "WHERE d.sido_name = :sidoName " +
+            "GROUP BY d.gugun_name " +
+            "order by total desc " +
+            "limit 15;",nativeQuery = true)
+    List<Object[]>chartData(@Param("sidoName") String sidoName);
+
 }

@@ -1,6 +1,9 @@
 <template>
   <AppContent class="img">
     <AppCardHeader>로그인</AppCardHeader>
+    <div>
+      <img src="@/assets/img/kakao_login_medium.png" @click="kakao" />
+    </div>
     <div class="card-body d-flex flex-column justify-content-center">
       <form @submit.prevent>
         <div class="mb-4">
@@ -77,6 +80,12 @@ const goFindPW = () => {
 };
 const goSignup = () => {
   router.push({ name: 'SignUp' });
+};
+const kakao = () => {
+  window.open(
+    'https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=6c779f7199f5aa77f349e6165df482bc&redirect_uri=http://localhost:5500/login',
+    {},
+  );
 };
 </script>
 

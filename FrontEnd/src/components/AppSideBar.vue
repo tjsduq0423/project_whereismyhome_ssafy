@@ -147,7 +147,7 @@ import KaKaoLoadview from './KaKaoLoadview.vue';
 import { ref } from 'vue';
 
 // 차트 데이터.
-import { data, options } from '@/assets/data/homeChart';
+import { data, options } from '@/data/homeChart';
 const chartData = ref({ ...data });
 const chartOptions = ref({ ...options });
 

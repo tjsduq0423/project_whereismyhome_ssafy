@@ -115,7 +115,7 @@
     </div>
     <button @click="showSideBar = !showSideBar">사이드바 on/off</button>
     <!-- 맵 + 사이드 바 -->
-    <KaKaoMap>
+    <KaKaoMap v-if="delayMap">
       <transition
         appear
         mode="out-in"
@@ -125,6 +125,12 @@
         <AppSideBar v-show="showSideBar"></AppSideBar>
       </transition>
     </KaKaoMap>
+
+    <div v-else class="d-flex align-items-center justify-content-center" style="min-height: 80vh">
+      <div class="spinner-border" role="status" style="height: 10vh; width: 10vh; border-width: 0.5rem">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
   </AppContent>
 </template>
 
@@ -132,8 +138,14 @@
 import KaKaoMap from '@/components/KaKaoMap.vue';
 import AppSideBar from '@/components/AppSideBar.vue';
 import AppContent from '@/components/AppContent.vue';
-import sidoGugunData from '@/assets/data/sido_gugun';
+import sidoGugunData from '@/data/sido_gugun';
 import { computed, ref } from 'vue';
+
+//delay sninner
+const delayMap = ref(false);
+setTimeout(() => {
+  delayMap.value = true;
+}, 1000);
 
 const showSideBar = ref(false);
 // 시도 구군 셀렉트 바
@@ -147,7 +159,7 @@ const gugunList = computed(() => {
 
 <style lang="scss" scoped>
 .img {
-  background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.5)), url('@/assets/img/apartment00.jpg');
+  background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.5)), url('/img/apartment00.jpg');
 }
 .searchIcon {
   position: absolute;

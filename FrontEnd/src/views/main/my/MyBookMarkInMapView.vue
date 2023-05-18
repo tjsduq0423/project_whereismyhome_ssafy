@@ -39,7 +39,7 @@ const showSideBar = ref(false);
 
 <style lang="scss" scoped>
 .img {
-  background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.5)), url('@/assets/img/apartment00.jpg');
+  background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.5)), url('/img/apartment00.jpg');
 }
 .searchIcon {
   position: absolute;

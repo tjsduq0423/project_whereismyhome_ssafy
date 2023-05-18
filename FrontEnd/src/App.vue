@@ -17,7 +17,7 @@ import AppAlert from '@/components/AppAlert.vue';
 <style lang="scss">
 @font-face {
   font-family: 'BMFonts';
-  src: url('@/assets/fonts/otf/BMHANNAProOTF.otf');
+  src: url('@/styles/fonts/BMHANNAProOTF.otf');
 }
 * {
   font-family: 'BMFonts', sans-serif;

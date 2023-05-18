@@ -61,7 +61,7 @@ const goEditPage = () => router.push({ name: 'NoticeEdit', params: { id } });
 
 <style scoped>
 .img {
-  background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.5)), url('@/assets/img/notice02.jpg');
+  background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.5)), url('/img/notice02.jpg');
 }
 .cardWidthPadding {
   margin: 0rem 28vw 0rem 28vw;

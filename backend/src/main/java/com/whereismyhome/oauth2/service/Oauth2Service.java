@@ -72,9 +72,7 @@ public class Oauth2Service {
         log.info("name : {}", name);
         log.info("email : {}", email);
 
-        Member member = loginAndRegist(name, email);
-
-        return member;
+        return loginAndRegist(name, email);
     }
 
     //회원가입 및 로그인
@@ -86,9 +84,9 @@ public class Oauth2Service {
                 .password("ssafy")
                 .build();
         try {
-            memberService.findUser(kakaoMember.getId());
+          kakaoMember = memberService.findUser(kakaoMember.getId());
         } catch (BusinessLogicException e) {
-            memberService.join(kakaoMember);
+            kakaoMember = memberService.join(kakaoMember);
         }
 
         return kakaoMember;

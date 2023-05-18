@@ -31,7 +31,7 @@ public class MemberService {
 
 
     //회원가입
-    public void join(Member member) throws IllegalAccessException {
+    public Member join(Member member) throws IllegalAccessException {
         verifiedMember(member.getId());
 
         member.setPassword(passwordEncoder.encode(member.getPassword()));
@@ -47,6 +47,8 @@ public class MemberService {
 
         memberRepository.save(member);
         memberRoleRepository.save(role);
+
+        return member;
     }
 
     //회원 id 중복 검사

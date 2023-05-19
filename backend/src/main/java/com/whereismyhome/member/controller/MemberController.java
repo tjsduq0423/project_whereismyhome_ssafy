@@ -69,12 +69,19 @@ public class MemberController {
         return ResponseEntity.noContent().build();
     }
 
-    //회원가입 시 이메일 인증
+    //회원가입 및 비밀번호 찾기 시 이메일 인증
     @GetMapping("/{email}")
-    public ResponseEntity senMail(@PathVariable("email") String email) throws MessagingException {
+    public ResponseEntity sendMail(@PathVariable("email") String email) throws MessagingException {
         String key = memberService.sendMail(email);
 
         return ResponseEntity.ok().body(key);
     }
+    
+    //비밀번호 변경
+    @PutMapping("/change")
+    public ResponseEntity findPassword(@RequestBody MemberLoginDto loginDto) {
+        memberService.changePassword(mapper.memberLoginDtoToMember(loginDto)); 
 
+        return ResponseEntity.ok().body("비밀번호 변경 완료");
+    }
 }

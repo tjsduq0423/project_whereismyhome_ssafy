@@ -30,7 +30,7 @@ public class Member implements UserDetails {
     @Column(nullable = false, length = 45)
     private String name;
 
-    @Column(nullable = false, length = 45)
+    @Column(nullable = false, length = 45, unique = true)
     private String email;
 
     @OneToMany(mappedBy = "member")

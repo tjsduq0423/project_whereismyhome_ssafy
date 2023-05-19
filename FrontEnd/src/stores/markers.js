@@ -16,6 +16,14 @@ export const useMarkersStore = defineStore('markers', () => {
   const isShowSubway = ref(false);
   const isShowBus = ref(false);
 
+  const delayTimeByMarker = computed(() => {
+    let defalutDelay = 1000;
+    if (isShowBus.value) defalutDelay += 250;
+    if (isShowHospital.value) defalutDelay += 500;
+    if (isShowCCTV.value) defalutDelay += 1000;
+    return defalutDelay;
+  });
+
   const apartMarkers = ref([]);
   const schoolMarkers = ref([]);
   const cctvMarkers = ref([]);
@@ -24,22 +32,6 @@ export const useMarkersStore = defineStore('markers', () => {
   const busMarkers = ref([]);
 
   const sidoGugun = ref([]);
-
-  const _schoolMarkers = computed(() => {
-    return isShowSchool.value ? [...schoolMarkers.value] : [];
-  });
-  const _cctvMarkers = computed(() => {
-    return isShowCCTV.value ? [...cctvMarkers.value] : [];
-  });
-  const _hospitalMarkers = computed(() => {
-    return isShowHospital.value ? [...hospitalMarkers.value] : [];
-  });
-  const _subwayMarkers = computed(() => {
-    return isShowSubway.value ? [...subwayMarkers.value] : [];
-  });
-  const _busMarkers = computed(() => {
-    return isShowBus.value ? [...busMarkers.value] : [];
-  });
 
   const setApartMarkers = async (lng, lat) => {
     try {
@@ -109,10 +101,6 @@ export const useMarkersStore = defineStore('markers', () => {
     isShowHospital,
     isShowSubway,
     isShowBus,
-    _schoolMarkers,
-    _cctvMarkers,
-    _hospitalMarkers,
-    _subwayMarkers,
-    _busMarkers,
+    delayTimeByMarker,
   };
 });

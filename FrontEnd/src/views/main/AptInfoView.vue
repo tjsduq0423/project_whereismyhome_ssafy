@@ -65,26 +65,73 @@
         </div>
 
         <!-- 학교, 병원, 버정, 지하철, CCTV checkBoxes -->
-        <div class="col-auto gap-2 d-flex align-items-center fs-6">
-          <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
-            <label class="form-check-label" for="flexCheckDefault"> 학교 </label>
+        <div class="col-auto d-flex flex-column align-items-center fs-6">
+          <div class="row">
+            <div class="col-auto">
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  @click="vLoading(300)"
+                  v-model="isShowSchool"
+                  id="flexCheckDefault"
+                />
+                <label class="form-check-label" for="flexCheckDefault"> 학교 </label>
+              </div>
+            </div>
+            <div class="col-auto">
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  @click="vLoading(1000)"
+                  v-model="isShowHospital"
+                  id="flexCheckDefault"
+                />
+                <label class="form-check-label" for="flexCheckDefault"> 병원 </label>
+              </div>
+            </div>
+            <div class="col-auto">
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  @click="vLoading(750)"
+                  v-model="isShowBus"
+                  id="flexCheckDefault"
+                />
+                <label class="form-check-label" for="flexCheckDefault"> 버스 </label>
+              </div>
+            </div>
+            <div class="col-auto">
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  @click="vLoading(300)"
+                  v-model="isShowSubway"
+                  id="flexCheckDefault"
+                />
+                <label class="form-check-label" for="flexCheckDefault"> 지하철 </label>
+              </div>
+            </div>
+            <div class="col-auto">
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  @click="vLoading(1500)"
+                  v-model="isShowCCTV"
+                  id="flexCheckDefault"
+                />
+                <label class="form-check-label" for="flexCheckDefault"> CCTV </label>
+              </div>
+            </div>
           </div>
-          <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
-            <label class="form-check-label" for="flexCheckDefault"> 병원 </label>
-          </div>
-          <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
-            <label class="form-check-label" for="flexCheckDefault"> 버스 </label>
-          </div>
-          <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
-            <label class="form-check-label" for="flexCheckDefault"> 지하철 </label>
-          </div>
-          <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
-            <label class="form-check-label" for="flexCheckDefault"> CCTV </label>
+          <div class="row">
+            <small id="codeHelp" class="form-text text-muted m-0 p-0"
+              >너무 많은 편의시설 마커는 kakao map API 속도에 영향을 줄 수있습니다.</small
+            >
           </div>
         </div>
 
@@ -131,21 +178,25 @@
         <span class="visually-hidden">Loading...</span>
       </div>
     </div>
+    <AppLoading style="z-index: 100"></AppLoading>
   </AppContent>
 </template>
 
 <script setup>
+import AppLoading from '@/components/features/AppLoading.vue';
 import KaKaoMap from '@/components/kakao/KaKaoMap.vue';
 import AptInfoSideBar from '@/components/features/AptInfoSideBar.vue';
 import AppContent from '@/components/layouts/AppContent.vue';
 import sidoGugunData from '@/data/sido_gugun';
 import { computed, ref, watch } from 'vue';
-
-//delay sninner
+import { useLoading } from '@/composables/loading';
+//page delay
 const delayMap = ref(false);
 setTimeout(() => {
   delayMap.value = true;
 }, 1000);
+// Data delay
+const { vLoading } = useLoading();
 
 const showSideBar = ref(false);
 // 시도 구군 셀렉트 바
@@ -154,13 +205,17 @@ const selectedGugun = ref(null);
 
 const sidoList = [...Object.keys(sidoGugunData)];
 const gugunList = computed(() => {
-  return sidoGugunData[selectedSido.value];
+  let data = sidoGugunData[selectedSido.value];
+  if (data === undefined || data === null) return [];
+  data = [...data];
+  data.sort();
+  return data;
 });
 
 import { useMarkersStore } from '@/stores/markers';
 import { storeToRefs } from 'pinia';
 const markerStrore = useMarkersStore();
-const { sidoGugun } = storeToRefs(markerStrore);
+const { sidoGugun, isShowCCTV, isShowSchool, isShowHospital, isShowSubway, isShowBus } = storeToRefs(markerStrore);
 watch(selectedGugun, v => {
   sidoGugun.value = [selectedSido.value, v];
 });

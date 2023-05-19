@@ -44,13 +44,12 @@ public class MemberController {
 
         String accessToken = jwtProvider.createAccessToken(member.getId(), member.getRoles().getRole());
         log.info("토큰 정상 생성");
-//        String encode = URLEncoder.encode("Bearer " + accessToken, StandardCharsets.UTF_8);
+
         String encode = URLEncoder.encode(accessToken, StandardCharsets.UTF_8);
 
         Cookie cookie = new Cookie("Authorization", encode);
         cookie.setPath(("/"));
         cookie.setHttpOnly(true);
-        cookie.setMaxAge(60 * 60);
         response.addCookie(cookie);
 
         MemberResponseDto memberResponseDto = mapper.memberToMemberResponseDto(member);

@@ -19,9 +19,9 @@
 </template>
 
 <script setup>
-import AppContent from '@/components/AppContent.vue';
-import AppBarChart from '@/components/AppBarChart.vue';
-import { data, options } from '@/assets/data/homeChart';
+import AppContent from '@/components/layouts/AppContent.vue';
+import AppBarChart from '@/components/chart/AppBarChart.vue';
+import { data, options } from '@/data/homeChart';
 
 const chartData = { ...data };
 const chartOptions = { ...options };
@@ -29,7 +29,7 @@ const chartOptions = { ...options };
 
 <style lang="scss" scoped>
 .img {
-  background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.5)), url('@/assets/img/apartment03jpg.jpg');
+  background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.5)), url('/img/apartment03jpg.jpg');
   .cardOver {
     margin-top: 25vh;
     margin-bottom: 5vh;

@@ -43,9 +43,9 @@
 </template>
 
 <script setup>
-import AppModal from '@/components/AppModal.vue';
-import AppContent from '@/components/AppContent.vue';
-import AppCardHeader from '@/components/AppCardHeader.vue';
+import AppModal from '@/components/features/AppModal.vue';
+import AppContent from '@/components/layouts/AppContent.vue';
+import AppCardHeader from '@/components/layouts/AppCardHeader.vue';
 import { ref } from 'vue';
 import { useAlert } from '@/composables/alert';
 const { vAlert } = useAlert();
@@ -76,6 +76,6 @@ const validate = () => {
 
 <style scoped>
 .img {
-  background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.5)), url('@/assets/img/aprtments01.jpg');
+  background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.5)), url('/img/aprtments01.jpg');
 }
 </style>

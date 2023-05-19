@@ -12,8 +12,8 @@
 </template>
 
 <script setup>
-import AppContent from '@/components/AppContent.vue';
-import AppBoardForm from '@/components/AppBoardForm.vue';
+import AppContent from '@/components/layouts/AppContent.vue';
+import AppBoardForm from '@/components/layouts/AppBoardForm.vue';
 
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
@@ -41,7 +41,7 @@ const goListPage = () => router.push({ name: 'Notice' });
 
 <style scoped>
 .img {
-  background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.5)), url('@/assets/img/notice02.jpg');
+  background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.5)), url('/img/notice02.jpg');
 }
 .cardWidthPadding {
   margin: 0rem 28vw 0rem 28vw;

@@ -61,9 +61,9 @@
 </template>
 
 <script setup>
-import AppCardHeader from '@/components/AppCardHeader.vue';
-import AppContent from '@/components/AppContent.vue';
-import AppModal from '@/components/AppModal.vue';
+import AppCardHeader from '@/components/layouts/AppCardHeader.vue';
+import AppContent from '@/components/layouts/AppContent.vue';
+import AppModal from '@/components/features/AppModal.vue';
 
 import { join } from '@/api/member';
 import { ref } from 'vue';
@@ -121,7 +121,7 @@ const validate = () => {
 
 <style scoped>
 .img {
-  background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.5)), url('@/assets/img/aprtments01.jpg');
+  background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.5)), url('/img/aprtments01.jpg');
 }
 input[type='password']::placeholder {
   font-family: 'BMFonts';

@@ -43,8 +43,8 @@
 </template>
 
 <script setup>
-import AppContent from '@/components/AppContent.vue';
-import AppPaginationBar from '@/components/AppPaginationBar.vue';
+import AppContent from '@/components/layouts/AppContent.vue';
+import AppPaginationBar from '@/components/features/AppPaginationBar.vue';
 import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
@@ -101,7 +101,7 @@ const formatDate = date => {
 
 <style scoped>
 .img {
-  background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.5)), url('@/assets/img/Qna01.jpg');
+  background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.5)), url('/img/Qna01.jpg');
 }
 .cardWidthPadding {
   margin: 0rem 28vw 0rem 28vw;

@@ -10,6 +10,7 @@ export const useAlertStore = defineStore('alert', () => {
       alerts.value.shift();
     }, 1600);
   };
+
   const vSuccess = message => {
     vAlert(message, 'success');
   };

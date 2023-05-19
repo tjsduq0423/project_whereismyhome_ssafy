@@ -14,50 +14,42 @@
         <div class="col-auto mp"></div>
       </div>
     </div>
+    <button @click="showSideBar = !showSideBar">사이드바 on/off</button>
+    <!-- <KaKaoMap v-if="delayMap">
+      <transition
+        appear
+        mode="out-in"
+        enter-active-class="animate__animated animate__slideInLeft"
+        leave-active-class="animate__animated animate__slideOutLeft"
+      >
+        <AppSideBar v-show="showSideBar"></AppSideBar>
+      </transition>
+    </KaKaoMap>
 
-    <button @click="testFunction">사이드바 on/off</button>
-
-    <!-- 맵 + 사이드 바 -->
-    <div id="map" style="min-height: 80vh">
-      <AppSideBar v-if="showSideBar"></AppSideBar>
-    </div>
+    <div v-else class="d-flex align-items-center justify-content-center" style="min-height: 80vh">
+      <div class="spinner-border" role="status" style="height: 10vh; width: 10vh; border-width: 0.5rem">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div> -->
   </AppContent>
 </template>
 
 <script setup>
-import AppContent from '@/components/AppContent.vue';
-import AppSideBar from '@/components/AppSideBar.vue';
-import { onMounted, ref } from 'vue';
-// 아파트 매매 정보 관련 사이드바 제어
+import AppContent from '@/components/layouts/AppContent.vue';
+import { ref } from 'vue';
+
+//delay sninner
+const delayMap = ref(false);
+setTimeout(() => {
+  delayMap.value = true;
+}, 1000);
+
 const showSideBar = ref(false);
-const testFunction = async () => {
-  showSideBar.value = !showSideBar.value;
-};
-
-// kakao map 생성.
-/* global kakao */
-const map = ref(null);
-const initMap = () => {
-  const container = document.getElementById('map');
-  const options = {
-    center: new kakao.maps.LatLng(33.450701, 126.570667),
-    level: 5,
-  };
-  map.value = new kakao.maps.Map(container, options);
-};
-
-onMounted(() => {
-  try {
-    kakao.maps.load(initMap);
-  } catch (err) {
-    console.error(err);
-  }
-});
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .img {
-  background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.5)), url('@/assets/img/apartment00.jpg');
+  background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.5)), url('/img/apartment00.jpg');
 }
 .searchIcon {
   position: absolute;
@@ -73,5 +65,16 @@ onMounted(() => {
 }
 .mp {
   margin-right: 60vw;
+}
+a {
+  font-weight: bold;
+  text-decoration: none;
+  color: black;
+  &:hover {
+    border-bottom: 0.35rem solid black;
+  }
+  &.router-link-active {
+    border-bottom: 0.35rem solid black;
+  }
 }
 </style>

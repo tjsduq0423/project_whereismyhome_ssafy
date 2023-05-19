@@ -1,10 +1,11 @@
 package com.whereismyhome.notice.service;
 
+import com.whereismyhome.exception.BusinessLogicException;
+import com.whereismyhome.exception.ExceptionCode;
 import com.whereismyhome.notice.dto.NoticePutDto;
 import com.whereismyhome.notice.entity.Notice;
 import com.whereismyhome.notice.repository.NoticeRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -31,7 +32,7 @@ public class NoticeService {
     //공지사항 찾기 및 유효성 검사
     public Notice findNotice(int id) {
         return noticeRepository.findById(id)
-                .orElseThrow(() -> new EmptyResultDataAccessException(1));
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.BOARD_NOT_FOUND));
     }
 
     //공지사항 상세 조회

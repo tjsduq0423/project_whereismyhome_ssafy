@@ -111,7 +111,8 @@
           data-bs-parent="#accordionFlushExample"
         >
           <div class="accordion-body">
-            학교 , 병원 ,버스 , 지하철 등등 편의 시설 현 아파트 위치 기준 반경 500 m 내 tab으로 가까운 순으로 표시
+            학교 , 병원 ,버스 , 지하철 등등 편의 시설 현 아파트 위치 기준 반경 500 m 내 tab으로
+            가까운 순으로 표시
           </div>
         </div>
       </div>

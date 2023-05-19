@@ -10,15 +10,21 @@
     </p>
     <div class="row g-2">
       <div class="col-auto me-auto">
-        <button type="button" class="btn btn-outline-success btn-lg" @click="goListPage">목록</button>
+        <button type="button" class="btn btn-outline-success btn-lg" @click="goListPage">
+          목록
+        </button>
       </div>
       <!-- 관리자 권한 v-if 필요 -->
       <template v-if="userInfo.id === item.memberId">
         <div class="col-auto">
-          <button type="button" class="btn btn-outline-primary btn-lg" @click="goEditPage">수정</button>
+          <button type="button" class="btn btn-outline-primary btn-lg" @click="goEditPage">
+            수정
+          </button>
         </div>
         <div class="col-auto">
-          <button type="button" class="btn btn-outline-danger btn-lg" @click="deleteQnA">삭제</button>
+          <button type="button" class="btn btn-outline-danger btn-lg" @click="deleteQnA">
+            삭제
+          </button>
         </div>
       </template>
     </div>

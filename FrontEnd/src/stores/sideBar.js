@@ -3,11 +3,8 @@ import { defineStore } from 'pinia';
 
 export const useSideBarStore = defineStore('sideBar', () => {
   const isShow = ref(false);
-  const changeState = () => {
-    isShow.value = !isShow.value;
-  };
-  const resetIsShow = () => {
-    isShow.value = false;
-  };
-  return { isShow, changeState, resetIsShow };
+  const aptInfo = ref(null);
+  const aptDealInfo = ref(null);
+  const aptRankInfo = ref(null);
+  return { isShow, aptInfo, aptDealInfo, aptRankInfo };
 });

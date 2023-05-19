@@ -9,12 +9,14 @@
           <RouterLink class="fs-4" :to="{ name: 'AptInfo' }">아파트 매매 정보</RouterLink>
         </div>
         <div class="col-auto d-flex align-items-center">
-          <RouterLink class="fs-4" :to="{ name: 'MyBookMarkInMapView' }">북마크 매매 정보</RouterLink>
+          <RouterLink class="fs-4" :to="{ name: 'MyBookMarkInMapView' }"
+            >북마크 매매 정보</RouterLink
+          >
         </div>
         <div class="col-auto mp"></div>
       </div>
     </div>
-    <button @click="showSideBar = !showSideBar">사이드바 on/off</button>
+    <button @click="isShow = !isShow">사이드바 on/off</button>
     <!-- <KaKaoMap v-if="delayMap">
       <transition
         appear
@@ -22,7 +24,7 @@
         enter-active-class="animate__animated animate__slideInLeft"
         leave-active-class="animate__animated animate__slideOutLeft"
       >
-        <AppSideBar v-show="showSideBar"></AppSideBar>
+        <AppSideBar v-show="isShow"></AppSideBar>
       </transition>
     </KaKaoMap>
 
@@ -43,13 +45,12 @@ const delayMap = ref(false);
 setTimeout(() => {
   delayMap.value = true;
 }, 1000);
-
-const showSideBar = ref(false);
 </script>
 
 <style lang="scss" scoped>
 .img {
-  background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.5)), url('/img/apartment00.jpg');
+  background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.5)),
+    url('/img/apartment00.jpg');
 }
 .searchIcon {
   position: absolute;

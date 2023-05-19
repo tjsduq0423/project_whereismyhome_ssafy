@@ -11,7 +11,9 @@
     <hr />
     <div class="row g-2">
       <div class="col-auto me-auto">
-        <button type="button" class="btn btn-outline-success btn-lg" @click="goListPage">목록</button>
+        <button type="button" class="btn btn-outline-success btn-lg" @click="goListPage">
+          목록
+        </button>
       </div>
       <!-- 관리자 권한 v-if 필요 -->
       <div class="col-auto">
@@ -61,7 +63,8 @@ const goEditPage = () => router.push({ name: 'NoticeEdit', params: { id } });
 
 <style scoped>
 .img {
-  background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.5)), url('/img/notice02.jpg');
+  background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.5)),
+    url('/img/notice02.jpg');
 }
 .cardWidthPadding {
   margin: 0rem 28vw 0rem 28vw;

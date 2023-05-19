@@ -29,7 +29,8 @@ const chartOptions = { ...options };
 
 <style lang="scss" scoped>
 .img {
-  background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.5)), url('/img/apartment03jpg.jpg');
+  background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.5)),
+    url('/img/apartment03jpg.jpg');
   .cardOver {
     margin-top: 25vh;
     margin-bottom: 5vh;

@@ -5,6 +5,7 @@ import com.whereismyhome.hosedeal.dto.HouseDealResponseDto;
 import com.whereismyhome.hosedeal.entity.HouseDeal;
 import com.whereismyhome.hosedeal.mapper.HouseDealMapper;
 import com.whereismyhome.hosedeal.service.HouseDealService;
+import com.whereismyhome.houseinfo.dto.ChartDataDto;
 import com.whereismyhome.houseinfo.dto.HouseInfoResponseDto;
 import com.whereismyhome.houseinfo.entity.HouseInfo;
 import com.whereismyhome.houseinfo.mapper.HouseInfoMapper;
@@ -48,5 +49,14 @@ public class InfoController {
         long rank = houseInfoService.getRank(aptCode);
 
         return ResponseEntity.ok().body(rank + "등");
+    }
+
+    //차트 데이터 조회
+    @GetMapping("/chart/{sido-name}")
+    public ResponseEntity findChartData(@PathVariable("sido-name") String sidoName) {
+        List<Object[]> chartDataList = houseInfoService.getChartData(sidoName);
+        List<ChartDataDto> chartDataDtos = infoMapper.chartDataListToChartDataDtos(chartDataList);
+        return ResponseEntity.ok().body(chartDataDtos);
+
     }
 }

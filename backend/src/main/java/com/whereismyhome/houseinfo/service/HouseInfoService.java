@@ -5,7 +5,6 @@ import com.whereismyhome.exception.BusinessLogicException;
 import com.whereismyhome.exception.ExceptionCode;
 import com.whereismyhome.houseinfo.dto.HousePointDto;
 import com.whereismyhome.houseinfo.entity.HouseInfo;
-import com.whereismyhome.houseinfo.mapper.HouseInfoMapper;
 import com.whereismyhome.houseinfo.repository.HouseInfoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,7 +15,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class HouseInfoService {
     private final HouseInfoRepository houseInfoRepository;
-    private final HouseInfoMapper mapper;
 
     //아파트 정보 조회
     public HouseInfo findHouse(long aptCode) {
@@ -72,4 +70,11 @@ public class HouseInfoService {
 
         return rank;
     }
+
+    //차트에 사용될 데이터
+    public List<Object[]> getChartData(String sidoName) {
+        List<Object[]> chartList = houseInfoRepository.chartData(sidoName);
+        return chartList;
+    }
+
 }

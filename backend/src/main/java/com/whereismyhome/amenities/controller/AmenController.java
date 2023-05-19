@@ -5,6 +5,7 @@ import com.whereismyhome.amenities.dto.response.*;
 import com.whereismyhome.amenities.service.AmenService;
 import com.whereismyhome.houseinfo.dto.HousePointDto;
 import com.whereismyhome.houseinfo.dto.HouseResponseDto;
+import com.whereismyhome.houseinfo.mapper.HouseInfoMapper;
 import com.whereismyhome.houseinfo.service.HouseInfoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,12 +19,13 @@ import java.util.List;
 public class AmenController {
     private final AmenService amenService;
     private final HouseInfoService houseInfoService;
-
+    private final HouseInfoMapper mapper;
     //반경 내 아파트 조회
     @PostMapping("/house")
     public ResponseEntity findApt(@RequestBody GeoPostDto geoPostDto) {
-        List<HouseResponseDto> aptList = amenService.findApt(geoPostDto.getLng(), geoPostDto.getLat());
-        return ResponseEntity.ok().body(aptList);
+        List<HouseResponseDto> houseResponseDtos = mapper.aptListToHouseResponseDto(amenService.findApt(geoPostDto.getLng(), geoPostDto.getLat()));
+
+        return ResponseEntity.ok().body(houseResponseDtos);
     }
 
     //반경 내 cctv 조회

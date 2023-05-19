@@ -2,6 +2,7 @@ package com.whereismyhome.houseinfo.mapper;
 
 import com.whereismyhome.houseinfo.dto.ChartDataDto;
 import com.whereismyhome.houseinfo.dto.HouseInfoResponseDto;
+import com.whereismyhome.houseinfo.dto.HouseResponseDto;
 import com.whereismyhome.houseinfo.entity.HouseInfo;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -25,4 +26,18 @@ public interface HouseInfoMapper {
                 .viewCount((long) objects[2])
                 .dealAmount((long) objects[3]).build();
     }
+
+    List<HouseResponseDto> aptListToHouseResponseDto(List<Object[]> aptList);
+
+    default HouseResponseDto objectToHouseResponseDto(Object[] objects) {
+        return HouseResponseDto.builder()
+                .aptCode((long) objects[0])
+                .apartmentName(String.valueOf(objects[1]))
+                .lng(String.valueOf(objects[2]))
+                .lat(String.valueOf(objects[3]))
+                .buildYear((int) objects[4])
+                .avg((long) objects[5])
+                .build();
+    }
+
 }

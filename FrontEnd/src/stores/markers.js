@@ -15,10 +15,11 @@ export const useMarkersStore = defineStore('markers', () => {
   const isShowHospital = ref(false);
   const isShowSubway = ref(false);
   const isShowBus = ref(false);
+  const showSideBar = ref(false);
 
   const delayTimeByMarker = computed(() => {
-    let defalutDelay = 1000;
-    if (isShowBus.value) defalutDelay += 250;
+    let defalutDelay = 500;
+    if (isShowBus.value) defalutDelay += 200;
     if (isShowHospital.value) defalutDelay += 500;
     if (isShowCCTV.value) defalutDelay += 1000;
     return defalutDelay;
@@ -83,6 +84,7 @@ export const useMarkersStore = defineStore('markers', () => {
   };
 
   return {
+    showSideBar,
     apartMarkers,
     schoolMarkers,
     cctvMarkers,

@@ -7,7 +7,6 @@
 <script setup>
 // kakao map 생성.
 import { ref, watch } from 'vue';
-import { debounce } from 'lodash';
 import { storeToRefs } from 'pinia';
 import { tryOnMounted } from '@vueuse/core';
 import { useKakaoStore } from '@/stores/kakao';
@@ -26,18 +25,24 @@ const initMap = () => {
     center: new kakao.value.maps.LatLng(lat, lng),
     level: 3,
   };
-
+  //맵 생성.
   map.value = new kakao.value.maps.Map(container, options);
-  // 중심좌표 추적 이벤트-> 중심좌표 변경 후 0.5초동안 변경이 없을 때 실행
-  kakao.value.maps.event.addListener(
-    map.value,
-    'center_changed',
-    debounce(() => {
-      vLoading(delayTimeByMarker.value);
-      const latlng = map.value.getCenter();
-      mapCenterLatLng.value = [latlng.getLat(), latlng.getLng()];
-    }, 500),
-  );
+  map.value.setZoomable(false);
+  map.value.addControl(new kakao.value.maps.ZoomControl(), kakao.value.maps.ControlPosition.RIGHT);
+
+  // 중심좌표 추적 이벤트
+  kakao.value.maps.event.addListener(map.value, 'dragend', () => {
+    vLoading(delayTimeByMarker.value);
+    const latlng = map.value.getCenter();
+    mapCenterLatLng.value = [latlng.getLat(), latlng.getLng()];
+  });
+
+  // 지도 클릭 시 사이드바 닫기
+  kakao.value.maps.event.addListener(map.value, 'click', function (mouseEvent) {
+    if (mouseEvent.target === mouseEvent.currentTarget) {
+      showSideBar.value = false;
+    }
+  });
 };
 
 // 맵 마운트
@@ -49,6 +54,7 @@ tryOnMounted(() => {
 import { useMarkersStore } from '@/stores/markers';
 const markersStore = useMarkersStore();
 const {
+  showSideBar,
   delayTimeByMarker,
   apartMarkers,
   schoolMarkers,
@@ -87,13 +93,21 @@ const subwayMarkerList = ref([]);
 // loading 변수
 
 // mount 함수
+// 마커 mount
 const mountMarkers = (map, markerList) => {
   markerList.forEach(marker => {
     marker.setMap(map);
   });
 };
-
+// infoWindow 마커 클로저 함수
+const makeOverListener = (map, customOverlay) => {
+  return function () {
+    console.log('test');
+    customOverlay.setMap(map);
+  };
+};
 // 마커 좌표를 가지고 있는 배열들을 감시하여 맵에 마커 mount unmount
+// 아파트 감시
 watch(apartMarkers, v => {
   const imgSize = new kakao.value.maps.Size(35, 40);
   const markerImg = new kakao.value.maps.MarkerImage('/img/apartmentMarker.png', imgSize);
@@ -110,19 +124,25 @@ watch(apartMarkers, v => {
   mountMarkers(map.value, apartMarkerList.value);
 });
 
+// 학교 감시
 watch(schoolMarkers, v => {
   const imgSize = new kakao.value.maps.Size(35, 35);
   const markerImg = new kakao.value.maps.MarkerImage('/img/schoolMarker.png', imgSize);
   mountMarkers(null, schoolMarkerList.value);
   schoolMarkerList.value = [];
-  v.forEach(p =>
-    schoolMarkerList.value.push(
-      new kakao.value.maps.Marker({
-        position: new kakao.value.maps.LatLng(p.lat, p.lng),
-        image: markerImg,
-      }),
-    ),
-  );
+  v.forEach(p => {
+    const marker = new kakao.value.maps.Marker({
+      position: new kakao.value.maps.LatLng(p.lat, p.lng),
+      image: markerImg,
+    });
+    const customOverlay = new kakao.value.maps.CustomOverlay({
+      position: new kakao.value.maps.LatLng(p.lat, p.lng),
+      content: '<div style="padding:5px;">Hello World!</div>',
+    });
+    kakao.value.maps.event.addListener(marker, 'mouseover', makeOverListener(map.value, customOverlay));
+    kakao.value.maps.event.addListener(marker, 'mouseout', makeOverListener(null, customOverlay));
+    schoolMarkerList.value.push(marker);
+  });
   if (isShowSchool.value === false) return;
   mountMarkers(map.value, schoolMarkerList.value);
 });
@@ -134,7 +154,7 @@ watch(isShowSchool, v => {
     mountMarkers(map.value, schoolMarkerList.value);
   }
 });
-
+// cctv 감시
 watch(cctvMarkers, v => {
   const imgSize = new kakao.value.maps.Size(15, 15);
   const markerImg = new kakao.value.maps.MarkerImage('/img/cctvMarker.png', imgSize);
@@ -159,6 +179,7 @@ watch(isShowCCTV, v => {
     mountMarkers(map.value, cctvMarkerList.value);
   }
 });
+
 // 병원 감시
 watch(hospitalMarkers, v => {
   const imgSize = new kakao.value.maps.Size(20, 20);

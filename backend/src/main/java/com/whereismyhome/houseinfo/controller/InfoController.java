@@ -7,6 +7,7 @@ import com.whereismyhome.hosedeal.mapper.HouseDealMapper;
 import com.whereismyhome.hosedeal.service.HouseDealService;
 import com.whereismyhome.houseinfo.dto.ChartDataDto;
 import com.whereismyhome.houseinfo.dto.HouseInfoResponseDto;
+import com.whereismyhome.houseinfo.dto.RankResponseDto;
 import com.whereismyhome.houseinfo.entity.HouseInfo;
 import com.whereismyhome.houseinfo.mapper.HouseInfoMapper;
 import com.whereismyhome.houseinfo.service.HouseInfoService;
@@ -46,9 +47,9 @@ public class InfoController {
     //랭킹 정보 조회
     @GetMapping("/rank/{apt-code}")
     public ResponseEntity findRank(@PathVariable("apt-code") long aptCode) {
-        long rank = houseInfoService.getRank(aptCode);
+        RankResponseDto rank = houseInfoService.getRank(aptCode);
 
-        return ResponseEntity.ok().body(rank + "등");
+        return ResponseEntity.ok().body(rank);
     }
 
     //차트 데이터 조회

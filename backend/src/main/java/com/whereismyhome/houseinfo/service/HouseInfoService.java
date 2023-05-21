@@ -4,6 +4,7 @@ import com.whereismyhome.dongcode.entity.DongCode;
 import com.whereismyhome.exception.BusinessLogicException;
 import com.whereismyhome.exception.ExceptionCode;
 import com.whereismyhome.houseinfo.dto.HousePointDto;
+import com.whereismyhome.houseinfo.dto.RankResponseDto;
 import com.whereismyhome.houseinfo.entity.HouseInfo;
 import com.whereismyhome.houseinfo.repository.HouseInfoRepository;
 import lombok.RequiredArgsConstructor;
@@ -42,11 +43,11 @@ public class HouseInfoService {
         return point;
     }
 
-    public long getRank(long aptCode) {
+    public RankResponseDto getRank(long aptCode) {
         DongCode gugunName = findGugunName(aptCode);
-        long rank = makeRank(gugunName.getSidoName(), gugunName.getGugunName(), aptCode);
+        return makeRank(gugunName.getSidoName(), gugunName.getGugunName(), aptCode);
 
-        return rank;
+
     }
 
     //아파트 코드에 해당하는 지역구 추출
@@ -59,16 +60,20 @@ public class HouseInfoService {
     }
 
     //랭크 계산
-    public long makeRank(String sidoName, String gugunName,long aptCode) {
+    public RankResponseDto makeRank(String sidoName, String gugunName, long aptCode) {
         List<Object[]> objectList = houseInfoRepository.makeRank(sidoName, gugunName);
 
         long rank = 1;
         for (Object[] objects : objectList) {
-            if((long)objects[1] == aptCode) break;
-            else rank++;
+            if ((long) objects[1] == aptCode) {
+                return RankResponseDto.builder()
+                        .rank(rank)
+                        .mark((long) objects[3])
+                        .viewCount((int) objects[2])
+                        .build();
+            } else rank++;
         }
-
-        return rank;
+        throw new BusinessLogicException(ExceptionCode.HOUSE_NOT_FOUND);
     }
 
     //차트에 사용될 데이터

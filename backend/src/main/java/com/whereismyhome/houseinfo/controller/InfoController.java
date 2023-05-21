@@ -60,4 +60,12 @@ public class InfoController {
         return ResponseEntity.ok().body(chartDataDtos);
 
     }
+
+    //조회수 증가
+    @GetMapping("/view/{apt-code}")
+    public ResponseEntity updateViewCount(@PathVariable ("apt-code") long aptCode) {
+        houseInfoService.updateViewCount(aptCode);
+
+        return ResponseEntity.ok().body(aptCode + " 조회 수 1 증가");
+    }
 }

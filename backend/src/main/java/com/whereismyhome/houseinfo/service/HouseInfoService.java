@@ -19,21 +19,15 @@ public class HouseInfoService {
 
     //아파트 정보 조회
     public HouseInfo findHouse(long aptCode) {
-        HouseInfo houseInfo = validHouse(aptCode);
 
-        //정보 조회 되었을 때 조회수 1증가
-        houseInfo.setViewcount(houseInfo.getViewcount() + 1);
-        houseInfoRepository.save(houseInfo);
-
-        return houseInfo;
+        return validHouse(aptCode);
     }
 
     //유효성 검사
     public HouseInfo validHouse(long aptCode) {
-        HouseInfo houseInfo = houseInfoRepository.findById(aptCode)
-                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.HOUSE_NOT_FOUND));
 
-        return houseInfo;
+        return houseInfoRepository.findById(aptCode)
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.HOUSE_NOT_FOUND));
     }
 
     //아파트 코드에 맞는 좌표 들고 오기
@@ -45,18 +39,15 @@ public class HouseInfoService {
 
     public RankResponseDto getRank(long aptCode) {
         DongCode gugunName = findGugunName(aptCode);
+
         return makeRank(gugunName.getSidoName(), gugunName.getGugunName(), aptCode);
-
-
     }
 
     //아파트 코드에 해당하는 지역구 추출
     public DongCode findGugunName(long aptCode) {
         HouseInfo house = validHouse(aptCode);
-        DongCode dongCode = house.getDongCode();
 
-        return dongCode;
-
+        return house.getDongCode();
     }
 
     //랭크 계산
@@ -82,4 +73,11 @@ public class HouseInfoService {
         return chartList;
     }
 
+    //조회수 증가
+    public void updateViewCount(long aptCode) {
+        HouseInfo house = findHouse(aptCode);
+
+        house.setViewcount(house.getViewcount() + 1);
+        houseInfoRepository.save(house);
+    }
 }

@@ -11,7 +11,18 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface BookMarkMapper {
 
-    List<BookMarkResponseDto> bookMarkListToBookMarkResponseDtos(List<BookMark> bookMarkList);
+    List<BookMarkResponseDto> objectListToBookMarkResponseDtos(List<Object[]> objects);
+
+    default BookMarkResponseDto objectToBookMarkResponseDto(Object[] objects) {
+        return BookMarkResponseDto.builder()
+                .aptCode((long) objects[0])
+                .buildYear((int) objects[1])
+                .areaName(String.valueOf(objects[2]))
+                .max((long)objects[3])
+                .min((long)objects[4])
+                .aptName(String.valueOf(objects[5]))
+                .build();
+    }
 
     @Mapping(source = "houseInfo.aptCode",target = "aptCode")
     BookMarkResponseDto bookMarkToBookMarkResponseDto(BookMark bookMark);

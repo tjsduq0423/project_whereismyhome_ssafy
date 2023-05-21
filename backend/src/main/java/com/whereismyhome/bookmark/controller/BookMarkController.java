@@ -39,7 +39,8 @@ public class BookMarkController {
     //북마크 조회
     @GetMapping("/{member-id}")
     public ResponseEntity getList(@PathVariable("member-id") String memberId) {
-        List<BookMarkResponseDto> bookMarkList = mapper.bookMarkListToBookMarkResponseDtos(bookMarkService.getList(memberId));
-        return ResponseEntity.ok().body(bookMarkList);
+        List<BookMarkResponseDto> bookMarkResponseDtos = mapper.objectListToBookMarkResponseDtos(bookMarkService.getList(memberId));
+
+        return ResponseEntity.ok().body(bookMarkResponseDtos);
     }
 }

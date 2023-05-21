@@ -12,4 +12,5 @@ import lombok.Setter;
 public class GeoPostDto {
     private String lng;
     private String lat;
+    private int zoomLevel;
 }

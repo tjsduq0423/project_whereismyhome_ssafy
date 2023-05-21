@@ -25,7 +25,7 @@ public class InfoController {
     private final HouseDealService houseDealService;
     private final HouseDealMapper houseDealMapper;
 
-    //아파트 정보 조회 테스트
+    //아파트 정보 조회
     @GetMapping("/{apt-code}")
     public ResponseEntity findHouse(@PathVariable("apt-code") long aptCode) {
         HouseInfo house = houseInfoService.findHouse(aptCode);

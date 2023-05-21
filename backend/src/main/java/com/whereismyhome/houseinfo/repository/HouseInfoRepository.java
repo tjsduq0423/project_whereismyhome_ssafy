@@ -11,11 +11,11 @@ import java.util.List;
 public interface HouseInfoRepository extends JpaRepository<HouseInfo, Long> {
     @Query(value = "select h.apt_code,h.apartment_name,h.lng,h.lat,h.build_year, round(CAST(avg(replace(hd.deal_amount,',','')) as SIGNED ),-3) as avg " +
             "from HouseInfo h " +
-            "join housedeal hd on h.apt_code = hd.apt_code " +
-            "where st_contains(st_buffer(Point(:lng, :lat),0.01),h.local_point) " +
+            "left join housedeal hd on h.apt_code = hd.apt_code " +
+            "where st_contains(st_buffer(Point(:lng, :lat),:dist),h.local_point) " +
             "group by h.apt_code"
             , nativeQuery = true)
-    List<Object[]> findByApt(@Param("lng") String lng, @Param("lat") String lat);
+    List<Object[]> findByApt(@Param("lng") String lng, @Param("lat") String lat, @Param("dist") double dist);
 
     @Query("select new com.whereismyhome.houseinfo.dto.HousePointDto(h.lng, h.lat) from HouseInfo h where h.aptCode = :aptCode")
     HousePointDto findByPoint(@Param("aptCode") long aptCode);

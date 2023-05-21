@@ -7,6 +7,7 @@ import com.whereismyhome.hosedeal.mapper.HouseDealMapper;
 import com.whereismyhome.hosedeal.service.HouseDealService;
 import com.whereismyhome.houseinfo.dto.ChartDataDto;
 import com.whereismyhome.houseinfo.dto.HouseInfoResponseDto;
+import com.whereismyhome.houseinfo.dto.RankResponseDto;
 import com.whereismyhome.houseinfo.entity.HouseInfo;
 import com.whereismyhome.houseinfo.mapper.HouseInfoMapper;
 import com.whereismyhome.houseinfo.service.HouseInfoService;
@@ -25,7 +26,7 @@ public class InfoController {
     private final HouseDealService houseDealService;
     private final HouseDealMapper houseDealMapper;
 
-    //아파트 정보 조회 테스트
+    //아파트 정보 조회
     @GetMapping("/{apt-code}")
     public ResponseEntity findHouse(@PathVariable("apt-code") long aptCode) {
         HouseInfo house = houseInfoService.findHouse(aptCode);
@@ -46,9 +47,9 @@ public class InfoController {
     //랭킹 정보 조회
     @GetMapping("/rank/{apt-code}")
     public ResponseEntity findRank(@PathVariable("apt-code") long aptCode) {
-        long rank = houseInfoService.getRank(aptCode);
+        RankResponseDto rank = houseInfoService.getRank(aptCode);
 
-        return ResponseEntity.ok().body(rank + "등");
+        return ResponseEntity.ok().body(rank);
     }
 
     //차트 데이터 조회
@@ -58,5 +59,13 @@ public class InfoController {
         List<ChartDataDto> chartDataDtos = infoMapper.chartDataListToChartDataDtos(chartDataList);
         return ResponseEntity.ok().body(chartDataDtos);
 
+    }
+
+    //조회수 증가
+    @GetMapping("/view/{apt-code}")
+    public ResponseEntity updateViewCount(@PathVariable ("apt-code") long aptCode) {
+        houseInfoService.updateViewCount(aptCode);
+
+        return ResponseEntity.ok().body(aptCode + " 조회 수 1 증가");
     }
 }

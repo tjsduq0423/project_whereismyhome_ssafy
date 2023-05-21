@@ -8,5 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BookMarkDto {
+    private String memberId;
     private Long aptCode;
 }

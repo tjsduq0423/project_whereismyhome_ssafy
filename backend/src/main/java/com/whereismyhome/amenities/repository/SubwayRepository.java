@@ -10,6 +10,6 @@ import java.util.List;
 
 public interface SubwayRepository extends JpaRepository<Subway, Integer> {
 
-    @Query("select new com.whereismyhome.amenities.dto.response.SubwayResponseDto(s.id, s.name, s.lat, s.lng,s.phoneNumber) from Subway s where st_contains(st_buffer(Point(:lng,:lat),0.01),s.localPoint) order by ST_Distance_Sphere(Point(:lng,:lat),s.localPoint)")
-    List<SubwayResponseDto> findBySubway(@Param("lng") String lng, @Param("lat") String lat);
+    @Query("select new com.whereismyhome.amenities.dto.response.SubwayResponseDto(s.id, s.name, s.lat, s.lng,s.phoneNumber) from Subway s where st_contains(st_buffer(Point(:lng,:lat),:dist),s.localPoint) order by ST_Distance_Sphere(Point(:lng,:lat),s.localPoint)")
+    List<SubwayResponseDto> findBySubway(@Param("lng") String lng, @Param("lat") String lat,@Param("dist") double dist);
 }

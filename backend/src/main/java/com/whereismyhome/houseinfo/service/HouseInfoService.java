@@ -4,6 +4,7 @@ import com.whereismyhome.dongcode.entity.DongCode;
 import com.whereismyhome.exception.BusinessLogicException;
 import com.whereismyhome.exception.ExceptionCode;
 import com.whereismyhome.houseinfo.dto.HousePointDto;
+import com.whereismyhome.houseinfo.dto.RankResponseDto;
 import com.whereismyhome.houseinfo.entity.HouseInfo;
 import com.whereismyhome.houseinfo.repository.HouseInfoRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,21 +19,15 @@ public class HouseInfoService {
 
     //아파트 정보 조회
     public HouseInfo findHouse(long aptCode) {
-        HouseInfo houseInfo = validHouse(aptCode);
 
-        //정보 조회 되었을 때 조회수 1증가
-        houseInfo.setViewcount(houseInfo.getViewcount() + 1);
-        houseInfoRepository.save(houseInfo);
-
-        return houseInfo;
+        return validHouse(aptCode);
     }
 
     //유효성 검사
     public HouseInfo validHouse(long aptCode) {
-        HouseInfo houseInfo = houseInfoRepository.findById(aptCode)
-                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.HOUSE_NOT_FOUND));
 
-        return houseInfo;
+        return houseInfoRepository.findById(aptCode)
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.HOUSE_NOT_FOUND));
     }
 
     //아파트 코드에 맞는 좌표 들고 오기
@@ -42,33 +37,34 @@ public class HouseInfoService {
         return point;
     }
 
-    public long getRank(long aptCode) {
+    public RankResponseDto getRank(long aptCode) {
         DongCode gugunName = findGugunName(aptCode);
-        long rank = makeRank(gugunName.getSidoName(), gugunName.getGugunName(), aptCode);
 
-        return rank;
+        return makeRank(gugunName.getSidoName(), gugunName.getGugunName(), aptCode);
     }
 
     //아파트 코드에 해당하는 지역구 추출
     public DongCode findGugunName(long aptCode) {
         HouseInfo house = validHouse(aptCode);
-        DongCode dongCode = house.getDongCode();
 
-        return dongCode;
-
+        return house.getDongCode();
     }
 
     //랭크 계산
-    public long makeRank(String sidoName, String gugunName,long aptCode) {
+    public RankResponseDto makeRank(String sidoName, String gugunName, long aptCode) {
         List<Object[]> objectList = houseInfoRepository.makeRank(sidoName, gugunName);
 
         long rank = 1;
         for (Object[] objects : objectList) {
-            if((long)objects[1] == aptCode) break;
-            else rank++;
+            if ((long) objects[1] == aptCode) {
+                return RankResponseDto.builder()
+                        .rank(rank)
+                        .mark((long) objects[3])
+                        .viewCount((int) objects[2])
+                        .build();
+            } else rank++;
         }
-
-        return rank;
+        throw new BusinessLogicException(ExceptionCode.HOUSE_NOT_FOUND);
     }
 
     //차트에 사용될 데이터
@@ -77,4 +73,11 @@ public class HouseInfoService {
         return chartList;
     }
 
+    //조회수 증가
+    public void updateViewCount(long aptCode) {
+        HouseInfo house = findHouse(aptCode);
+
+        house.setViewcount(house.getViewcount() + 1);
+        houseInfoRepository.save(house);
+    }
 }

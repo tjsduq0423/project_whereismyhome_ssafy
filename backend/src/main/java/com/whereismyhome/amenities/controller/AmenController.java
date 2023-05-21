@@ -20,10 +20,12 @@ public class AmenController {
     private final AmenService amenService;
     private final HouseInfoService houseInfoService;
     private final HouseInfoMapper mapper;
+
     //반경 내 아파트 조회
     @PostMapping("/house")
     public ResponseEntity findApt(@RequestBody GeoPostDto geoPostDto) {
-        List<HouseResponseDto> houseResponseDtos = mapper.aptListToHouseResponseDto(amenService.findApt(geoPostDto.getLng(), geoPostDto.getLat()));
+        List<Object[]> aptList = amenService.findApt(geoPostDto.getLng(), geoPostDto.getLat(), geoPostDto.getZoomLevel());
+        List<HouseResponseDto> houseResponseDtos = mapper.aptListToHouseResponseDto(aptList);
 
         return ResponseEntity.ok().body(houseResponseDtos);
     }
@@ -31,7 +33,7 @@ public class AmenController {
     //반경 내 cctv 조회
     @PostMapping("/cctv")
     public ResponseEntity findCctv(@RequestBody GeoPostDto geoPostDto) {
-        List<CctvResponseDto> cctvList = amenService.findCctv(geoPostDto.getLng(), geoPostDto.getLat());
+        List<CctvResponseDto> cctvList = amenService.findCctv(geoPostDto.getLng(), geoPostDto.getLat(), geoPostDto.getZoomLevel());
 
         return ResponseEntity.ok().body(cctvList);
     }
@@ -39,7 +41,7 @@ public class AmenController {
     //반경 내 hospital 조회
     @PostMapping("/hospital")
     public ResponseEntity findHospital(@RequestBody GeoPostDto geoPostDto) {
-        List<HospitalResponseDto> hospitalList = amenService.findHospital(geoPostDto.getLng(), geoPostDto.getLat());
+        List<HospitalResponseDto> hospitalList = amenService.findHospital(geoPostDto.getLng(), geoPostDto.getLat(),geoPostDto.getZoomLevel());
 
         return ResponseEntity.ok().body(hospitalList);
     }
@@ -47,7 +49,7 @@ public class AmenController {
     //반경 내 school 조회
     @PostMapping("/school")
     public ResponseEntity findSchool(@RequestBody GeoPostDto geoPostDto) {
-        List<SchoolResponseDto> schoolList = amenService.findSchool(geoPostDto.getLng(), geoPostDto.getLat());
+        List<SchoolResponseDto> schoolList = amenService.findSchool(geoPostDto.getLng(), geoPostDto.getLat(),geoPostDto.getZoomLevel());
 
         return ResponseEntity.ok().body(schoolList);
     }
@@ -55,14 +57,14 @@ public class AmenController {
     //반경 내 bus 조회
     @PostMapping("/bus")
     public ResponseEntity findBus(@RequestBody GeoPostDto geoPostDto) {
-        List<BusResponseDto> busList = amenService.findBus(geoPostDto.getLng(), geoPostDto.getLat());
+        List<BusResponseDto> busList = amenService.findBus(geoPostDto.getLng(), geoPostDto.getLat(),geoPostDto.getZoomLevel());
         return ResponseEntity.ok().body(busList);
     }
 
     //반경 내 subway조회
     @PostMapping("/subway")
     public ResponseEntity findSubway(@RequestBody GeoPostDto geoPostDto) {
-        List<SubwayResponseDto> subwayList = amenService.findSubway(geoPostDto.getLng(), geoPostDto.getLat());
+        List<SubwayResponseDto> subwayList = amenService.findSubway(geoPostDto.getLng(), geoPostDto.getLat(), geoPostDto.getZoomLevel());
 
         return ResponseEntity.ok().body(subwayList);
     }
@@ -72,7 +74,7 @@ public class AmenController {
     @GetMapping("/bus/{apt-code}")
     public ResponseEntity aptBus(@PathVariable("apt-code") long aptCode) {
         HousePointDto point = houseInfoService.getPoint(aptCode);
-        List<BusResponseDto> busList = amenService.findBus(point.getLng(), point.getLat());
+        List<BusResponseDto> busList = amenService.findBus(point.getLng(), point.getLat(),0);
 
         return ResponseEntity.ok().body(busList);
     }
@@ -81,7 +83,7 @@ public class AmenController {
     @GetMapping("/cctv/{apt-code}")
     public ResponseEntity aptCctv(@PathVariable("apt-code") long aptCode) {
         HousePointDto point = houseInfoService.getPoint(aptCode);
-        List<CctvResponseDto> cctvList = amenService.findCctv(point.getLng(), point.getLat());
+        List<CctvResponseDto> cctvList = amenService.findCctv(point.getLng(), point.getLat(),0);
 
         return ResponseEntity.ok().body(cctvList);
     }
@@ -89,7 +91,7 @@ public class AmenController {
     @GetMapping("/hospital/{apt-code}")
     public ResponseEntity aptHospital(@PathVariable("apt-code") long aptCode) {
         HousePointDto point = houseInfoService.getPoint(aptCode);
-        List<HospitalResponseDto> hospitalList = amenService.findHospital(point.getLng(), point.getLat());
+        List<HospitalResponseDto> hospitalList = amenService.findHospital(point.getLng(), point.getLat(),0);
 
         return ResponseEntity.ok().body(hospitalList);
     }
@@ -97,7 +99,7 @@ public class AmenController {
     @GetMapping("/school/{apt-code}")
     public ResponseEntity aptSchool(@PathVariable("apt-code") long aptCode) {
         HousePointDto point = houseInfoService.getPoint(aptCode);
-        List<SchoolResponseDto> schoolList = amenService.findSchool(point.getLng(), point.getLat());
+        List<SchoolResponseDto> schoolList = amenService.findSchool(point.getLng(), point.getLat(),0);
 
         return ResponseEntity.ok().body(schoolList);
     }
@@ -106,7 +108,7 @@ public class AmenController {
     @GetMapping("/subway/{apt-code}")
     public ResponseEntity aptSubway(@PathVariable("apt-code") long aptCode) {
         HousePointDto point = houseInfoService.getPoint(aptCode);
-        List<HospitalResponseDto> hospitalList = amenService.findHospital(point.getLng(), point.getLat());
+        List<HospitalResponseDto> hospitalList = amenService.findHospital(point.getLng(), point.getLat(),0);
 
         return ResponseEntity.ok().body(hospitalList);
     }

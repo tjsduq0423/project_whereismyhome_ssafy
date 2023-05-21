@@ -1,10 +1,12 @@
 package com.whereismyhome.bookmark.controller;
 
+import com.whereismyhome.bookmark.dto.BookMarkDto;
 import com.whereismyhome.bookmark.dto.BookMarkResponseDto;
-import com.whereismyhome.bookmark.dto.BookMarkUpdateDto;
+import com.whereismyhome.bookmark.entity.BookMark;
 import com.whereismyhome.bookmark.mapper.BookMarkMapper;
 import com.whereismyhome.bookmark.service.BookMarkService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,12 +19,21 @@ public class BookMarkController {
     private final BookMarkService bookMarkService;
     private final BookMarkMapper mapper;
 
-    //북마크 업데이트
-    @PostMapping("/update")
-    public ResponseEntity updateBookMark(@RequestBody BookMarkUpdateDto updateDto) {
-        bookMarkService.updateBookMark(mapper.toBookMarkServiceDto(updateDto));
+    //북마크 등록
+    @PostMapping("/add")
+    public ResponseEntity addBookMark(@RequestBody BookMarkDto bookMarkDto) {
+        BookMark bookMark = mapper.bookMarkDtoToBookMark(bookMarkDto);
+        bookMarkService.addBookMark(bookMark);
 
-        return ResponseEntity.ok().body("북마크 업데이트");
+        return ResponseEntity.status(HttpStatus.CREATED).body("북마크 정상 등록");
+    }
+
+    //북마크 제거
+    @PostMapping("/delete")
+    public ResponseEntity deleteBookMark(@RequestBody BookMarkDto bookMarkDto) {
+        bookMarkService.deleteBookMark(bookMarkDto.getMemberId(), bookMarkDto.getAptCode());
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("북마크 정상 삭제");
     }
 
     //북마크 조회

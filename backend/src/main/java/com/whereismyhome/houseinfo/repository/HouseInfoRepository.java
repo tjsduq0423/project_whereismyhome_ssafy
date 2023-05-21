@@ -9,7 +9,8 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface HouseInfoRepository extends JpaRepository<HouseInfo, Long> {
-    @Query(value = "select h.apt_code,h.apartment_name,h.lng,h.lat,h.build_year, round(CAST(avg(replace(hd.deal_amount,',','')) as SIGNED ),-3) as avg " +
+    @Query(value = "select h.apt_code,h.apartment_name,h.lng,h.lat,h.build_year, " +
+            "round(avg(cast(replace(hd.deal_amount, ',', '') as signed)), -3) as avg " +
             "from HouseInfo h " +
             "left join housedeal hd on h.apt_code = hd.apt_code " +
             "where st_contains(st_buffer(Point(:lng, :lat),:dist),h.local_point) " +

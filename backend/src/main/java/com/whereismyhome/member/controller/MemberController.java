@@ -44,13 +44,12 @@ public class MemberController {
 
         String accessToken = jwtProvider.createAccessToken(member.getId(), member.getRoles().getRole());
         log.info("토큰 정상 생성");
-//        String encode = URLEncoder.encode("Bearer " + accessToken, StandardCharsets.UTF_8);
+
         String encode = URLEncoder.encode(accessToken, StandardCharsets.UTF_8);
 
         Cookie cookie = new Cookie("Authorization", encode);
         cookie.setPath(("/"));
         cookie.setHttpOnly(true);
-        cookie.setMaxAge(60 * 60);
         response.addCookie(cookie);
 
         MemberResponseDto memberResponseDto = mapper.memberToMemberResponseDto(member);
@@ -70,12 +69,19 @@ public class MemberController {
         return ResponseEntity.noContent().build();
     }
 
-    //회원가입 시 이메일 인증
+    //회원가입 및 비밀번호 찾기 시 이메일 인증
     @GetMapping("/{email}")
-    public ResponseEntity senMail(@PathVariable("email") String email) throws MessagingException {
+    public ResponseEntity sendMail(@PathVariable("email") String email) throws MessagingException {
         String key = memberService.sendMail(email);
 
         return ResponseEntity.ok().body(key);
     }
+    
+    //비밀번호 변경
+    @PutMapping("/change")
+    public ResponseEntity findPassword(@RequestBody MemberLoginDto loginDto) {
+        memberService.changePassword(mapper.memberLoginDtoToMember(loginDto)); 
 
+        return ResponseEntity.ok().body("비밀번호 변경 완료");
+    }
 }

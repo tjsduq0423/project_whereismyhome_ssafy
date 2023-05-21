@@ -60,9 +60,10 @@ public class MemberService {
         }
     }
 
+    //id로 회원 찾기
     public Member findUser(String id) {
         return memberRepository.findById(id)
-                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.BAD_PARAM));
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.USER_NOT_FOUND));
     }
 
     //비밀번호 확인
@@ -110,5 +111,14 @@ public class MemberService {
 
         log.info("이메일 전송 성공");
         return key;
+    }
+
+    //비밀번호 변경
+    public void changePassword(Member member) {
+        Member findMember = findUser(member.getId());
+
+        findMember.setPassword(passwordEncoder.encode(member.getPassword()));
+
+        memberRepository.save(findMember);
     }
 }

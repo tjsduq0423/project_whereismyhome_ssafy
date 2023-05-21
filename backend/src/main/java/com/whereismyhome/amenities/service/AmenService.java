@@ -19,43 +19,37 @@ public class AmenService {
     private final SubwayRepository subwayRepository;
     //반경 내 아파트 정보 조회
     public List<Object[]> findApt(String lng, String lat) {
-        List<Object[]> aptList = houseInfoRepository.findByApt(lng, lat);
 
-        return aptList;
+        return houseInfoRepository.findByApt(lng, lat);
     }
 
     //반경 내 버스 정보 조회
     public List<BusResponseDto> findBus(String lng, String lat) {
-        List<BusResponseDto> busList = busRepository.findByBus(lng, lat);
 
-        return busList;
+        return busRepository.findByBus(lng, lat);
     }
 
     //변경 내 cctv 정보조회
     public List<CctvResponseDto> findCctv(String lng, String lat) {
-        List<CctvResponseDto> cctvList = cctvRepository.findByCctv(lng, lat);
 
-        return cctvList;
+        return cctvRepository.findByCctv(lng, lat);
     }
 
     //변경 내 학교 정보 조회
     public List<SchoolResponseDto> findSchool(String lng, String lat) {
-        List<SchoolResponseDto> schooList = schoolRepository.findBySchool(lng, lat);
 
-        return schooList;
+        return schoolRepository.findBySchool(lng, lat);
     }
 
     //반경 내 병원 정보 조회
     public List<HospitalResponseDto> findHospital(String lng, String lat) {
-        List<HospitalResponseDto> hospitalList = hospitalRepository.findByHospital(lng, lat);
 
-        return hospitalList;
+        return hospitalRepository.findByHospital(lng, lat);
     }
 
     //반경 내 지하철 정보조회
     public List<SubwayResponseDto> findSubway(String lng, String lat) {
-        List<SubwayResponseDto> subwayList = subwayRepository.findBySubway(lng, lat);
 
-        return subwayList;
+        return subwayRepository.findBySubway(lng, lat);
     }
 }

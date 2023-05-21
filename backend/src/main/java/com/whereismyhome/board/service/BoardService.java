@@ -23,6 +23,7 @@ public class BoardService {
 
     //게시글 삭제
     public void delete(int id) {
+        findBoard(id);
         boardRepository.deleteById(id);
     }
 
@@ -58,8 +59,7 @@ public class BoardService {
 
     //게시글 상세조회
     public Board boardDetail(int id) {
-        Board board = findBoard(id);
-        return board;
+        return findBoard(id);
     }
 
 

@@ -15,4 +15,10 @@ public class ExceptionController {
 
         return ErrorResponse.setErrorResponse(e.getExceptionCode());
     }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity globalException(Exception e) {
+        return ResponseEntity.status(500).body(e.getMessage());
+    }
+
 }

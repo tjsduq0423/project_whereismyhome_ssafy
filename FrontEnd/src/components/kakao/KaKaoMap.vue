@@ -60,7 +60,7 @@ const initMap = () => {
   // 지도 클릭 시 사이드바 닫기
   kakao.value.maps.event.addListener(map.value, 'click', function (mouseEvent) {
     if (mouseEvent.target === mouseEvent.currentTarget) {
-      isShow.value = false;
+      showSideBar.value = false;
     }
   });
 };
@@ -69,17 +69,26 @@ const initMap = () => {
 tryOnMounted(() => {
   kakao.value.maps.load(initMap);
 });
+// memberId
+import { useAuthStore } from '@/stores/auth';
+const authStore = useAuthStore();
+const { userInfo } = storeToRefs(authStore);
+// 북마크
+import { useBookmarkStore } from '@/stores/bookmark';
+const bookmarkStore = useBookmarkStore();
+const { getBookmarkList } = bookmarkStore;
 // 사이드바
 import { useSideBarStore } from '@/stores/sideBar';
 const sideBarStore = useSideBarStore();
-const { isShow } = storeToRefs(sideBarStore);
+const { showSideBar, lodaViewLatLng } = storeToRefs(sideBarStore);
+const { setAptInfo, setAptDealInfo, setAptRankByCode } = sideBarStore;
 //마커
 import { useMarkersStore } from '@/stores/markers';
 const markersStore = useMarkersStore();
 const {
   apartMarkers,
   schoolMarkers,
-  cctvMarkers,
+  // cctvMarkers,
   hospitalMarkers,
   subwayMarkers,
   busMarkers,
@@ -135,7 +144,7 @@ const onOffMarkers = (isShow, markerList) => {
 };
 
 // 마커 좌표를 가지고 있는 배열들을 감시하여 맵에 마커 mount unmount
-// 아파트 감시
+// watch debounce 사용할 것.
 watch(apartMarkers, v => {
   const imgSize = new kakao.value.maps.Size(35, 40);
   const markerImg = new kakao.value.maps.MarkerImage('/img/apartmentMarker.png', imgSize);
@@ -149,9 +158,20 @@ watch(apartMarkers, v => {
       image: markerImg,
       clickable: true,
     });
-    kakao.value.maps.event.addListener(marker, 'click', () => {
-      isShow.value = true;
+    kakao.value.maps.event.addListener(marker, 'click', async () => {
+      if (showSideBar.value === true) showSideBar.value = false;
+      try {
+        lodaViewLatLng.value = [p.lat, p.lng];
+        await setAptInfo(p.aptCode, p.apartmentName);
+        await setAptDealInfo(p.aptCode);
+        await setAptRankByCode(p.aptCode);
+        await getBookmarkList(userInfo.value.id);
+        showSideBar.value = true;
+      } catch (err) {
+        console.error(err);
+      }
     });
+    apartMarkerList.value.push(marker);
   });
 });
 
@@ -197,44 +217,44 @@ watch(isShowSchool, v => {
   onOffMarkers(map.value.getLevel() <= 3 && v, schoolMarkerList.value);
 });
 // cctv 감시
-watch(cctvMarkers, v => {
-  const imgSize = new kakao.value.maps.Size(10, 10);
-  const markerImg = new kakao.value.maps.MarkerImage('/img/cctvMarker.png', imgSize);
-  mountMarkers(null, cctvMarkerList.value);
-  cctvMarkerList.value = [];
-  v.forEach(p => {
-    const marker = new kakao.value.maps.Marker({
-      map: map.value,
-      position: new kakao.value.maps.LatLng(p.lat, p.lng),
-      image: markerImg,
-      clickable: true,
-    });
-    const customOverlay = new kakao.value.maps.CustomOverlay({
-      map: map.value,
-      position: marker.getPosition(),
-      content: `<div class="card mt-5 text-center">
-                  <div class="card-body p-2">
-                    <p class="card-text">용도 - ${p.usage}</p>
-                  </div>
-                </div>`,
-      clickable: true,
-      zIndex: 10,
-    });
-    customOverlay.setVisible(false);
-    kakao.value.maps.event.addListener(marker, 'click', () => {
-      customOverlay.setVisible(true);
-      setTimeout(() => {
-        customOverlay.setVisible(false);
-      }, 2000);
-    });
-    cctvMarkerList.value.push(marker);
-  });
-  onOffMarkers(map.value.getLevel() <= 3 && isShowCCTV.value, cctvMarkerList.value);
-});
+// watch(cctvMarkers, v => {
+//   const imgSize = new kakao.value.maps.Size(10, 10);
+//   const markerImg = new kakao.value.maps.MarkerImage('/img/cctvMarker.png', imgSize);
+//   mountMarkers(null, cctvMarkerList.value);
+//   cctvMarkerList.value = [];
+//   v.forEach(p => {
+//     const marker = new kakao.value.maps.Marker({
+//       map: map.value,
+//       position: new kakao.value.maps.LatLng(p.lat, p.lng),
+//       image: markerImg,
+//       clickable: true,
+//     });
+//     const customOverlay = new kakao.value.maps.CustomOverlay({
+//       map: map.value,
+//       position: marker.getPosition(),
+//       content: `<div class="card mt-5 text-center">
+//                   <div class="card-body p-2">
+//                     <p class="card-text">용도 - ${p.usage}</p>
+//                   </div>
+//                 </div>`,
+//       clickable: true,
+//       zIndex: 10,
+//     });
+//     customOverlay.setVisible(false);
+//     kakao.value.maps.event.addListener(marker, 'click', () => {
+//       customOverlay.setVisible(true);
+//       setTimeout(() => {
+//         customOverlay.setVisible(false);
+//       }, 2000);
+//     });
+//     cctvMarkerList.value.push(marker);
+//   });
+//   onOffMarkers(map.value.getLevel() <= 3 && isShowCCTV.value, cctvMarkerList.value);
+// });
 
-watch(isShowCCTV, v => {
-  onOffMarkers(map.value.getLevel() <= 3 && v, cctvMarkerList.value);
-});
+// watch(isShowCCTV, v => {
+//   onOffMarkers(map.value.getLevel() <= 3 && v, cctvMarkerList.value);
+// });
 
 // 병원 감시
 watch(hospitalMarkers, v => {
@@ -366,6 +386,18 @@ watch(sidoGugun, v => {
   const geocoder = new kakao.value.maps.services.Geocoder();
   const [sido, gugun] = v;
   geocoder.addressSearch(`${sido} ${gugun}`, (result, status) => {
+    if (status === kakao.value.maps.services.Status.OK) {
+      map.value.setCenter(new kakao.value.maps.LatLng(result[0].address.y, result[0].address.x));
+    }
+  });
+});
+// searchBar 이벤트 감시
+import { useSearchStore } from '@/stores/search';
+const searchStore = useSearchStore();
+const { selectedSearchInput } = storeToRefs(searchStore);
+watch(selectedSearchInput, v => {
+  const geocoder = new kakao.value.maps.services.Geocoder();
+  geocoder.addressSearch(v, (result, status) => {
     if (status === kakao.value.maps.services.Status.OK) {
       map.value.setCenter(new kakao.value.maps.LatLng(result[0].address.y, result[0].address.x));
     }

@@ -74,7 +74,6 @@
                 <input
                   class="form-check-input"
                   type="checkbox"
-                  @click="vLoading"
                   v-model="isShowSchool"
                   id="flexCheckDefault"
                 />
@@ -86,7 +85,6 @@
                 <input
                   class="form-check-input"
                   type="checkbox"
-                  @click="vLoading"
                   v-model="isShowHospital"
                   id="flexCheckDefault"
                 />
@@ -98,7 +96,6 @@
                 <input
                   class="form-check-input"
                   type="checkbox"
-                  @click="vLoading"
                   v-model="isShowBus"
                   id="flexCheckDefault"
                 />
@@ -110,29 +107,27 @@
                 <input
                   class="form-check-input"
                   type="checkbox"
-                  @click="vLoading"
                   v-model="isShowSubway"
                   id="flexCheckDefault"
                 />
                 <label class="form-check-label" for="flexCheckDefault"> 지하철 </label>
               </div>
             </div>
-            <div class="col-auto">
+            <!-- <div class="col-auto">
               <div class="form-check">
                 <input
                   class="form-check-input"
                   type="checkbox"
-                  @click="vLoading"
                   v-model="isShowCCTV"
                   id="flexCheckDefault"
                 />
                 <label class="form-check-label" for="flexCheckDefault"> CCTV </label>
               </div>
-            </div>
+            </div> -->
           </div>
           <div class="row">
             <small id="codeHelp" class="form-text text-muted m-0 p-0"
-              >지도 중심 기준 편의시설 정보 마커 on/off , 표시 기준 : 지도 zoom level 3이하</small
+              >편의시설 정보 마커 on/off, 지도 zoom level 3이하 표시</small
             >
           </div>
         </div>
@@ -240,7 +235,16 @@
               type="search"
               placeholder="Search"
               aria-label="Search"
+              v-model="searchInput"
             />
+            <div v-show="showSearchList" class="card searchList">
+              test
+              <!-- <div v-for="(gugun, idx) in gugunList" :key="idx">{{ gugun }}</div>
+              <hr v-if="aptList" />
+              <div v-for="(apt, idx) in aptList" :key="idx">{{ apt }}</div>
+              <hr v-if="subwayList" />
+              <div v-for="(subway, idx) in subwayList" :key="idx">{{ subway }}</div> -->
+            </div>
           </form>
         </div>
       </div>
@@ -253,7 +257,7 @@
         enter-active-class="animate__animated animate__slideInLeft"
         leave-active-class="animate__animated animate__slideOutLeft"
       >
-        <AptInfoSideBar v-show="isShow"></AptInfoSideBar>
+        <AptInfoSideBar v-show="showSideBar"></AptInfoSideBar>
       </transition>
     </KaKaoMap>
 
@@ -277,19 +281,42 @@ import AptInfoSideBar from '@/components/features/AptInfoSideBar.vue';
 import AppContent from '@/components/layouts/AppContent.vue';
 import sidoGugunData from '@/data/sido_gugun';
 import { computed, ref } from 'vue';
-import { useLoading } from '@/composables/loading';
 //page delay
 const delayMap = ref(false);
 setTimeout(() => {
   delayMap.value = true;
 }, 1000);
-// Data delay
-const { vLoading } = useLoading();
+
+// searchBar
+import { useSearchStore } from '@/stores/search';
+const searchStore = useSearchStore();
+const { showSearchList } = storeToRefs(searchStore);
+
+const searchInput = ref('');
+const sendSearchInput = async () => {
+  try {
+    //actions calls
+    showSearchList.value = true;
+  } catch (err) {
+    console.error(err);
+  }
+};
+watchDebounced(
+  searchInput,
+  v => {
+    if (v === '') {
+      showSearchList.value = false;
+      return;
+    } else {
+      sendSearchInput();
+    }
+  },
+  { debounce: 500, maxWait: 5000 },
+);
 
 // 시도 구군 셀렉트 바
 const selectedSido = ref(null);
 const selectedGugun = ref(null);
-
 const sidoList = [...Object.keys(sidoGugunData)];
 const gugunList = computed(() => {
   let data = sidoGugunData[selectedSido.value];
@@ -302,17 +329,22 @@ const gugunSelect = gugun => {
   selectedGugun.value = gugun;
   sidoGugun.value = [selectedSido.value, gugun];
 };
+
+// sidebar isShow 제어
 import { useSideBarStore } from '@/stores/sideBar';
 const sideBarStore = useSideBarStore();
-const { isShow } = storeToRefs(sideBarStore);
+const { showSideBar } = storeToRefs(sideBarStore);
+
+// marker isshow제어
 import { useMarkersStore } from '@/stores/markers';
 import { storeToRefs } from 'pinia';
+import { watchDebounced } from '@vueuse/core';
 const markerStrore = useMarkersStore();
 const {
   buildYearRange,
   priceRange,
   sidoGugun,
-  isShowCCTV,
+  // isShowCCTV,
   isShowSchool,
   isShowHospital,
   isShowSubway,
@@ -364,5 +396,24 @@ div > a {
 }
 .btn {
   width: 100%;
+}
+.searchList {
+  position: absolute;
+  top: 45px;
+  z-index: 100;
+  width: 100%;
+  max-height: 30rem;
+  overflow: auto;
+  &::-webkit-scrollbar {
+    width: 8px; /* 스크롤바의 너비 */
+  }
+  &::-webkit-scrollbar-thumb {
+    height: 30%; /* 스크롤바의 길이 */
+    background: #d1d1d1; /* 스크롤바의 색상 */
+    border-radius: 10px;
+  }
+  &::-webkit-scrollbar-track {
+    background-color: #ececec;
+  }
 }
 </style>

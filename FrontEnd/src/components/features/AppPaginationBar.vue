@@ -47,7 +47,7 @@ const props = defineProps({
   },
   showContentCount: {
     type: Number,
-    required: true,
+    default: 10,
   },
   showPaginationBtnCount: {
     type: Number,

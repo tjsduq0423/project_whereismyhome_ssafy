@@ -45,10 +45,10 @@ public class MemberService {
         role.setRole(autho);
         role.setMember(member);
 
-        memberRepository.save(member);
+        Member saveMember = memberRepository.save(member);
         memberRoleRepository.save(role);
 
-        return member;
+        return saveMember;
     }
 
     //회원 id 중복 검사

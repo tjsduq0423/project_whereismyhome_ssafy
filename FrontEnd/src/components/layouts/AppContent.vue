@@ -27,6 +27,7 @@
   position: relative;
 }
 .card {
+  max-width: 80vw;
   margin-top: 70px;
   margin-bottom: 5vh;
 }

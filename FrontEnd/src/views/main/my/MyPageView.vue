@@ -1,30 +1,32 @@
 <template>
   <AppContent class="img">
-    <AppCardHeader class="py-3">Profile</AppCardHeader>
-    <div class="container-fluid p-0">
-      <div class="row mb-5">
-        <div class="col headRow">
-          <h1 class="my-5">
-            {{ userInfo.name }}
-          </h1>
-          <h5>userInfo.email</h5>
+    <template #default>
+      <AppCardHeader class="py-3">Profile</AppCardHeader>
+      <div class="container-fluid p-0">
+        <div class="row mb-5 mx-0 p-0">
+          <div class="col text-center">
+            <h1 class="my-5">
+              {{ userInfo.name }}
+            </h1>
+            <h5>userInfo.email</h5>
+          </div>
         </div>
-      </div>
 
-      <div class="row">
-        <div class="col-auto">
-          <RouterLink :to="{ name: MyQnA }">My QnA</RouterLink>
+        <div class="row">
+          <div class="col-auto">
+            <RouterLink to="/myPage/myQnA">My QnA</RouterLink>
+          </div>
+          <div class="col-auto">
+            <RouterLink to="/myPage/myBookMark">My BookMark</RouterLink>
+          </div>
         </div>
-        <div class="col-auto">
-          <RouterLink :to="{ name: MyBookMark }">My BookMark</RouterLink>
+        <div class="row">
+          <div class="col p-0">
+            <RouterView></RouterView>
+          </div>
         </div>
       </div>
-      <div class="row">
-        <div class="col p-0">
-          <RouterView></RouterView>
-        </div>
-      </div>
-    </div>
+    </template>
   </AppContent>
 </template>
 
@@ -42,10 +44,6 @@ const { userInfo } = storeToRefs(authStore);
 .img {
   background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.5)),
     url('/img/apartment04jpg.jpg');
-}
-.headRow {
-  text-align: center;
-  margin: 0px 32vw 0px 32vw;
 }
 .row {
   margin: 1rem 0rem 1.5rem 0rem;

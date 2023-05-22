@@ -11,7 +11,6 @@ import { storeToRefs } from 'pinia';
 import { tryOnMounted } from '@vueuse/core';
 import { useKakaoStore } from '@/stores/kakao';
 import { useLoading } from '@/composables/loading';
-import { useDebounceFn } from '@vueuse/core';
 
 const { vLoading } = useLoading();
 const kakaoStore = useKakaoStore();
@@ -26,36 +25,17 @@ const initMap = () => {
     center: new kakao.value.maps.LatLng(lat, lng),
     level: 3,
   };
-  //맵 생성 + zoom controller 부착
+  //맵 생성.
   map.value = new kakao.value.maps.Map(container, options);
+  map.value.setZoomable(false);
   map.value.addControl(new kakao.value.maps.ZoomControl(), kakao.value.maps.ControlPosition.RIGHT);
-  // 지도 확대 축소 이벤트
-  kakao.value.maps.event.addListener(map.value, 'zoom_changed', () => {
-    const level = map.value.getLevel();
-    if (level > 3) {
-      if (isShowCCTV.value) onOffMarkers(false, cctvMarkerList.value);
-      if (isShowHospital.value) onOffMarkers(false, hospitalMarkerList.value);
-      if (isShowBus.value) onOffMarkers(false, busMarkerList.value);
-      if (isShowSchool.value) onOffMarkers(false, subwayMarkerList.value);
-      if (isShowSubway.value) onOffMarkers(false, schoolMarkerList.value);
-    } else {
-      if (isShowCCTV.value) onOffMarkers(true, cctvMarkerList.value);
-      if (isShowHospital.value) onOffMarkers(true, hospitalMarkerList.value);
-      if (isShowBus.value) onOffMarkers(true, busMarkerList.value);
-      if (isShowSchool.value) onOffMarkers(true, schoolMarkerList.value);
-      if (isShowSubway.value) onOffMarkers(true, subwayMarkerList.value);
-    }
-  });
+
   // 중심좌표 추적 이벤트
-  kakao.value.maps.event.addListener(
-    map.value,
-    'center_changed',
-    useDebounceFn(() => {
-      vLoading();
-      const latlng = map.value.getCenter();
-      mapCenterLatLng.value = [latlng.getLat(), latlng.getLng()];
-    }, 500),
-  );
+  kakao.value.maps.event.addListener(map.value, 'dragend', () => {
+    vLoading(delayTimeByMarker.value);
+    const latlng = map.value.getCenter();
+    mapCenterLatLng.value = [latlng.getLat(), latlng.getLng()];
+  });
 
   // 지도 클릭 시 사이드바 닫기
   kakao.value.maps.event.addListener(map.value, 'click', function (mouseEvent) {
@@ -69,26 +49,16 @@ const initMap = () => {
 tryOnMounted(() => {
   kakao.value.maps.load(initMap);
 });
-// memberId
-import { useAuthStore } from '@/stores/auth';
-const authStore = useAuthStore();
-const { userInfo } = storeToRefs(authStore);
-// 북마크
-import { useBookmarkStore } from '@/stores/bookmark';
-const bookmarkStore = useBookmarkStore();
-const { getBookmarkList } = bookmarkStore;
-// 사이드바
-import { useSideBarStore } from '@/stores/sideBar';
-const sideBarStore = useSideBarStore();
-const { showSideBar, lodaViewLatLng } = storeToRefs(sideBarStore);
-const { setAptInfo, setAptDealInfo, setAptRankByCode } = sideBarStore;
-//마커
+
+//마커 제어
 import { useMarkersStore } from '@/stores/markers';
 const markersStore = useMarkersStore();
 const {
+  showSideBar,
+  delayTimeByMarker,
   apartMarkers,
   schoolMarkers,
-  // cctvMarkers,
+  cctvMarkers,
   hospitalMarkers,
   subwayMarkers,
   busMarkers,
@@ -110,8 +80,6 @@ const {
 
 // 중심좌표 추적 -> 마커 데이터 api call
 watch(mapCenterLatLng, async v => {
-  // zoomLevel
-  // const level = map.value.getLevel();
   const [lat, lng] = v;
   await setApartMarkers(lng, lat);
   await setSchoolMarkers(lng, lat);
@@ -137,248 +105,167 @@ const mountMarkers = (map, markerList) => {
     marker.setMap(map);
   });
 };
-const onOffMarkers = (isShow, markerList) => {
-  markerList.forEach(marker => {
-    marker.setVisible(isShow);
-  });
+// infoWindow 마커 클로저 함수
+const makeOverListener = (map, customOverlay) => {
+  return function () {
+    console.log('test');
+    customOverlay.setMap(map);
+  };
 };
-
 // 마커 좌표를 가지고 있는 배열들을 감시하여 맵에 마커 mount unmount
-// watch debounce 사용할 것.
+// 아파트 감시
 watch(apartMarkers, v => {
   const imgSize = new kakao.value.maps.Size(35, 40);
   const markerImg = new kakao.value.maps.MarkerImage('/img/apartmentMarker.png', imgSize);
-  // 모든 아파트 다 찍을 거임. 로딩 중에 찍을 거고 감시 없이 클러스터링
   mountMarkers(null, apartMarkerList.value);
   apartMarkerList.value = [];
-  v.forEach(p => {
-    const marker = new kakao.value.maps.Marker({
-      map: map.value,
-      position: new kakao.value.maps.LatLng(p.lat, p.lng),
-      image: markerImg,
-      clickable: true,
-    });
-    kakao.value.maps.event.addListener(marker, 'click', async () => {
-      if (showSideBar.value === true) showSideBar.value = false;
-      try {
-        lodaViewLatLng.value = [p.lat, p.lng];
-        await setAptInfo(p.aptCode, p.apartmentName);
-        await setAptDealInfo(p.aptCode);
-        await setAptRankByCode(p.aptCode);
-        await getBookmarkList(userInfo.value.id);
-        showSideBar.value = true;
-      } catch (err) {
-        console.error(err);
-      }
-    });
-    apartMarkerList.value.push(marker);
-  });
+  v.forEach(p =>
+    apartMarkerList.value.push(
+      new kakao.value.maps.Marker({
+        position: new kakao.value.maps.LatLng(p.lat, p.lng),
+        image: markerImg,
+      }),
+    ),
+  );
+  mountMarkers(map.value, apartMarkerList.value);
 });
 
 // 학교 감시
 watch(schoolMarkers, v => {
-  const imgSize = new kakao.value.maps.Size(40, 40);
+  const imgSize = new kakao.value.maps.Size(35, 35);
   const markerImg = new kakao.value.maps.MarkerImage('/img/schoolMarker.png', imgSize);
   mountMarkers(null, schoolMarkerList.value);
   schoolMarkerList.value = [];
   v.forEach(p => {
     const marker = new kakao.value.maps.Marker({
-      map: map.value,
       position: new kakao.value.maps.LatLng(p.lat, p.lng),
       image: markerImg,
-      clickable: true,
-      yAnchor: 0,
-      xAnchor: 0,
     });
     const customOverlay = new kakao.value.maps.CustomOverlay({
-      map: map.value,
-      position: marker.getPosition(),
-      content: `<div class="card mt-5 text-center">
-                  <div class="card-body p-2">
-                    <p class="card-text">${p.name}</p>
-                  </div>
-                </div>`,
-      clickable: true,
-      zIndex: 10,
+      position: new kakao.value.maps.LatLng(p.lat, p.lng),
+      content: '<div style="padding:5px;">Hello World!</div>',
     });
-    customOverlay.setVisible(false);
-    kakao.value.maps.event.addListener(marker, 'click', () => {
-      customOverlay.setVisible(true);
-      setTimeout(() => {
-        customOverlay.setVisible(false);
-      }, 2000);
-    });
+    kakao.value.maps.event.addListener(
+      marker,
+      'mouseover',
+      makeOverListener(map.value, customOverlay),
+    );
+    kakao.value.maps.event.addListener(marker, 'mouseout', makeOverListener(null, customOverlay));
     schoolMarkerList.value.push(marker);
   });
-  onOffMarkers(map.value.getLevel() <= 3 && isShowSchool.value, schoolMarkerList.value);
+  if (isShowSchool.value === false) return;
+  mountMarkers(map.value, schoolMarkerList.value);
 });
 
 watch(isShowSchool, v => {
-  onOffMarkers(map.value.getLevel() <= 3 && v, schoolMarkerList.value);
+  if (v === false) {
+    mountMarkers(null, schoolMarkerList.value);
+  } else {
+    mountMarkers(map.value, schoolMarkerList.value);
+  }
 });
 // cctv 감시
-// watch(cctvMarkers, v => {
-//   const imgSize = new kakao.value.maps.Size(10, 10);
-//   const markerImg = new kakao.value.maps.MarkerImage('/img/cctvMarker.png', imgSize);
-//   mountMarkers(null, cctvMarkerList.value);
-//   cctvMarkerList.value = [];
-//   v.forEach(p => {
-//     const marker = new kakao.value.maps.Marker({
-//       map: map.value,
-//       position: new kakao.value.maps.LatLng(p.lat, p.lng),
-//       image: markerImg,
-//       clickable: true,
-//     });
-//     const customOverlay = new kakao.value.maps.CustomOverlay({
-//       map: map.value,
-//       position: marker.getPosition(),
-//       content: `<div class="card mt-5 text-center">
-//                   <div class="card-body p-2">
-//                     <p class="card-text">용도 - ${p.usage}</p>
-//                   </div>
-//                 </div>`,
-//       clickable: true,
-//       zIndex: 10,
-//     });
-//     customOverlay.setVisible(false);
-//     kakao.value.maps.event.addListener(marker, 'click', () => {
-//       customOverlay.setVisible(true);
-//       setTimeout(() => {
-//         customOverlay.setVisible(false);
-//       }, 2000);
-//     });
-//     cctvMarkerList.value.push(marker);
-//   });
-//   onOffMarkers(map.value.getLevel() <= 3 && isShowCCTV.value, cctvMarkerList.value);
-// });
+watch(cctvMarkers, v => {
+  const imgSize = new kakao.value.maps.Size(15, 15);
+  const markerImg = new kakao.value.maps.MarkerImage('/img/cctvMarker.png', imgSize);
+  mountMarkers(null, cctvMarkerList.value);
+  cctvMarkerList.value = [];
+  v.forEach(p =>
+    cctvMarkerList.value.push(
+      new kakao.value.maps.Marker({
+        position: new kakao.value.maps.LatLng(p.lat, p.lng),
+        image: markerImg,
+      }),
+    ),
+  );
+  if (isShowCCTV.value === false) return;
+  mountMarkers(map.value, cctvMarkerList.value);
+});
 
-// watch(isShowCCTV, v => {
-//   onOffMarkers(map.value.getLevel() <= 3 && v, cctvMarkerList.value);
-// });
+watch(isShowCCTV, v => {
+  if (v === false) {
+    mountMarkers(null, cctvMarkerList.value);
+  } else {
+    mountMarkers(map.value, cctvMarkerList.value);
+  }
+});
 
 // 병원 감시
 watch(hospitalMarkers, v => {
-  const imgSize = new kakao.value.maps.Size(25, 25);
+  const imgSize = new kakao.value.maps.Size(20, 20);
   const markerImg = new kakao.value.maps.MarkerImage('/img/hospitalMarker.png', imgSize);
   mountMarkers(null, hospitalMarkerList.value);
   hospitalMarkerList.value = [];
-  v.forEach(p => {
-    const marker = new kakao.value.maps.Marker({
-      map: map.value,
-      position: new kakao.value.maps.LatLng(p.lat, p.lng),
-      image: markerImg,
-      clickable: true,
-    });
-    const customOverlay = new kakao.value.maps.CustomOverlay({
-      map: map.value,
-      position: marker.getPosition(),
-      content: `<div class="card mt-5 text-center">
-                  <div class="card-body p-2">
-                    <h6 class="card-title m-0">${p.name}</h6>
-                    <p class="card-text">전화번호 - ${p.phoneNumber}</p>
-                  </div>
-                </div>`,
-      clickable: true,
-      zIndex: 10,
-    });
-    customOverlay.setVisible(false);
-    kakao.value.maps.event.addListener(marker, 'click', () => {
-      customOverlay.setVisible(true);
-      setTimeout(() => {
-        customOverlay.setVisible(false);
-      }, 2000);
-    });
-    hospitalMarkerList.value.push(marker);
-  });
-
-  onOffMarkers(map.value.getLevel() <= 3 && isShowHospital.value, hospitalMarkerList.value);
+  v.forEach(p =>
+    hospitalMarkerList.value.push(
+      new kakao.value.maps.Marker({
+        position: new kakao.value.maps.LatLng(p.lat, p.lng),
+        image: markerImg,
+      }),
+    ),
+  );
+  if (isShowHospital.value === false) return;
+  mountMarkers(map.value, hospitalMarkerList.value);
 });
 
 watch(isShowHospital, v => {
-  onOffMarkers(map.value.getLevel() <= 3 && v, hospitalMarkerList.value);
+  if (v === false) {
+    mountMarkers(null, hospitalMarkerList.value);
+  } else {
+    mountMarkers(map.value, hospitalMarkerList.value);
+  }
 });
 
 //버스정류장 감시
 watch(busMarkers, v => {
-  const imgSize = new kakao.value.maps.Size(25, 25);
+  const imgSize = new kakao.value.maps.Size(15, 15);
   const markerImg = new kakao.value.maps.MarkerImage('/img/busMarker.png', imgSize);
   mountMarkers(null, busMarkerList.value);
   busMarkerList.value = [];
-  v.forEach(p => {
-    const marker = new kakao.value.maps.Marker({
-      map: map.value,
-      position: new kakao.value.maps.LatLng(p.lat, p.lng),
-      image: markerImg,
-      clickable: true,
-    });
-    const customOverlay = new kakao.value.maps.CustomOverlay({
-      map: map.value,
-      position: marker.getPosition(),
-      content: `<div class="card mt-5 text-center">
-                  <div class="card-body p-2">
-                    <h6 class="card-title m-0">버스정류장 - ${p.name}</h6>
-                  </div>
-                </div>`,
-      clickable: true,
-      zIndex: 10,
-    });
-    customOverlay.setVisible(false);
-    kakao.value.maps.event.addListener(marker, 'click', () => {
-      customOverlay.setVisible(true);
-      setTimeout(() => {
-        customOverlay.setVisible(false);
-      }, 2000);
-    });
-    busMarkerList.value.push(marker);
-  });
-
-  onOffMarkers(map.value.getLevel() <= 3 && isShowBus.value, busMarkerList.value);
+  v.forEach(p =>
+    busMarkerList.value.push(
+      new kakao.value.maps.Marker({
+        position: new kakao.value.maps.LatLng(p.lat, p.lng),
+        image: markerImg,
+      }),
+    ),
+  );
+  if (isShowBus.value === false) return;
+  mountMarkers(map.value, busMarkerList.value);
 });
 
 watch(isShowBus, v => {
-  onOffMarkers(map.value.getLevel() <= 3 && v, busMarkerList.value);
+  if (v === false) {
+    mountMarkers(null, busMarkerList.value);
+  } else {
+    mountMarkers(map.value, busMarkerList.value);
+  }
 });
 
 // 지하철 감시
 watch(subwayMarkers, v => {
-  const imgSize = new kakao.value.maps.Size(40, 40);
+  const imgSize = new kakao.value.maps.Size(30, 30);
   const markerImg = new kakao.value.maps.MarkerImage('/img/subwayMarker.png', imgSize);
   mountMarkers(null, subwayMarkerList.value);
   subwayMarkerList.value = [];
-  v.forEach(p => {
-    const marker = new kakao.value.maps.Marker({
-      map: map.value,
-      position: new kakao.value.maps.LatLng(p.lat, p.lng),
-      image: markerImg,
-      clickable: true,
-    });
-    const customOverlay = new kakao.value.maps.CustomOverlay({
-      map: map.value,
-      position: marker.getPosition(),
-      content: `<div class="card mt-5 text-center">
-                  <div class="card-body p-2">
-                    <h6 class="card-title m-0">역 - ${p.name}</h6>
-                    <p class="card-text">전화번호 - ${p.phoneNumber}</p>
-                  </div>
-                </div>`,
-      clickable: true,
-      zIndex: 10,
-    });
-    customOverlay.setVisible(false);
-    kakao.value.maps.event.addListener(marker, 'click', () => {
-      customOverlay.setVisible(true);
-      setTimeout(() => {
-        customOverlay.setVisible(false);
-      }, 2000);
-    });
-    subwayMarkerList.value.push(marker);
-  });
-
-  onOffMarkers(map.value.getLevel() <= 3 && isShowSubway.value, subwayMarkerList.value);
+  v.forEach(p =>
+    subwayMarkerList.value.push(
+      new kakao.value.maps.Marker({
+        position: new kakao.value.maps.LatLng(p.lat, p.lng),
+        image: markerImg,
+      }),
+    ),
+  );
+  if (isShowSubway.value === false) return;
+  mountMarkers(map.value, subwayMarkerList.value);
 });
 
 watch(isShowSubway, v => {
-  onOffMarkers(map.value.getLevel() <= 3 && v, subwayMarkerList.value);
+  if (v === false) {
+    mountMarkers(null, subwayMarkerList.value);
+  } else {
+    mountMarkers(map.value, subwayMarkerList.value);
+  }
 });
 
 // 셀렉트 바 좌표 이동 (좌표이동 추가)
@@ -386,18 +273,6 @@ watch(sidoGugun, v => {
   const geocoder = new kakao.value.maps.services.Geocoder();
   const [sido, gugun] = v;
   geocoder.addressSearch(`${sido} ${gugun}`, (result, status) => {
-    if (status === kakao.value.maps.services.Status.OK) {
-      map.value.setCenter(new kakao.value.maps.LatLng(result[0].address.y, result[0].address.x));
-    }
-  });
-});
-// searchBar 이벤트 감시
-import { useSearchStore } from '@/stores/search';
-const searchStore = useSearchStore();
-const { selectedSearchInput } = storeToRefs(searchStore);
-watch(selectedSearchInput, v => {
-  const geocoder = new kakao.value.maps.services.Geocoder();
-  geocoder.addressSearch(v, (result, status) => {
     if (status === kakao.value.maps.services.Status.OK) {
       map.value.setCenter(new kakao.value.maps.LatLng(result[0].address.y, result[0].address.x));
     }

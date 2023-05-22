@@ -67,7 +67,7 @@
             <ul class="dropdown-menu text-right m-0">
               <template v-if="userInfo.name !== '관리자'">
                 <li>
-                  <a class="dropdown-item fs-5 me" @click.prevent="router.push({ name: 'MyPage' })">
+                  <a class="dropdown-item fs-5 me" @click.prevent="router.push('/myPage/myQnA')">
                     <i class="bi bi-info-square"></i> Profile
                   </a>
                 </li>

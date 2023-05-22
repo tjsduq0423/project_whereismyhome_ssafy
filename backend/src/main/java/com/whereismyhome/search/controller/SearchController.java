@@ -24,4 +24,12 @@ public class SearchController {
 
         return ResponseEntity.ok().body(subwayName);
     }
+
+    //아파트 이름 + 북마크 개수 조회
+    @GetMapping("/house/{word}")
+    public ResponseEntity findByHouseName(@PathVariable("word") String word) {
+        List<Object[]> aptName = searchService.findAptName(word);
+
+        return null;
+    }
 }

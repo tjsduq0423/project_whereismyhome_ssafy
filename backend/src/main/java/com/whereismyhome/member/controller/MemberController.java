@@ -76,12 +76,18 @@ public class MemberController {
 
         return ResponseEntity.ok().body(key);
     }
-    
+
     //비밀번호 변경
     @PutMapping("/change")
     public ResponseEntity findPassword(@RequestBody MemberLoginDto loginDto) {
-        memberService.changePassword(mapper.memberLoginDtoToMember(loginDto)); 
+        memberService.changePassword(mapper.memberLoginDtoToMember(loginDto));
 
         return ResponseEntity.ok().body("비밀번호 변경 완료");
+    }
+
+    @GetMapping("/check/{member-id}")
+    public ResponseEntity memeberCheck(@PathVariable("member-id") String memberId) {
+
+        return ResponseEntity.ok().body(memberService.isCheck(memberId));
     }
 }

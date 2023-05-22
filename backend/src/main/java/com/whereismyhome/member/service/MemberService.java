@@ -121,4 +121,11 @@ public class MemberService {
 
         memberRepository.save(findMember);
     }
+
+    //회원 중복 검사 api용 로직
+    public boolean isCheck(String memeberId) {
+        Optional<Member> findMember = memberRepository.findById(memeberId);
+
+        return findMember.isEmpty();
+    }
 }

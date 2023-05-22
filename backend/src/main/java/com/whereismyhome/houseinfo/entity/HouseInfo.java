@@ -20,7 +20,7 @@ public class HouseInfo {
     private Long aptCode;
 
     @Column
-    private String buildYear;
+    private int buildYear;
 
     @Column
     private String roadName;
@@ -69,6 +69,9 @@ public class HouseInfo {
 
     @Column
     private int viewcount;
+
+    @Column
+    private Long avg;
 
     @Column
     private Point localPoint;

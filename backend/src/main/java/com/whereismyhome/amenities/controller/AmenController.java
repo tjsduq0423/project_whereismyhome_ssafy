@@ -21,13 +21,12 @@ public class AmenController {
     private final HouseInfoService houseInfoService;
     private final HouseInfoMapper mapper;
 
-    //반경 내 아파트 조회
-    @PostMapping("/house")
-    public ResponseEntity findApt(@RequestBody GeoPostDto geoPostDto) {
-        List<Object[]> aptList = amenService.findApt(geoPostDto.getLng(), geoPostDto.getLat(), geoPostDto.getZoomLevel());
-        List<HouseResponseDto> houseResponseDtos = mapper.aptListToHouseResponseDto(aptList);
+    //아파트 전체 조회
+    @GetMapping("/house")
+    public ResponseEntity findApt() {
+        List<HouseResponseDto> aptAll = amenService.findAptAll();
 
-        return ResponseEntity.ok().body(houseResponseDtos);
+        return ResponseEntity.ok().body(aptAll);
     }
 
     //반경 내 cctv 조회

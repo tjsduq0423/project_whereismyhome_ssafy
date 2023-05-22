@@ -1,7 +1,7 @@
 <template>
   <div>
     <Suspense>
-      <InfinityScroll></InfinityScroll>
+      <!-- <InfinityScroll></InfinityScroll> -->
       <template #fallback>
         <p>Loading...</p>
       </template>
@@ -10,7 +10,7 @@
 </template>
 
 <script setup>
-import InfinityScroll from '@/components/AppInfinityScroll.vue';
+// import InfinityScroll from '@/components/features/AppInfinityScroll.vue';
 </script>
 
 <style lang="scss" scoped></style>

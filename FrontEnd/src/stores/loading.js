@@ -5,7 +5,7 @@ export const useLoadingStore = defineStore('loading', () => {
   const loading = ref(false);
 
   let timer;
-  const vLoading = (delay = 500) => {
+  const vLoading = () => {
     loading.value = true;
 
     if (timer) {
@@ -14,7 +14,7 @@ export const useLoadingStore = defineStore('loading', () => {
 
     timer = setTimeout(() => {
       loading.value = false;
-    }, delay);
+    }, 1000);
   };
 
   return {

@@ -6,8 +6,8 @@
           <h3>SSAFY</h3>
           <ul class="list-unstyled small">
             <li class="mb-2">
-              Designed and built with all the love in the world by the SAFFY 08 Class team with the help of our
-              contributors.
+              Designed and built with all the love in the world by the SAFFY 08 Class team with the
+              help of our contributors.
             </li>
             <li class="mb-2">Code licensed MIT, docs By MJH, HSH</li>
           </ul>

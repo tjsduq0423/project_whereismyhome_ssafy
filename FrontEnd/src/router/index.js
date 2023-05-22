@@ -92,18 +92,16 @@ const router = createRouter({
       path: '/myPage',
       name: 'MyPage',
       meta: { requiresAuth: true },
-      component: () => import('@/views/main/my/MypageView.vue'),
+      component: () => import('@/views/main/my/MyPageView.vue'),
       children: [
         {
-          path: '/myPage/myQnA',
+          path: 'myQnA',
           name: 'MyQnA',
-          meta: { requiresAuth: true },
           component: () => import('@/views/main/my/MyQnAView.vue'),
         },
         {
-          path: '/myPage/myBookMark',
+          path: 'myBookMark',
           name: 'MyBookMark',
-          meta: { requiresAuth: true },
           component: () => import('@/views/main/my/MyBookMarkView.vue'),
         },
       ],

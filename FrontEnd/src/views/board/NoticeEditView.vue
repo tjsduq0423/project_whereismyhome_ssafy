@@ -5,7 +5,9 @@
     <AppBoardForm v-model:title="title" v-model:content="content" @submit.prevent="updateNotice">
       <template #actions>
         <button type="submit" class="btn btn-outline-success btn-lg ms-auto">수정</button>
-        <button type="button" class="btn btn-outline-danger btn-lg" @click="goListPage">취소</button>
+        <button type="button" class="btn btn-outline-danger btn-lg" @click="goListPage">
+          취소
+        </button>
       </template>
     </AppBoardForm>
   </AppContent>
@@ -53,7 +55,8 @@ const goListPage = () => router.push({ name: 'Notice' });
 
 <style scoped>
 .img {
-  background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.5)), url('/img/notice02.jpg');
+  background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.5)),
+    url('/img/notice02.jpg');
 }
 .cardWidthPadding {
   margin: 0rem 28vw 0rem 28vw;

@@ -5,7 +5,9 @@
     <AppBoardForm v-model:title="title" v-model:content="content" @submit.prevent="createQnA">
       <template #actions>
         <button type="submit" class="btn btn-outline-success btn-lg ms-auto">저장</button>
-        <button type="button" class="btn btn-outline-danger btn-lg" @click="goListPage">취소</button>
+        <button type="button" class="btn btn-outline-danger btn-lg" @click="goListPage">
+          취소
+        </button>
       </template>
     </AppBoardForm>
   </AppContent>

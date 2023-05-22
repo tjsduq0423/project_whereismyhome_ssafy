@@ -15,9 +15,12 @@
         <tr v-for="item in _items" :key="item.id" class="text-truncate">
           <th>{{ item.responseContent == null ? '답변완료' : '미답변' }}</th>
           <td>
-            <a href="" class="text-decoration-none text-success" @click.prevent="goDetailPage(item.id)">{{
-              item.title
-            }}</a>
+            <a
+              href=""
+              class="text-decoration-none text-success"
+              @click.prevent="goDetailPage(item.id)"
+              >{{ item.title }}</a
+            >
           </td>
           <td>{{ item.memberId }}</td>
           <td>{{ formatDate(item.createtime) }}</td>

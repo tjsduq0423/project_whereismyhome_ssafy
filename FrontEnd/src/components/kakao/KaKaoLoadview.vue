@@ -5,12 +5,15 @@
 <script setup>
 //kakao.value 로드 뷰
 import { useKakaoStore } from '@/stores/kakao';
+import { useSideBarStore } from '@/stores/sideBar';
+import { tryOnMounted } from '@vueuse/core';
 import { storeToRefs } from 'pinia';
-import { onMounted, watch } from 'vue';
 const kakaoStore = useKakaoStore();
+const sideBarStore = useSideBarStore();
+const { lodaViewLatLng } = storeToRefs(sideBarStore);
 const { kakao } = storeToRefs(kakaoStore);
 
-const createLoadView = (lat = '33.450701', lng = '126.570667') => {
+const createLoadView = (lat, lng) => {
   const roadViewContainer = document.getElementById('roadViewContainer');
   const roadview = new kakao.value.maps.Roadview(roadViewContainer);
   const roadviewClient = new kakao.value.maps.RoadviewClient();
@@ -21,22 +24,12 @@ const createLoadView = (lat = '33.450701', lng = '126.570667') => {
   });
 };
 
-onMounted(() => {
-  try {
-    if (kakao.value === null) return;
-    kakao.value.maps.load(createLoadView);
-  } catch (err) {
-    console.error(err);
-  }
+tryOnMounted(() => {
+  const [lat, lng] = lodaViewLatLng.value;
+  kakao.value.maps.load(() => {
+    createLoadView(lat, lng);
+  });
 });
-
-watch(
-  kakao,
-  newValue => {
-    newValue.maps.load(createLoadView);
-  },
-  { deep: true },
-);
 </script>
 
 <style lang="scss" scoped></style>

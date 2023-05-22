@@ -261,7 +261,12 @@
       </transition>
     </KaKaoMap>
 
-    <div v-else class="d-flex align-items-center justify-content-center" style="min-height: 80vh">
+    <div
+      v-else
+      class="d-flex flex-column align-items-center justify-content-center"
+      style="min-height: 80vh"
+    >
+      <!-- <div class="mb-5" style="font-size: 5vh">카카오맵 로딩 중...</div> -->
       <div
         class="spinner-border"
         role="status"
@@ -285,7 +290,7 @@ import { computed, ref } from 'vue';
 const delayMap = ref(false);
 setTimeout(() => {
   delayMap.value = true;
-}, 1000);
+}, 800);
 
 // searchBar
 import { useSearchStore } from '@/stores/search';

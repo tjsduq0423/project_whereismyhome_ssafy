@@ -38,15 +38,9 @@ export const useMarkersStore = defineStore('markers', () => {
   // 아파트 마커 visible 필터링.
   const priceRange = ref('10');
   const buildYearRange = ref(100);
-  const filteredApartMarkers = computed(() => {
-    return apartMarkers.value.filter(marker => {
-      return (
-        (parseInt(priceRange.value) === 21 || marker.avg / 10000 < parseInt(priceRange.value)) &&
-        2023 - marker.buildYear <= buildYearRange.value
-      );
-    });
-  });
+
   const setApartMarkers = async () => {
+    if (apartMarkers.value.length !== 0) return;
     try {
       const response = await getApartMarkers();
       apartMarkers.value = [...response.data];
@@ -96,7 +90,6 @@ export const useMarkersStore = defineStore('markers', () => {
   };
 
   return {
-    filteredApartMarkers,
     buildYearRange,
     priceRange,
     apartMarkers,

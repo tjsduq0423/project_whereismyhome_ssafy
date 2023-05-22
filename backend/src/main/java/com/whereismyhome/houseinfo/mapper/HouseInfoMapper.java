@@ -2,7 +2,7 @@ package com.whereismyhome.houseinfo.mapper;
 
 import com.whereismyhome.houseinfo.dto.ChartDataDto;
 import com.whereismyhome.houseinfo.dto.HouseInfoResponseDto;
-import com.whereismyhome.houseinfo.dto.HouseResponseDto;
+import com.whereismyhome.houseinfo.dto.HouseSearchResponseDto;
 import com.whereismyhome.houseinfo.entity.HouseInfo;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -16,7 +16,6 @@ public interface HouseInfoMapper {
     @Mapping(source = "dongCode.dongName", target = "dongName")
     HouseInfoResponseDto infoToInfoResponseDto(HouseInfo houseInfo);
 
-
     List<ChartDataDto> chartDataListToChartDataDtos(List<Object[]> chartDataList);
 
     default ChartDataDto objectToChartData(Object[] objects) {
@@ -25,5 +24,15 @@ public interface HouseInfoMapper {
                 .markCount((long) objects[1])
                 .viewCount((long) objects[2])
                 .dealAmount((long) objects[3]).build();
+    }
+
+    List<HouseSearchResponseDto> houseSearchDataToHouseSearchResponseDtos(List<Object[]> houseSearchList);
+
+    default HouseSearchResponseDto objectToHouseSearchResponseDto(Object[] objects) {
+        return HouseSearchResponseDto.builder()
+                .aptCode((long) objects[0])
+                .aptName(String.valueOf(objects[1]))
+                .bookMarkCount((long) objects[2])
+                .build();
     }
 }

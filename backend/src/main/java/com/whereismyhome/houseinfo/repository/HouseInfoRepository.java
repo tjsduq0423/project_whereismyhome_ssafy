@@ -10,7 +10,30 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface HouseInfoRepository extends JpaRepository<HouseInfo, Long> {
+    //아파트 이름 + 해당 아파트 북마크 개수
+    @Query(value = "select h.apt_code, " +
+            "       h.apartment_name, " +
+            "       count(b.houseinfo_aptcode) " +
+            "from bookmark b " +
+            "inner join (" +
+            "    select apt_code,apartment_name " +
+            "    from houseinfo " +
+            "    where apartment_name like %:word% " +
+            ") h on h.apt_code = b.houseinfo_aptcode " +
+            "group by h.apt_code; ",nativeQuery = true)
+    List<Object[]> findByHouseName(@Param("word") String word);
 
+    //구군 + 구군에 속한 아파트 개수
+    @Query(value = "select d.gugun_name, " +
+            "       count(h.apt_code) as aptCount " +
+            "from houseinfo h " +
+            "         inner join (select dong_code, gugun_name " +
+            "                     from dongcode " +
+            "                     where gugun_name like %:word%) d on d.dong_code = h.dong_code " +
+            "group by d.gugun_name;", nativeQuery = true)
+    List<Object[]> findByGuGunName(@Param("word") String word);
+
+    //아파트 정보 전체 조회
     @Query("select new com.whereismyhome.houseinfo.dto.HouseResponseDto(" +
             "h.aptCode, " +
             "h.apartmentName, " +

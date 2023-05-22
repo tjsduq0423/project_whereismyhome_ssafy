@@ -8,7 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity(name = "bookmark")
+@Table(name = "bookmark")
+@Entity
 @Getter
 @Setter
 @NoArgsConstructor

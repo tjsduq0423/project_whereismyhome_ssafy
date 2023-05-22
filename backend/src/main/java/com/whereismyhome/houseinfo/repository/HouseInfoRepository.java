@@ -18,7 +18,7 @@ public interface HouseInfoRepository extends JpaRepository<HouseInfo, Long> {
             "inner join (" +
             "    select apt_code,apartment_name " +
             "    from houseinfo " +
-            "    where apartment_name like '%':word'%' " +
+            "    where apartment_name like %:word% " +
             ") h on h.apt_code = b.houseinfo_aptcode " +
             "group by h.apt_code; ",nativeQuery = true)
     List<Object[]> findByHouseName(@Param("word") String word);

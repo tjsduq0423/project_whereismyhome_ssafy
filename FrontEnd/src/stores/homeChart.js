@@ -11,7 +11,6 @@ export const useHomeChartStore = defineStore('homeChar', () => {
 
   const setChartData = async sido => {
     const response = await getChartInfoBySidoName(sido);
-    console.log(response.data);
     const data = {
       name: sido,
       labels: [...response.data.map(el => el.gugunName)],

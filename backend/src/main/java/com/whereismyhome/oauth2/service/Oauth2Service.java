@@ -25,7 +25,7 @@ public class Oauth2Service {
     public String kakaoLogin(String code) {
         //추후 값 yml로 이동
         String client_id = "6c779f7199f5aa77f349e6165df482bc";
-        String redirect_uri = "http://localhost:8080/oauth2/kakao";
+        String redirect_uri = "http://localhost:5500/login";
 
         WebClient webClient = WebClient.create();
 

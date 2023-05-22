@@ -1,10 +1,10 @@
 <template>
   <AppContent class="img">
     <AppCardHeader>로그인</AppCardHeader>
-    <div>
-      <img src="@/assets/img/kakao_login_medium.png" @click="kakao" />
-    </div>
     <div class="card-body d-flex flex-column justify-content-center">
+      <button type="button" class="mb-4 btn p-0 shadow-sm border border-0" @click="kakao">
+        <img src="/img/kakao_login_medium_wide.png" style="width: 100%; height: 100%" />
+      </button>
       <form @submit.prevent>
         <div class="mb-4">
           <label for="id" class="form-label">ID</label>
@@ -53,17 +53,28 @@
 <script setup>
 import AppCardHeader from '@/components/layouts/AppCardHeader.vue';
 import AppContent from '@/components/layouts/AppContent.vue';
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 import { useAuthStore } from '@/stores/auth.js';
 import { ref } from 'vue';
 import { useAlert } from '@/composables/alert';
+const router = useRouter();
+const route = useRoute();
 
 const { vAlert, vSuccess } = useAlert();
-const { validateMember } = useAuthStore();
+const { validateMember, kvalidateMember } = useAuthStore();
 const id = ref('');
 const password = ref('');
 
-const router = useRouter();
+const kLogin = async code => {
+  try {
+    await kvalidateMember(code);
+    vSuccess('카카오 로그인 성공');
+    router.push({ name: 'Home' });
+  } catch (err) {
+    vAlert('카카오 로그인 실패');
+    console.error(err);
+  }
+};
 
 const login = async () => {
   if (!validate()) return;
@@ -94,9 +105,14 @@ const goSignup = () => {
 const kakao = () => {
   window.open(
     'https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=6c779f7199f5aa77f349e6165df482bc&redirect_uri=http://localhost:5500/login',
-    {},
+    '_self',
   );
 };
+// 쿼리스트링으로 code를 받게되면 이를 통해 서버에 요청을 보내는 로직을 수행한다.
+if (route.query.code) {
+  console.log(route.query.code);
+  kLogin(route.query.code);
+}
 </script>
 
 <style scoped>

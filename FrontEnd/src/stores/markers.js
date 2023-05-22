@@ -46,9 +46,9 @@ export const useMarkersStore = defineStore('markers', () => {
       );
     });
   });
-  const setApartMarkers = async (lng, lat) => {
+  const setApartMarkers = async () => {
     try {
-      const response = await getApartMarkers(lng, lat);
+      const response = await getApartMarkers();
       apartMarkers.value = [...response.data];
     } catch (err) {
       console.error(err);

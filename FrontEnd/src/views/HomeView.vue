@@ -13,7 +13,10 @@
       </div>
     </template>
 
-    <h1 class="chartHeader text-center">Trend</h1>
+    <h1 class="chartHeader text-center">
+      <i class="bi bi-fire" style="color: red"></i> Trend
+      <i class="bi bi-fire" style="color: red"></i>
+    </h1>
     <AppBarChart v-if="chartData" :chart-data="chartData"> </AppBarChart>
     <div
       v-else
@@ -28,7 +31,9 @@
         <span class="visually-hidden">Loading...</span>
       </div>
     </div>
-    <small class="footerText text-muted">트렌드에 관한 이야기</small>
+    <small class="footerText text-muted mt-3"
+      >거래량, 북마크, 조회수 데이터를 기준으로 산출한 관심도 그래프 입니다.</small
+    >
     <hr />
     <div class="d-flex flex-wrap gap-2 justify-content-center align-items-center">
       <button

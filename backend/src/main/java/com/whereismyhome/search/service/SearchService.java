@@ -23,4 +23,9 @@ public class SearchService {
     public List<Object[]> findAptName(String word) {
         return houseInfoRepository.findByHouseName(word);
     }
+
+    //구군 + 구군에 속한 아파트 개수
+    public List<Object[]> findGuGunName(String word) {
+        return houseInfoRepository.findByGuGunName(word);
+    }
 }

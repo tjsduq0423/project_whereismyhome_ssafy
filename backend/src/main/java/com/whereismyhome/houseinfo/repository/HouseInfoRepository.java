@@ -23,6 +23,16 @@ public interface HouseInfoRepository extends JpaRepository<HouseInfo, Long> {
             "group by h.apt_code; ",nativeQuery = true)
     List<Object[]> findByHouseName(@Param("word") String word);
 
+    //구군 + 구군에 속한 아파트 개수
+    @Query(value = "select d.gugun_name, " +
+            "       count(h.apt_code) as aptCount " +
+            "from houseinfo h " +
+            "         inner join (select dong_code, gugun_name " +
+            "                     from dongcode " +
+            "                     where gugun_name like %:word%) d on d.dong_code = h.dong_code " +
+            "group by d.gugun_name;", nativeQuery = true)
+    List<Object[]> findByGuGunName(@Param("word") String word);
+
     //아파트 정보 전체 조회
     @Query("select new com.whereismyhome.houseinfo.dto.HouseResponseDto(" +
             "h.aptCode, " +

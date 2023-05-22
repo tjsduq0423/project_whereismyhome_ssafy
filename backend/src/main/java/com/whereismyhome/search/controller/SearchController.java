@@ -1,6 +1,8 @@
 package com.whereismyhome.search.controller;
 
 import com.whereismyhome.amenities.dto.response.SubwaySearchResponseDto;
+import com.whereismyhome.dongcode.dto.DonCodeSearchResponseDto;
+import com.whereismyhome.dongcode.mapper.DongCodeMapper;
 import com.whereismyhome.houseinfo.dto.HouseSearchResponseDto;
 import com.whereismyhome.houseinfo.mapper.HouseInfoMapper;
 import com.whereismyhome.search.service.SearchService;
@@ -19,6 +21,8 @@ import java.util.List;
 public class SearchController {
     private final SearchService searchService;
     private final HouseInfoMapper houseInfoMapper;
+    private final DongCodeMapper dongCodeMapper;
+
     //지하철 조회
     @GetMapping("/subway/{word}")
     public ResponseEntity findSubwayName(@PathVariable("word") String word) {
@@ -32,5 +36,13 @@ public class SearchController {
     public ResponseEntity findByHouseName(@PathVariable("word") String word) {
         List<HouseSearchResponseDto> houseSearchResponseDtos = houseInfoMapper.houseSearchDataToHouseSearchResponseDtos(searchService.findAptName(word));
         return ResponseEntity.ok().body(houseSearchResponseDtos);
+    }
+
+    //구군 이름 + 해당 구에 속하는 아파트 개수
+    @GetMapping("/gugun/{word}")
+    public ResponseEntity findByGuGun(@PathVariable("word") String word) {
+        List<DonCodeSearchResponseDto> donCodeSearchResponseDtos = dongCodeMapper.dongCodeDataToDonCodeSearchResponseDtos(searchService.findGuGunName(word));
+
+        return ResponseEntity.ok().body(donCodeSearchResponseDtos);
     }
 }

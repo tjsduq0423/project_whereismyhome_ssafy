@@ -10,7 +10,7 @@ export const getCCTVMarkers = (lng, lat) => amen.post('/cctv', { lng, lat });
 
 export const getBusMarkers = (lng, lat) => amen.post('/bus', { lng, lat });
 
-export const getApartMarkers = (lng, lat) => amen.post('/house', { lng, lat });
+export const getApartMarkers = () => amen.get('/house');
 
 export const getSubwayDistance = aptCode => amen.get(`/subway${aptCode}`);
 

@@ -49,7 +49,7 @@ public class AmenService {
     }
 
     //반경 내 지하철 정보조회
-    public List<SubwayResponseDto> findSubway(String lng, String lat, int zoomLevel) {
+    public List<Object[]> findSubway(String lng, String lat, int zoomLevel) {
 
         return subwayRepository.findBySubway(lng, lat, getDist(zoomLevel));
     }

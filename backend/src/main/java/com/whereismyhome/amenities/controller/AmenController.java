@@ -63,9 +63,9 @@ public class AmenController {
     //반경 내 subway조회
     @PostMapping("/subway")
     public ResponseEntity findSubway(@RequestBody GeoPostDto geoPostDto) {
-        List<SubwayResponseDto> subwayList = amenService.findSubway(geoPostDto.getLng(), geoPostDto.getLat(), geoPostDto.getZoomLevel());
+        List<SubwayResponseDto> subwayResponseDtos = amenMapper.subWayDataListToSubwayResponseDtos(amenService.findSubway(geoPostDto.getLng(), geoPostDto.getLat(), geoPostDto.getZoomLevel()));
 
-        return ResponseEntity.ok().body(subwayList);
+        return ResponseEntity.ok().body(subwayResponseDtos);
     }
 
     //아파트 중심으로 반경 이내
@@ -107,8 +107,8 @@ public class AmenController {
     @GetMapping("/subway/{apt-code}")
     public ResponseEntity aptSubway(@PathVariable("apt-code") long aptCode) {
         HousePointDto point = houseInfoService.getPoint(aptCode);
-        List<HospitalResponseDto> hospitalList = amenService.findHospital(point.getLng(), point.getLat(),0);
+        List<SubwayResponseDto> subwayResponseDtos = amenMapper.subWayDataListToSubwayResponseDtos(amenService.findSubway(point.getLng(), point.getLat(), 0));
 
-        return ResponseEntity.ok().body(hospitalList);
+        return ResponseEntity.ok().body(subwayResponseDtos);
     }
 }

@@ -8,7 +8,7 @@
 // kakao map 생성.
 import { ref, watch } from 'vue';
 import { storeToRefs } from 'pinia';
-import { tryOnMounted } from '@vueuse/core';
+import { tryOnMounted, watchDebounced } from '@vueuse/core';
 import { useKakaoStore } from '@/stores/kakao';
 import { useLoading } from '@/composables/loading';
 import { useDebounceFn } from '@vueuse/core';
@@ -28,24 +28,30 @@ const initMap = () => {
   };
   //맵 생성 + zoom controller 부착
   map.value = new kakao.value.maps.Map(container, options);
+  map.value.setMaxLevel(9);
+  map.value.setKeyboardShortcuts(false);
   map.value.addControl(new kakao.value.maps.ZoomControl(), kakao.value.maps.ControlPosition.RIGHT);
   // 지도 확대 축소 이벤트
-  kakao.value.maps.event.addListener(map.value, 'zoom_changed', () => {
-    const level = map.value.getLevel();
-    if (level > 3) {
-      if (isShowCCTV.value) onOffMarkers(false, cctvMarkerList.value);
-      if (isShowHospital.value) onOffMarkers(false, hospitalMarkerList.value);
-      if (isShowBus.value) onOffMarkers(false, busMarkerList.value);
-      if (isShowSchool.value) onOffMarkers(false, subwayMarkerList.value);
-      if (isShowSubway.value) onOffMarkers(false, schoolMarkerList.value);
-    } else {
-      if (isShowCCTV.value) onOffMarkers(true, cctvMarkerList.value);
-      if (isShowHospital.value) onOffMarkers(true, hospitalMarkerList.value);
-      if (isShowBus.value) onOffMarkers(true, busMarkerList.value);
-      if (isShowSchool.value) onOffMarkers(true, schoolMarkerList.value);
-      if (isShowSubway.value) onOffMarkers(true, subwayMarkerList.value);
-    }
-  });
+  kakao.value.maps.event.addListener(
+    map.value,
+    'zoom_changed',
+    useDebounceFn(() => {
+      const level = map.value.getLevel();
+      if (level > 3) {
+        if (isShowHospital.value) onOffMarkers(false, hospitalMarkerList.value);
+        if (isShowBus.value) onOffMarkers(false, busMarkerList.value);
+        if (isShowSchool.value) onOffMarkers(false, subwayMarkerList.value);
+        if (isShowSubway.value) onOffMarkers(false, schoolMarkerList.value);
+      } else {
+        if (isShowHospital.value) onOffMarkers(true, hospitalMarkerList.value);
+        if (isShowBus.value) onOffMarkers(true, busMarkerList.value);
+        if (isShowSchool.value) onOffMarkers(true, schoolMarkerList.value);
+        if (isShowSubway.value) onOffMarkers(true, subwayMarkerList.value);
+      }
+      if (level > 5) zoomFilter.value = false;
+      else zoomFilter.value = true;
+    }, 500),
+  );
   // 중심좌표 추적 이벤트
   kakao.value.maps.event.addListener(
     map.value,
@@ -68,8 +74,10 @@ const initMap = () => {
 // 맵 마운트
 tryOnMounted(async () => {
   kakao.value.maps.load(initMap);
+  vLoading();
   await setApartMarkers();
 });
+
 // memberId
 import { useAuthStore } from '@/stores/auth';
 const authStore = useAuthStore();
@@ -77,7 +85,7 @@ const { userInfo } = storeToRefs(authStore);
 // 북마크
 import { useBookmarkStore } from '@/stores/bookmark';
 const bookmarkStore = useBookmarkStore();
-const { getBookmarkList } = bookmarkStore;
+const { setBookmarkList } = bookmarkStore;
 // 사이드바
 import { useSideBarStore } from '@/stores/sideBar';
 const sideBarStore = useSideBarStore();
@@ -87,44 +95,40 @@ const { setAptInfo, setAptDealInfo, setAptRankByCode } = sideBarStore;
 import { useMarkersStore } from '@/stores/markers';
 const markersStore = useMarkersStore();
 const {
-  apartMarkers,
   schoolMarkers,
-  // cctvMarkers,
   hospitalMarkers,
+  apartMarkers,
   subwayMarkers,
   busMarkers,
-  isShowCCTV,
   isShowSchool,
   isShowHospital,
   isShowSubway,
   isShowBus,
   sidoGugun,
+  priceRange,
+  buildYearRange,
 } = storeToRefs(markersStore);
-const {
-  setApartMarkers,
-  setSchoolMarkers,
-  setCCTVMarkers,
-  setHospitalMarkers,
-  setSubwayMarkers,
-  setBusMarkers,
-} = markersStore;
+const { setApartMarkers, setSchoolMarkers, setHospitalMarkers, setSubwayMarkers, setBusMarkers } =
+  markersStore;
 
 // 중심좌표 추적 -> 마커 데이터 api call
-watch(mapCenterLatLng, async v => {
-  // zoomLevel
-  // const level = map.value.getLevel();
-  const [lat, lng] = v;
-  await setSchoolMarkers(lng, lat);
-  await setCCTVMarkers(lng, lat);
-  await setHospitalMarkers(lng, lat);
-  await setSubwayMarkers(lng, lat);
-  await setBusMarkers(lng, lat);
-});
+watchDebounced(
+  mapCenterLatLng,
+  async v => {
+    // zoomLevel
+    // const level = map.value.getLevel();
+    const [lat, lng] = v;
+    await setSchoolMarkers(lng, lat);
+    await setHospitalMarkers(lng, lat);
+    await setSubwayMarkers(lng, lat);
+    await setBusMarkers(lng, lat);
+  },
+  { debounce: 500, maxWait: 5000 },
+);
 
 //아파트 마운트 및 필터를 위한 반응형 변수들.
 const apartMarkerList = ref([]);
 const schoolMarkerList = ref([]);
-const cctvMarkerList = ref([]);
 const hospitalMarkerList = ref([]);
 const busMarkerList = ref([]);
 const subwayMarkerList = ref([]);
@@ -142,34 +146,56 @@ const onOffMarkers = (isShow, markerList) => {
     marker.setVisible(isShow);
   });
 };
-
-// 마커 좌표를 가지고 있는 배열들을 감시하여 맵에 마커 mount unmount
-// watch debounce 사용할 것.
+// 전국구( 강남구 평균 매매가 ~원) 해당하는 평균 매매가와 위치별 커스텀 오버레이 생성  => 해당 오버레이 클릭시 줌
+// 마커 필터링 watcher
+const zoomFilter = ref(true);
+watchDebounced(
+  [priceRange, buildYearRange, zoomFilter],
+  ([newPriceRange, newBuildYearRange, newZoomFilter]) => {
+    apartMarkerList.value.forEach(aptMarker => {
+      const avg = aptMarker.info.avg;
+      const bulidYear = aptMarker.info.buildYear;
+      if (
+        (parseInt(newPriceRange) === 21 || avg / 10000 < parseInt(newPriceRange)) &&
+        2023 - bulidYear <= newBuildYearRange &&
+        newZoomFilter
+      ) {
+        aptMarker.marker.setVisible(true);
+      } else {
+        aptMarker.marker.setVisible(false);
+      }
+    });
+  },
+  {
+    debounce: 500,
+    maxWait: 5000,
+  },
+);
 
 watch(apartMarkers, v => {
   const imgSize = new kakao.value.maps.Size(35, 40);
   const markerImg = new kakao.value.maps.MarkerImage('/img/apartmentMarker.png', imgSize);
-  v.forEach(p => {
+  v.forEach(info => {
     const marker = new kakao.value.maps.Marker({
       map: map.value,
-      position: new kakao.value.maps.LatLng(p.lat, p.lng),
+      position: new kakao.value.maps.LatLng(info.lat, info.lng),
       image: markerImg,
       clickable: true,
     });
     kakao.value.maps.event.addListener(marker, 'click', async () => {
       if (showSideBar.value === true) showSideBar.value = false;
       try {
-        lodaViewLatLng.value = [p.lat, p.lng];
-        await setAptInfo(p.aptCode, p.apartmentName);
-        await setAptDealInfo(p.aptCode);
-        await setAptRankByCode(p.aptCode);
-        await getBookmarkList(userInfo.value.id);
+        lodaViewLatLng.value = [info.lat, info.lng];
+        await setAptInfo(info.aptCode, info.apartmentName);
+        await setAptDealInfo(info.aptCode);
+        await setAptRankByCode(info.aptCode);
+        await setBookmarkList(userInfo.value.id);
         showSideBar.value = true;
       } catch (err) {
         console.error(err);
       }
     });
-    apartMarkerList.value.push(marker);
+    apartMarkerList.value.push({ marker, info });
   });
 });
 
@@ -193,7 +219,7 @@ watch(schoolMarkers, v => {
       position: marker.getPosition(),
       content: `<div class="card mt-5 text-center">
                   <div class="card-body p-2">
-                    <p class="card-text">${p.name}</p>
+                    <p class="card-text fs-5">${p.name}</p>
                   </div>
                 </div>`,
       clickable: true,
@@ -214,45 +240,6 @@ watch(schoolMarkers, v => {
 watch(isShowSchool, v => {
   onOffMarkers(map.value.getLevel() <= 3 && v, schoolMarkerList.value);
 });
-// cctv 감시
-// watch(cctvMarkers, v => {
-//   const imgSize = new kakao.value.maps.Size(10, 10);
-//   const markerImg = new kakao.value.maps.MarkerImage('/img/cctvMarker.png', imgSize);
-//   mountMarkers(null, cctvMarkerList.value);
-//   cctvMarkerList.value = [];
-//   v.forEach(p => {
-//     const marker = new kakao.value.maps.Marker({
-//       map: map.value,
-//       position: new kakao.value.maps.LatLng(p.lat, p.lng),
-//       image: markerImg,
-//       clickable: true,
-//     });
-//     const customOverlay = new kakao.value.maps.CustomOverlay({
-//       map: map.value,
-//       position: marker.getPosition(),
-//       content: `<div class="card mt-5 text-center">
-//                   <div class="card-body p-2">
-//                     <p class="card-text">용도 - ${p.usage}</p>
-//                   </div>
-//                 </div>`,
-//       clickable: true,
-//       zIndex: 10,
-//     });
-//     customOverlay.setVisible(false);
-//     kakao.value.maps.event.addListener(marker, 'click', () => {
-//       customOverlay.setVisible(true);
-//       setTimeout(() => {
-//         customOverlay.setVisible(false);
-//       }, 2000);
-//     });
-//     cctvMarkerList.value.push(marker);
-//   });
-//   onOffMarkers(map.value.getLevel() <= 3 && isShowCCTV.value, cctvMarkerList.value);
-// });
-
-// watch(isShowCCTV, v => {
-//   onOffMarkers(map.value.getLevel() <= 3 && v, cctvMarkerList.value);
-// });
 
 // 병원 감시
 watch(hospitalMarkers, v => {
@@ -272,8 +259,8 @@ watch(hospitalMarkers, v => {
       position: marker.getPosition(),
       content: `<div class="card mt-5 text-center">
                   <div class="card-body p-2">
-                    <h6 class="card-title m-0">${p.name}</h6>
-                    <p class="card-text">전화번호 - ${p.phoneNumber}</p>
+                    <h5 class="card-title m-0">${p.name}</h5>
+                    <p class="card-text">${p.phoneNumber ? `전화번호 : ${p.phoneNumber}` : ''}</p>
                   </div>
                 </div>`,
       clickable: true,
@@ -314,7 +301,7 @@ watch(busMarkers, v => {
       position: marker.getPosition(),
       content: `<div class="card mt-5 text-center">
                   <div class="card-body p-2">
-                    <h6 class="card-title m-0">버스정류장 - ${p.name}</h6>
+                    <h5 class="card-title m-0">정류장 이름 : ${p.name}</h5>
                   </div>
                 </div>`,
       clickable: true,
@@ -355,8 +342,8 @@ watch(subwayMarkers, v => {
       position: marker.getPosition(),
       content: `<div class="card mt-5 text-center">
                   <div class="card-body p-2">
-                    <h6 class="card-title m-0">역 - ${p.name}</h6>
-                    <p class="card-text">전화번호 - ${p.phoneNumber}</p>
+                    <h4 class="card-title m-0">${p.name}역</h4>
+                    <p class="card-text">${p.phoneNumber ? `전화번호 : ${p.phoneNumber}` : ''}</p>
                   </div>
                 </div>`,
       clickable: true,

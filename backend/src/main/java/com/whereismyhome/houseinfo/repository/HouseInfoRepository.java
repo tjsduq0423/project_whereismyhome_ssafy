@@ -1,6 +1,7 @@
 package com.whereismyhome.houseinfo.repository;
 
 import com.whereismyhome.houseinfo.dto.HousePointDto;
+import com.whereismyhome.houseinfo.dto.HouseResponseDto;
 import com.whereismyhome.houseinfo.entity.HouseInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -9,14 +10,16 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface HouseInfoRepository extends JpaRepository<HouseInfo, Long> {
-    @Query(value = "select h.apt_code,h.apartment_name,h.lng,h.lat,h.build_year, " +
-            "round(avg(cast(replace(hd.deal_amount, ',', '') as signed)), -3) as avg " +
-            "from HouseInfo h " +
-            "left join housedeal hd on h.apt_code = hd.apt_code " +
-            "where st_contains(st_buffer(Point(:lng, :lat),:dist),h.local_point) " +
-            "group by h.apt_code"
-            , nativeQuery = true)
-    List<Object[]> findByApt(@Param("lng") String lng, @Param("lat") String lat, @Param("dist") double dist);
+
+    @Query("select new com.whereismyhome.houseinfo.dto.HouseResponseDto(" +
+            "h.aptCode, " +
+            "h.apartmentName, " +
+            "h.lng, " +
+            "h.lat, " +
+            "h.buildYear," +
+            "h.avg)" +
+            "from HouseInfo h")
+    List<HouseResponseDto> findByAptAll();
 
     @Query("select new com.whereismyhome.houseinfo.dto.HousePointDto(h.lng, h.lat) from HouseInfo h where h.aptCode = :aptCode")
     HousePointDto findByPoint(@Param("aptCode") long aptCode);

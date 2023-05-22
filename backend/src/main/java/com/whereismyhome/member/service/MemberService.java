@@ -29,7 +29,6 @@ public class MemberService {
     private final MemberRoleRepository memberRoleRepository;
     private final JavaMailSender javaMailSender;
 
-
     //회원가입
     public Member join(Member member) throws IllegalAccessException {
         verifiedMember(member.getId());

@@ -26,8 +26,7 @@ public class AmenService {
 
 
     //반경 내 버스 정보 조회
-    public List<BusResponseDto> findBus(String lng, String lat,int zoomLevel) {
-
+    public List<Object[]> findBus(String lng, String lat, int zoomLevel) {
         return busRepository.findByBus(lng, lat, getDist(zoomLevel));
     }
 

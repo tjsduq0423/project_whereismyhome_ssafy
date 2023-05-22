@@ -2,10 +2,10 @@ package com.whereismyhome.amenities.controller;
 
 import com.whereismyhome.amenities.dto.post.GeoPostDto;
 import com.whereismyhome.amenities.dto.response.*;
+import com.whereismyhome.amenities.mapper.AmenMapper;
 import com.whereismyhome.amenities.service.AmenService;
 import com.whereismyhome.houseinfo.dto.HousePointDto;
 import com.whereismyhome.houseinfo.dto.HouseResponseDto;
-import com.whereismyhome.houseinfo.mapper.HouseInfoMapper;
 import com.whereismyhome.houseinfo.service.HouseInfoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +19,7 @@ import java.util.List;
 public class AmenController {
     private final AmenService amenService;
     private final HouseInfoService houseInfoService;
-    private final HouseInfoMapper mapper;
+    private final AmenMapper amenMapper;
 
     //아파트 전체 조회
     @GetMapping("/house")
@@ -56,8 +56,8 @@ public class AmenController {
     //반경 내 bus 조회
     @PostMapping("/bus")
     public ResponseEntity findBus(@RequestBody GeoPostDto geoPostDto) {
-        List<BusResponseDto> busList = amenService.findBus(geoPostDto.getLng(), geoPostDto.getLat(),geoPostDto.getZoomLevel());
-        return ResponseEntity.ok().body(busList);
+        List<BusResponseDto> busResponseDtos = amenMapper.busDataListToBusResponseDtos(amenService.findBus(geoPostDto.getLng(), geoPostDto.getLat(), geoPostDto.getZoomLevel()));
+        return ResponseEntity.ok().body(busResponseDtos);
     }
 
     //반경 내 subway조회
@@ -73,9 +73,9 @@ public class AmenController {
     @GetMapping("/bus/{apt-code}")
     public ResponseEntity aptBus(@PathVariable("apt-code") long aptCode) {
         HousePointDto point = houseInfoService.getPoint(aptCode);
-        List<BusResponseDto> busList = amenService.findBus(point.getLng(), point.getLat(),0);
+        List<BusResponseDto> busResponseDtos = amenMapper.busDataListToBusResponseDtos(amenService.findBus(point.getLng(), point.getLat(), 0));
 
-        return ResponseEntity.ok().body(busList);
+        return ResponseEntity.ok().body(busResponseDtos);
     }
 
     //cctv

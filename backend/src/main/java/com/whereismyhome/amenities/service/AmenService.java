@@ -37,13 +37,13 @@ public class AmenService {
     }
 
     //변경 내 학교 정보 조회
-    public List<SchoolResponseDto> findSchool(String lng, String lat, int zoomLevel) {
+    public List<Object[]> findSchool(String lng, String lat, int zoomLevel) {
 
         return schoolRepository.findBySchool(lng, lat, getDist(zoomLevel));
     }
 
     //반경 내 병원 정보 조회
-    public List<HospitalResponseDto> findHospital(String lng, String lat, int zoomLevel) {
+    public List<Object[]> findHospital(String lng, String lat, int zoomLevel) {
 
         return hospitalRepository.findByHospital(lng, lat,getDist(zoomLevel));
     }

@@ -40,17 +40,17 @@ public class AmenController {
     //반경 내 hospital 조회
     @PostMapping("/hospital")
     public ResponseEntity findHospital(@RequestBody GeoPostDto geoPostDto) {
-        List<HospitalResponseDto> hospitalList = amenService.findHospital(geoPostDto.getLng(), geoPostDto.getLat(),geoPostDto.getZoomLevel());
+        List<HospitalResponseDto> hospitalResponseDtos = amenMapper.hospitalListToHospitalResponseDtos(amenService.findHospital(geoPostDto.getLng(), geoPostDto.getLat(), geoPostDto.getZoomLevel()));
 
-        return ResponseEntity.ok().body(hospitalList);
+        return ResponseEntity.ok().body(hospitalResponseDtos);
     }
 
     //반경 내 school 조회
     @PostMapping("/school")
     public ResponseEntity findSchool(@RequestBody GeoPostDto geoPostDto) {
-        List<SchoolResponseDto> schoolList = amenService.findSchool(geoPostDto.getLng(), geoPostDto.getLat(),geoPostDto.getZoomLevel());
+        List<SchoolResponseDto> schoolResponseDtos = amenMapper.schoolDataListToSchoolResponseDtos(amenService.findSchool(geoPostDto.getLng(), geoPostDto.getLat(), geoPostDto.getZoomLevel()));
 
-        return ResponseEntity.ok().body(schoolList);
+        return ResponseEntity.ok().body(schoolResponseDtos);
     }
 
     //반경 내 bus 조회
@@ -90,17 +90,17 @@ public class AmenController {
     @GetMapping("/hospital/{apt-code}")
     public ResponseEntity aptHospital(@PathVariable("apt-code") long aptCode) {
         HousePointDto point = houseInfoService.getPoint(aptCode);
-        List<HospitalResponseDto> hospitalList = amenService.findHospital(point.getLng(), point.getLat(),0);
+        List<HospitalResponseDto> hospitalResponseDtos = amenMapper.hospitalListToHospitalResponseDtos(amenService.findHospital(point.getLng(), point.getLat(), 0));
 
-        return ResponseEntity.ok().body(hospitalList);
+        return ResponseEntity.ok().body(hospitalResponseDtos);
     }
     //학교
     @GetMapping("/school/{apt-code}")
     public ResponseEntity aptSchool(@PathVariable("apt-code") long aptCode) {
         HousePointDto point = houseInfoService.getPoint(aptCode);
-        List<SchoolResponseDto> schoolList = amenService.findSchool(point.getLng(), point.getLat(),0);
+        List<SchoolResponseDto> schoolResponseDtos = amenMapper.schoolDataListToSchoolResponseDtos(amenService.findSchool(point.getLng(), point.getLat(), 0));
 
-        return ResponseEntity.ok().body(schoolList);
+        return ResponseEntity.ok().body(schoolResponseDtos);
     }
 
     //지하철

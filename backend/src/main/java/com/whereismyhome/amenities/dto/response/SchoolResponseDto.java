@@ -1,8 +1,12 @@
 package com.whereismyhome.amenities.dto.response;
 
-import lombok.Getter;
+import lombok.*;
 
 @Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class SchoolResponseDto {
     private Integer id;
 
@@ -12,10 +16,5 @@ public class SchoolResponseDto {
 
     private String lng;
 
-    public SchoolResponseDto(Integer id, String name, String lat, String lng) {
-        this.id = id;
-        this.name = name;
-        this.lat = lat;
-        this.lng = lng;
-    }
+    private String dist;
 }

@@ -1,13 +1,20 @@
 <template>
   <AppContent class="img">
     <div class="cardWidthPadding"></div>
-    <h2 class="" style="word-break: break-all; word-wrap: normal">
-      {{ item.title }}
-    </h2>
+    <h2 style="word-break: break-all; word-wrap: normal">제목 : {{ item.title }}</h2>
     <hr />
     <p style="height: 33vh; word-break: break-all; word-wrap: normal; max-width: 60vw" class="fs-4">
-      {{ item.content }}
+      내용 : {{ item.content }}
     </p>
+    <hr v-if="item.responseContent" />
+    <p
+      v-if="item.responseContent"
+      style="height: 33vh; word-break: break-all; word-wrap: normal; max-width: 60vw"
+      class="fs-4"
+    >
+      답변 : {{ item.responseContent }}
+    </p>
+    <hr />
     <div class="row g-2">
       <div class="col-auto me-auto">
         <button type="button" class="btn btn-outline-success btn-lg" @click="goListPage">

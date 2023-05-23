@@ -11,7 +11,7 @@
             <h1 class="my-5">
               {{ userInfo.name }}
             </h1>
-            <h5>userInfo.email</h5>
+            <h5>{{ userInfo.email }}</h5>
           </div>
         </div>
 

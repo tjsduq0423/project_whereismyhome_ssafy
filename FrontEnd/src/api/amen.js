@@ -14,12 +14,10 @@ export const getBusMarkers = (lng, lat, zoomlevel) => amen.post('/bus', { lng, l
 export const getApartMarkers = (lng, lat, zoomlevel) =>
   amen.post('/house', { lng, lat, zoomlevel });
 
-export const getSubwayDistance = aptCode => amen.get(`/subway${aptCode}`);
+export const getSubwayDistance = aptCode => amen.get(`/subway/${aptCode}`);
 
-export const getSchoolDistance = aptCode => amen.get(`/school${aptCode}`);
+export const getSchoolDistance = aptCode => amen.get(`/school/${aptCode}`);
 
-export const getHospitalDistance = aptCode => amen.get(`/hospital${aptCode}`);
+export const getHospitalDistance = aptCode => amen.get(`/hospital/${aptCode}`);
 
-export const getCCTVDistance = aptCode => amen.get(`/cctv${aptCode}`);
-
-export const getBusDistance = aptCode => amen.get(`/bus${aptCode}`);
+export const getBusDistance = aptCode => amen.get(`/bus/${aptCode}`);

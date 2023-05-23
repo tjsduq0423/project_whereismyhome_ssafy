@@ -37,7 +37,7 @@ public class Member implements UserDetails {
     private List<Board> boardList;
 
     @JsonBackReference
-    @OneToOne(mappedBy = "member")
+    @OneToOne(mappedBy = "member", cascade = CascadeType.ALL)
     private MemberRole roles;
 
 

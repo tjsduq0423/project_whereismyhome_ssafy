@@ -43,10 +43,9 @@ public class MemberService {
         MemberRole role = new MemberRole();
         role.setRole(autho);
         role.setMember(member);
+        member.setRoles(role);
 
         Member saveMember = memberRepository.save(member);
-        memberRoleRepository.save(role);
-
         return saveMember;
     }
 
@@ -126,5 +125,10 @@ public class MemberService {
         Optional<Member> findMember = memberRepository.findById(memeberId);
 
         return findMember.isEmpty();
+    }
+
+    //회원 삭제
+    public void deleteMember(String memeberId) {
+        memberRepository.deleteById(memeberId);
     }
 }

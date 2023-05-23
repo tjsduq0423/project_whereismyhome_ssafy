@@ -21,8 +21,10 @@ export const useAuthStore = defineStore('auth', () => {
     userInfo.value = { ...response.data };
   };
   const kvalidateMember = async code => {
-    const response = await axios.get(
+    const response = await axios.post(
       `${import.meta.env.VITE_APP_API_URL}/oauth2/kakao?code=${code}`,
+      {},
+      { withCredentials: true },
     );
     userInfo.value = { ...response.data };
   };

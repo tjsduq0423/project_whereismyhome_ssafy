@@ -11,8 +11,13 @@
             id="id"
             v-model="id"
             placeholder="Enter your ID"
+            @keyup="checkId"
           />
+          <small v-if="id && isDuplicated" id="passwordHelp" class="form-text text-danger">
+            중복 아이디입니다. 다시 입력해주세요.
+          </small>
         </div>
+
         <div class="form-group mb-2">
           <label for="InputPassword" class="form-label">Password</label>
           <input
@@ -92,10 +97,11 @@ import AppCardHeader from '@/components/layouts/AppCardHeader.vue';
 import AppContent from '@/components/layouts/AppContent.vue';
 import AppModal from '@/components/features/AppModal.vue';
 
-import { join, sendEmail } from '@/api/member';
+import { join, sendEmail, checkMember } from '@/api/member';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAlert } from '@/composables/alert';
+import { useDebounceFn } from '@vueuse/core';
 const { vAlert, vSuccess } = useAlert();
 const router = useRouter();
 
@@ -103,6 +109,13 @@ const id = ref('');
 const password = ref('');
 const name = ref('');
 const email = ref('');
+
+const isDuplicated = ref(false);
+const checkId = useDebounceFn(async () => {
+  if (!id.value) return;
+  const response = await checkMember(id.value);
+  isDuplicated.value = !response.data;
+}, 500);
 
 const modalOpen = ref(false);
 const inputCode = ref('');

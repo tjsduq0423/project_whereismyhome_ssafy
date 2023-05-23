@@ -200,27 +200,34 @@ import { useDebounceFn } from '@vueuse/core';
 import axios from 'axios';
 const bookmarkStore = useBookmarkStore();
 const { bookmarkList } = storeToRefs(bookmarkStore);
+const { dBookmark, aBookmark } = bookmarkStore;
 
 // 현재 고른 apt 기준 북마크 여부
-const curBookmark = ref(null);
-watch(bookmarkList, () => {
-  bookmarkList.value.forEach(v => {
-    if (v.aptCode === aptInfo.aptCode) {
-      curBookmark.value = true;
-      return;
-    }
-  });
-  curBookmark.value = false;
+const curBookmark = ref(false);
+watch(bookmarkList, newBookmarkList => {
+  if (newBookmarkList?.find(bookmark => bookmark.aptCode === aptInfo.value.aptCode)) {
+    curBookmark.value = true;
+  } else {
+    curBookmark.value = false;
+  }
 });
 
-const clickBookmark = () => {
-  curBookmark.value = !curBookmark.value;
-  useDebounceFn(() => {
-    console.log('test');
-    // api call
-    // 알람 등록
-  }, 500);
-};
+// 북마크 토글
+import { useAuthStore } from '@/stores/auth';
+const authStore = useAuthStore();
+const { userInfo } = storeToRefs(authStore);
+const clickBookmark = useDebounceFn(async () => {
+  try {
+    if (curBookmark.value) {
+      await dBookmark(userInfo.value.id, aptInfo.value.aptCode);
+    } else {
+      await aBookmark(userInfo.value.id, aptInfo.value.aptCode);
+    }
+    curBookmark.value = !curBookmark.value;
+  } catch (err) {
+    console.error(err);
+  }
+}, 500);
 
 // 페이지네이션 변수
 const curPage = ref(1);
@@ -229,24 +236,8 @@ watch([tableItems, curPage], ([items, p]) => {
   _tableItems.value = [...items.slice((p - 1) * 10, p * 10)];
 });
 
-// new tabs
+// new tabs 파싱
 const sectionHeadlineContent = ref('');
-watch(aptInfo, async v => {
-  const url = `https://land.naver.com/news/search.naver?keyword=${v.gugunName} 부동산`;
-
-  try {
-    const response = await axios.get(url);
-    const parser = new DOMParser();
-    const htmlDoc = parser.parseFromString(response.data, 'text/html');
-    const sectionHeadline = htmlDoc.querySelector('.headline_list');
-
-    if (sectionHeadline) {
-      sectionHeadlineContent.value = sectionHeadline.innerHTML;
-    }
-  } catch (err) {
-    console.error('Error occurred while fetching news:', err);
-  }
-});
 watch(aptInfo, async v => {
   const url = `https://land.naver.com/news/search.naver?keyword=${v.gugunName} 부동산`;
 

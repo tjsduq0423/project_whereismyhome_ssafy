@@ -28,7 +28,7 @@ const initMap = () => {
   };
   //맵 생성 + zoom controller 부착
   map.value = new kakao.value.maps.Map(container, options);
-  map.value.setMaxLevel(9);
+  map.value.setMaxLevel(8);
   map.value.setKeyboardShortcuts(false);
   map.value.addControl(new kakao.value.maps.ZoomControl(), kakao.value.maps.ControlPosition.RIGHT);
   // 지도 확대 축소 이벤트
@@ -211,8 +211,6 @@ watch(schoolMarkers, v => {
       position: new kakao.value.maps.LatLng(p.lat, p.lng),
       image: markerImg,
       clickable: true,
-      yAnchor: 0,
-      xAnchor: 0,
     });
     const customOverlay = new kakao.value.maps.CustomOverlay({
       map: map.value,

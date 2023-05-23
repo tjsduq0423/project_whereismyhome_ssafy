@@ -6,6 +6,7 @@ import com.whereismyhome.amenities.mapper.AmenMapper;
 import com.whereismyhome.amenities.service.AmenService;
 import com.whereismyhome.houseinfo.dto.HousePointDto;
 import com.whereismyhome.houseinfo.dto.HouseResponseDto;
+import com.whereismyhome.houseinfo.mapper.HouseInfoMapper;
 import com.whereismyhome.houseinfo.service.HouseInfoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,13 +21,14 @@ public class AmenController {
     private final AmenService amenService;
     private final HouseInfoService houseInfoService;
     private final AmenMapper amenMapper;
+    private final HouseInfoMapper houseInfoMapper;
 
     //아파트 전체 조회
-    @GetMapping("/house")
-    public ResponseEntity findApt() {
-        List<HouseResponseDto> aptAll = amenService.findAptAll();
+    @PostMapping("/house")
+    public ResponseEntity findApt(@RequestBody GeoPostDto geoPostDto) {
+        List<HouseResponseDto> houseResponseDtos = houseInfoMapper.aptDataListToHouseResponseDtos(amenService.findApt(geoPostDto.getLng(), geoPostDto.getLat(), geoPostDto.getZoomLevel()));
 
-        return ResponseEntity.ok().body(aptAll);
+        return ResponseEntity.ok().body(houseResponseDtos);
     }
 
     //반경 내 cctv 조회
@@ -86,6 +88,7 @@ public class AmenController {
 
         return ResponseEntity.ok().body(cctvList);
     }
+
     //병원
     @GetMapping("/hospital/{apt-code}")
     public ResponseEntity aptHospital(@PathVariable("apt-code") long aptCode) {
@@ -94,6 +97,7 @@ public class AmenController {
 
         return ResponseEntity.ok().body(hospitalResponseDtos);
     }
+
     //학교
     @GetMapping("/school/{apt-code}")
     public ResponseEntity aptSchool(@PathVariable("apt-code") long aptCode) {

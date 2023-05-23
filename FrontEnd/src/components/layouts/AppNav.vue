@@ -72,14 +72,14 @@
                     @click.prevent="router.push('/myPage/myQnA')"
                     type="button"
                   >
-                    <i class="bi bi-info-square"></i> Profile
+                    <i class="bi bi-info-square"></i> 프로필
                   </a>
                 </li>
                 <hr class="dropdown-divider" />
               </template>
               <li>
                 <a class="dropdown-item fs-5" type="button" @click.prevent="logout">
-                  <i class="bi bi-x-circle"></i> Logout
+                  <i class="bi bi-x-circle"></i> 로그아웃
                 </a>
               </li>
             </ul>

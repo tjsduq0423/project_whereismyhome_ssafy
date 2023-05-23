@@ -13,7 +13,7 @@
       </thead>
       <tbody class="table-group-divider">
         <tr v-for="item in _items" :key="item.id" class="text-truncate">
-          <th>{{ item.responseContent == null ? '답변완료' : '미답변' }}</th>
+          <td>{{ item.responseContent === null ? '미답변' : '답변완료' }}</td>
           <td>
             <a
               href=""

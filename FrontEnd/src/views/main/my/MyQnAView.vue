@@ -1,18 +1,18 @@
 <template>
-  <table class="table text-truncate fs-3 m-0">
+  <table class="fs-3 m-0">
     <thead>
       <tr>
-        <th>제목</th>
-        <th class="">답변</th>
-        <th class="text-center">작성시간</th>
+        <th class="text-center">제목</th>
+        <th class="text-center">답변내용</th>
+        <th class="text-center">작성일자</th>
       </tr>
     </thead>
   </table>
   <div ref="tbodyEl" class="infinity">
     <table class="table text-truncate">
-      <tbody>
-        <tr v-for="item in _items" :key="item.id" class="text-truncate">
-          <td class="text-truncate">
+      <tbody class="table-group-divider">
+        <tr v-for="item in _items" :key="item.id" class="text-truncate fs-4">
+          <td class="text-truncate text-center">
             <a
               href=""
               class="text-decoration-none text-success"
@@ -20,7 +20,7 @@
               >{{ item.title }}</a
             >
           </td>
-          <td class="text-truncate">
+          <td class="text-truncate text-center">
             {{ item.responseContent ? item.responseContent : '답변없음' }}
           </td>
           <td class="text-center text-truncate">{{ formatDate(item.createtime) }}</td>
@@ -104,17 +104,16 @@ const formatDate = date => {
 tr {
   td:nth-child(1),
   th:nth-child(1) {
-    text-align: start;
     padding-left: 16px;
     min-width: 15vw;
   }
   td:nth-child(2),
   th:nth-child(2) {
-    min-width: 45vw;
+    min-width: 35vw;
   }
   td:nth-child(3),
   th:nth-child(3) {
-    min-width: 8vw;
+    min-width: 10vw;
   }
 }
 </style>

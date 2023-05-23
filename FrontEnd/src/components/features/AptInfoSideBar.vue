@@ -102,15 +102,21 @@
           data-bs-parent="#accordionFlushExample"
         >
           <div class="accordion-body pe-4">
-            <div class="row m-0 p-0">
-              <div class="col-6 p-0 text-center d-flex"><i class="bi bi-check2"></i> 조회수</div>
-              <div class="col-6 text-center d-flex"><i class="bi bi-heart-fill"></i> 북마크</div>
+            <div class="row">
+              <div class="col-6 text-center d-flex flex-column fs-5">
+                <div><i class="bi bi-check2 me-2"></i>조회수</div>
+                <div>{{ aptRankInfo.viewCount }} 회</div>
+              </div>
+              <div class="col-6 text-center d-flex flex-column fs-5">
+                <div><i class="bi bi-heart-fill me-2"></i> 북마크</div>
+                <div>{{ aptRankInfo.mark }} 회</div>
+              </div>
             </div>
             <div class="row">
-              <div class="col-6 text-center d-flex">{{ aptInfo.gugunName }}상위 몇퍼</div>
-              <div class="col-6 text-center d-flex">
-                {{ aptInfo.gugunName }} 상위 몇퍼 {{ aptRankInfo }} ?? 종합 55등이네 그냥 이대로
-                써도 될지도?
+              <div class="col-12 text-center d-flex justify-content-center">
+                <p class="fs-4 text-danger m-0">
+                  종합순위 in {{ aptInfo.gugunName }} - {{ aptRankInfo.rank }}위
+                </p>
               </div>
             </div>
           </div>
@@ -137,20 +143,38 @@
         >
           <div class="accordion-body">
             <ul class="nav nav-tabs">
-              <li class="nav-item">
-                <a :class="{ active: true }" class="nav-link" href="#" @click.prevent="">학교</a>
-              </li>
-              <li class="nav-item">
-                <a :class="{ active: true }" class="nav-link" href="#" @click.prevent="">학교</a>
-              </li>
-              <li class="nav-item">
-                <a :class="{ active: true }" class="nav-link" href="#" @click.prevent="">학교</a>
-              </li>
-              <li class="nav-item">
-                <a :class="{ active: true }" class="nav-link" href="#" @click.prevent="">학교</a>
+              <li
+                class="nav-item"
+                v-for="tabName in Object.keys(aptToAmenDistanceInfo)"
+                :key="tabName"
+              >
+                <a
+                  style="color: rgb(107, 107, 107)"
+                  :class="{ active: tabName === curTab }"
+                  class="nav-link"
+                  href="#"
+                  @click.prevent="curTab = tabName"
+                  >{{ tabName }}</a
+                >
               </li>
             </ul>
-            <div class="content">test</div>
+            <template v-for="tabName in Object.keys(aptToAmenDistanceInfo)" :key="tabName">
+              <div class="content mt-2" v-if="curTab === tabName">
+                <div
+                  v-for="item in aptToAmenDistanceInfo[tabName]"
+                  :key="item"
+                  class="d-flex flex-column justify-content-center align-items-start mb-2 border border-1 p-2"
+                >
+                  <div class="fs-5">
+                    {{ item.name }}
+                  </div>
+                  <div>
+                    <i class="bi bi-arrow-right-short fs-5"></i>
+                    {{ item.dist }}
+                  </div>
+                </div>
+              </div>
+            </template>
           </div>
         </div>
       </div>
@@ -173,8 +197,13 @@
           aria-labelledby="flush-headingFour"
           data-bs-parent="#accordionFlushExample"
         >
-          <div class="accordion-body p-0">
-            <div v-html="sectionHeadlineContent"></div>
+          <div class="accordion-body p-2">
+            <div class="m-0" v-for="(data, idx) in newsDataList" :key="idx">
+              <div class="title fs-5 text-primary fw-bold" v-html="data.title"></div>
+              <hr class="m-0" />
+              <div class="content text-secondary" v-html="data.content"></div>
+              <hr class="mb-1" />
+            </div>
           </div>
         </div>
       </div>
@@ -192,12 +221,19 @@ import { ref, watch } from 'vue';
 import { useSideBarStore } from '@/stores/sideBar';
 import { storeToRefs } from 'pinia';
 const sideBarStore = useSideBarStore();
-const { showSideBar, aptInfo, aptRankInfo, priceRange, chartData, tableItems } =
-  storeToRefs(sideBarStore);
+const {
+  aptToAmenDistanceInfo,
+  showSideBar,
+  aptInfo,
+  aptRankInfo,
+  priceRange,
+  chartData,
+  tableItems,
+} = storeToRefs(sideBarStore);
+
 // 북마크
 import { useBookmarkStore } from '@/stores/bookmark';
 import { useDebounceFn } from '@vueuse/core';
-import axios from 'axios';
 const bookmarkStore = useBookmarkStore();
 const { bookmarkList } = storeToRefs(bookmarkStore);
 const { dBookmark, aBookmark } = bookmarkStore;
@@ -214,6 +250,7 @@ watch(bookmarkList, newBookmarkList => {
 
 // 북마크 토글
 import { useAuthStore } from '@/stores/auth';
+import axios from 'axios';
 const authStore = useAuthStore();
 const { userInfo } = storeToRefs(authStore);
 const clickBookmark = useDebounceFn(async () => {
@@ -236,23 +273,38 @@ watch([tableItems, curPage], ([items, p]) => {
   _tableItems.value = [...items.slice((p - 1) * 10, p * 10)];
 });
 
-// new tabs 파싱
-const sectionHeadlineContent = ref('');
-// watch(aptInfo, async v => {
-//   const url = `https://land.naver.com/news/search.naver?keyword=${v.gugunName} 부동산`;
+// tab 제어
+const curTab = ref('학교');
+const newsDataList = ref([]);
 
-//   try {
-//     const response = await axios.get(url);
-//     const parser = new DOMParser();
-//     const htmlDoc = parser.parseFromString(response.data, 'text/html');
-//     const sectionHeadline = htmlDoc.querySelector('.headline_list');
-//     if (sectionHeadline) {
-//       sectionHeadlineContent.value = sectionHeadline.innerHTML;
-//     }
-//   } catch (err) {
-//     console.error('Error occurred while fetching news:', err);
-//   }
-// });
+// new tabs 파싱
+watch(aptInfo, async v => {
+  const url = `https://land.naver.com/news/search.naver?keyword=${v.gugunName} 부동산&field=1`;
+
+  try {
+    const response = await axios.get(url);
+    const parser = new DOMParser();
+    const htmlDoc = parser.parseFromString(response.data, 'text/html');
+    const sectionHeadline = htmlDoc.querySelector('.headline_list');
+    if (!sectionHeadline) return;
+    console.log(sectionHeadline);
+    const lis = sectionHeadline.getElementsByTagName('li');
+    for (let i = 0; i < Math.min(lis.length, 10); i++) {
+      let li = lis[i];
+      let tags_a = li.getElementsByTagName('a');
+      let title;
+      if (tags_a?.length === 1) title = tags_a[0].innerHTML;
+      else title = tags_a[1].innerHTML;
+      let content = li.getElementsByTagName('dd')[0].innerHTML;
+      newsDataList.value.push({
+        title,
+        content,
+      });
+    }
+  } catch (err) {
+    console.error('Error occurred while fetching news:', err);
+  }
+});
 </script>
 
 <style lang="scss" scoped>
@@ -271,5 +323,11 @@ const sectionHeadlineContent = ref('');
   height: 30%; /* 스크롤바의 길이 */
   background: #d1d1d1; /* 스크롤바의 색상 */
   border-radius: 10px;
+}
+.bi-check2::before,
+.bi-heart-fill::before,
+.bi-arrow-right-short::before {
+  display: inline-block;
+  vertical-align: middle;
 }
 </style>

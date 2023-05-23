@@ -145,7 +145,7 @@
             필터
           </button>
           <div class="dropdown-menu p-5" style="min-width: 30vw">
-            <div class="row m-0 p-0">
+            <div>
               <h4>평균 거래가</h4>
               <label for="customRange1" class="form-label">{{
                 priceRange <= 20 ? `~${priceRange}억` : '무제한'
@@ -161,7 +161,7 @@
               />
             </div>
             <hr />
-            <div class="row m-0 p-0">
+            <div>
               <h4>준공년도</h4>
               <div class="text-success"></div>
               <div class="row mb-2">

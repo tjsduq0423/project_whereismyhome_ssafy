@@ -1,12 +1,19 @@
 import { computed, ref } from 'vue';
 import { defineStore } from 'pinia';
 import { getAptInfoByCode, getAptRankByCode, getAptDealInfoByCode } from '@/api/info';
+import {
+  getBusDistance,
+  getSubwayDistance,
+  getSchoolDistance,
+  getHospitalDistance,
+} from '@/api/amen';
 export const useSideBarStore = defineStore('sideBar', () => {
   // sidebar show
   const showSideBar = ref(false);
   // sidebar loadView latlng
   const lodaViewLatLng = ref([]);
   // sidebar info
+  const aptToAmenDistanceInfo = ref({});
   const aptInfo = ref({});
   const aptDealInfo = ref([]);
   const aptRankInfo = ref('');
@@ -15,7 +22,6 @@ export const useSideBarStore = defineStore('sideBar', () => {
     if (prices.length === 0) return [];
     return [Math.min(...prices), Math.max(...prices)];
   });
-
   const chartData = computed(() => {
     const result = [];
     const groupedData = {};
@@ -60,6 +66,20 @@ export const useSideBarStore = defineStore('sideBar', () => {
       };
     });
   });
+
+  const setAptToAmenDistanceInfo = async aptCode => {
+    const bus = (await getBusDistance(aptCode)).data;
+    const subway = (await getSubwayDistance(aptCode)).data;
+    const school = (await getSchoolDistance(aptCode)).data;
+    const hospital = (await getHospitalDistance(aptCode)).data;
+    aptToAmenDistanceInfo.value = {
+      학교: school,
+      병원: hospital,
+      버스: bus,
+      열차: subway,
+    };
+  };
+
   const setAptInfo = async (aptCode, aptName) => {
     const response = await getAptInfoByCode(aptCode);
     aptInfo.value = { ...response.data, aptName };
@@ -85,5 +105,7 @@ export const useSideBarStore = defineStore('sideBar', () => {
     setAptInfo,
     setAptDealInfo,
     setAptRankByCode,
+    setAptToAmenDistanceInfo,
+    aptToAmenDistanceInfo,
   };
 });

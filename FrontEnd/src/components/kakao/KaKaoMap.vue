@@ -31,7 +31,7 @@ const initMap = () => {
   };
   //맵 생성 + zoom controller 부착
   map.value = new kakao.value.maps.Map(container, options);
-  map.value.setMaxLevel(9);
+  map.value.setMaxLevel(7);
   map.value.setKeyboardShortcuts(false);
   map.value.addControl(new kakao.value.maps.ZoomControl(), kakao.value.maps.ControlPosition.RIGHT);
   // 지도 확대 축소 이벤트
@@ -53,7 +53,7 @@ const initMap = () => {
       }
       if (level > 4) zoomFilter.value = false;
       else zoomFilter.value = true;
-    }, 250),
+    }, 500),
   );
   // 중심좌표 추적 이벤트
   kakao.value.maps.event.addListener(
@@ -92,6 +92,7 @@ import { useSideBarStore } from '@/stores/sideBar';
 const sideBarStore = useSideBarStore();
 const { showSideBar, lodaViewLatLng } = storeToRefs(sideBarStore);
 const { setAptInfo, setAptDealInfo, setAptRankByCode } = sideBarStore;
+const { setAptToAmenDistanceInfo } = sideBarStore;
 //마커
 import { useMarkersStore } from '@/stores/markers';
 const markersStore = useMarkersStore();
@@ -124,7 +125,7 @@ watchDebounced(
     await setSubwayMarkers(lng, lat, zoomlevel);
     await setBusMarkers(lng, lat, zoomlevel);
   },
-  { debounce: 250, maxWait: 5000 },
+  { debounce: 500, maxWait: 5000 },
 );
 
 //아파트 마운트 및 필터를 위한 반응형 변수들.
@@ -168,7 +169,7 @@ watchDebounced(
     });
   },
   {
-    debounce: 500,
+    debounce: 250,
     maxWait: 5000,
   },
 );
@@ -196,6 +197,7 @@ watch(apartMarkers, v => {
         await setAptDealInfo(info.aptCode);
         await setAptRankByCode(info.aptCode);
         await setBookmarkList(userInfo.value.id);
+        await setAptToAmenDistanceInfo(info.aptCode);
         if (!cookies.isKey(info.aptCode)) {
           cookies.set(info.aptCode, 'code', '30d');
           await plusViewCount(info.aptCode);

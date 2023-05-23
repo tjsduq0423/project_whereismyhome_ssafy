@@ -1,32 +1,36 @@
 <template>
-  <table class="table text-truncate fs-3 m-0">
+  <table class="fs-3 m-0">
     <thead>
       <tr>
-        <th>아파트 이름</th>
-        <th>지역</th>
-        <th>건설년도</th>
-        <th>거래가격</th>
+        <th class="text-center">아파트 이름</th>
+        <th class="text-center">지역</th>
+        <th class="text-center">건설년도</th>
+        <th class="text-center">거래가격</th>
       </tr>
     </thead>
   </table>
   <div ref="tbodyEl" class="infinity">
     <table class="table text-truncate">
-      <tbody>
-        <tr v-for="(item, idx) in _items" :key="idx" class="text-truncate">
-          <td class="text-truncate">
+      <tbody class="table-group-divider">
+        <tr v-for="(item, idx) in _items" :key="idx" class="text-truncate fs-4">
+          <td class="text-truncate text-center">
             {{ item.aptName }}
           </td>
-          <td class="text-truncate">
+          <td class="text-truncate text-center">
             {{ item.areaName }}
           </td>
           <td class="text-center text-truncate">{{ item.buildYear }}</td>
-          <td>{{ item.min / 10000 }}억 ~ {{ item.max / 10000 }} 억</td>
+          <td class="text-center">{{ item.min / 10000 }}억 ~ {{ item.max / 10000 }} 억</td>
         </tr>
       </tbody>
     </table>
   </div>
   <div class="d-flex">
-    <button type="button" class="btn btn-outline-success ms-auto mt-3 btn-lg" @click="goMap">
+    <button
+      type="button"
+      class="btn btn-outline-success ms-auto mt-3 btn-lg"
+      @click="$router.push('/myBookMarkInMapView')"
+    >
       맵에서 보기
     </button>
   </div>
@@ -35,11 +39,11 @@
 <script setup>
 import { ref } from 'vue';
 import { storeToRefs } from 'pinia';
-import { useRouter } from 'vue-router';
+// import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
 import { useInfiniteScroll } from '@vueuse/core';
 import { getBookmark } from '@/api/bookmark';
-const router = useRouter();
+// const router = useRouter();
 const authStore = useAuthStore();
 const { userInfo } = storeToRefs(authStore);
 
@@ -63,8 +67,6 @@ useInfiniteScroll(
   },
   { distance: 10 },
 );
-
-const goMap = () => {};
 </script>
 
 <style lang="scss" scoped>
@@ -86,17 +88,20 @@ const goMap = () => {};
 tr {
   td:nth-child(1),
   th:nth-child(1) {
-    text-align: start;
     padding-left: 16px;
-    min-width: 20vw;
+    min-width: 30vw;
   }
   td:nth-child(2),
   th:nth-child(2) {
-    min-width: 30vw;
+    min-width: 20vw;
   }
   td:nth-child(3),
   th:nth-child(3) {
-    min-width: 8vw;
+    min-width: 6vw;
+  }
+  td:nth-child(4),
+  th:nth-child(4) {
+    min-width: 14vw;
   }
 }
 </style>

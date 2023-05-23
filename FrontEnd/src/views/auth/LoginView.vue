@@ -110,7 +110,6 @@ const kakao = () => {
 };
 // 쿼리스트링으로 code를 받게되면 이를 통해 서버에 요청을 보내는 로직을 수행한다.
 if (route.query.code) {
-  console.log(route.query.code);
   kLogin(route.query.code);
 }
 </script>

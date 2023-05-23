@@ -64,9 +64,7 @@ useInfiniteScroll(
   { distance: 10 },
 );
 
-const goMap = () => {
-  router.push({ name: '' });
-};
+const goMap = () => {};
 </script>
 
 <style lang="scss" scoped>

@@ -12,6 +12,9 @@ import { tryOnMounted, watchDebounced } from '@vueuse/core';
 import { useKakaoStore } from '@/stores/kakao';
 import { useLoading } from '@/composables/loading';
 import { useDebounceFn } from '@vueuse/core';
+import { useCookies } from 'vue3-cookies';
+import { plusViewCount } from '@/api/info';
+const { cookies } = useCookies();
 
 const { vLoading } = useLoading();
 const kakaoStore = useKakaoStore();
@@ -193,6 +196,10 @@ watch(apartMarkers, v => {
         await setAptDealInfo(info.aptCode);
         await setAptRankByCode(info.aptCode);
         await setBookmarkList(userInfo.value.id);
+        if (!cookies.isKey(info.aptCode)) {
+          cookies.set(info.aptCode, 'code', '30d');
+          await plusViewCount(info.aptCode);
+        }
         showSideBar.value = true;
       } catch (err) {
         console.error(err);

@@ -90,4 +90,12 @@ public class MemberController {
 
         return ResponseEntity.ok().body(memberService.isCheck(memberId));
     }
+
+    //회원 삭제
+    @DeleteMapping("/delete/{member-id}")
+    public ResponseEntity deleteMember(@PathVariable("member-id") String memberId) {
+        memberService.deleteMember(memberId);
+
+        return ResponseEntity.ok().body("회원 탈퇴");
+    }
 }

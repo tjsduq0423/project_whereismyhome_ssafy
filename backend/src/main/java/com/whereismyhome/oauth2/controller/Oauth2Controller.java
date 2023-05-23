@@ -11,23 +11,21 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
 @RestController
 @RequiredArgsConstructor
+@CrossOrigin( allowedHeaders = "*")
 @RequestMapping("/oauth2")
 @Slf4j
 public class Oauth2Controller {
     private final Oauth2Service oauth2Service;
     private final MemberMapper mapper;
     private final JwtProvider jwtProvider;
-    @GetMapping("/kakao")
+    @PostMapping("/kakao")
     public ResponseEntity kakaoOauth(@RequestParam("code") String code, HttpServletResponse response) throws JsonProcessingException, IllegalAccessException {
         log.info("code {}", code);
         String body = oauth2Service.kakaoLogin(code);
@@ -39,7 +37,8 @@ public class Oauth2Controller {
         Cookie cookie = new Cookie("Authorization", encode);
         cookie.setPath(("/"));
         cookie.setHttpOnly(true);
-        cookie.setMaxAge(60 * 60);
+
+        log.info("cookie : {}", cookie);
         response.addCookie(cookie);
 
         MemberResponseDto memberResponseDto = mapper.memberToMemberResponseDto(member);

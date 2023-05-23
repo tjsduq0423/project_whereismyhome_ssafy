@@ -17,8 +17,8 @@ public interface AmenMapper {
         return BusResponseDto.builder()
                 .id((int) objects[0])
                 .name(String.valueOf(objects[1]))
-                .lng(String.valueOf(objects[2]))
-                .lat(String.valueOf(objects[3]))
+                .lat(String.valueOf(objects[2]))
+                .lng(String.valueOf(objects[3]))
                 .dist((objects[4]) + "m")
                 .build();
     }

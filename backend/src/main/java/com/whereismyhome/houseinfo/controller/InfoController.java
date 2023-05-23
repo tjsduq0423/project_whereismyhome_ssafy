@@ -1,6 +1,9 @@
 package com.whereismyhome.houseinfo.controller;
 
 
+import com.whereismyhome.dongcode.dto.GuGunAvgMountDto;
+import com.whereismyhome.dongcode.mapper.DongCodeMapper;
+import com.whereismyhome.dongcode.service.DongCodeService;
 import com.whereismyhome.hosedeal.dto.HouseDealResponseDto;
 import com.whereismyhome.hosedeal.entity.HouseDeal;
 import com.whereismyhome.hosedeal.mapper.HouseDealMapper;
@@ -28,6 +31,16 @@ public class InfoController {
     private final HouseInfoMapper infoMapper;
     private final HouseDealService houseDealService;
     private final HouseDealMapper houseDealMapper;
+    private final DongCodeService dongCodeService;
+    private final DongCodeMapper dongCodeMapper;
+
+    //지역구별 평균 매매가
+    @GetMapping("/deal/avg")
+    public ResponseEntity findGugunAvgMount() {
+        List<GuGunAvgMountDto> guGunAvgMountDto = dongCodeMapper.toGuGunAvgMountDto(dongCodeService.findGuGunAvgMount());
+
+        return ResponseEntity.ok().body(guGunAvgMountDto);
+    }
 
     //아파트 정보 조회
     @GetMapping("/{apt-code}")

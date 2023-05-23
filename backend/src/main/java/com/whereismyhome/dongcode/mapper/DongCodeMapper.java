@@ -1,6 +1,7 @@
 package com.whereismyhome.dongcode.mapper;
 
 import com.whereismyhome.dongcode.dto.DonCodeSearchResponseDto;
+import com.whereismyhome.dongcode.dto.GuGunAvgMountDto;
 import org.mapstruct.Mapper;
 
 import java.util.List;
@@ -14,6 +15,15 @@ public interface DongCodeMapper {
         return DonCodeSearchResponseDto.builder()
                 .gugunName(String.valueOf(objects[0]))
                 .aptCount((long) objects[1])
+                .build();
+    }
+
+    List<GuGunAvgMountDto> toGuGunAvgMountDto(List<Object[]> objects);
+
+    default GuGunAvgMountDto objectToDongCodeResponseDto(Object[] objects) {
+        return GuGunAvgMountDto.builder()
+                .gugunName(String.valueOf(objects[0]))
+                .avgMount((long) objects[1])
                 .build();
     }
 }

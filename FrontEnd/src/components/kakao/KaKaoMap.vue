@@ -345,7 +345,9 @@ watch(subwayMarkers, v => {
       content: `<div class="card mt-5 text-center">
                   <div class="card-body p-2">
                     <h4 class="card-title m-0">${p.name}역</h4>
-                    <p class="card-text">${p.phoneNumber ? `전화번호 : ${p.phoneNumber}` : ''}</p>
+                    <p class="card-text">${
+                      p.phoneNumber !== 'null' ? `전화번호 : ${p.phoneNumber}` : ''
+                    }</p>
                   </div>
                 </div>`,
       clickable: true,
@@ -382,13 +384,19 @@ watch(sidoGugun, v => {
 import { useSearchStore } from '@/stores/search';
 const searchStore = useSearchStore();
 const { selectedSearchInput } = storeToRefs(searchStore);
+
 watch(selectedSearchInput, v => {
-  const geocoder = new kakao.value.maps.services.Geocoder();
-  geocoder.addressSearch(v, (result, status) => {
-    if (status === kakao.value.maps.services.Status.OK) {
-      map.value.setCenter(new kakao.value.maps.LatLng(result[0].address.y, result[0].address.x));
-    }
-  });
+  const places = new kakao.value.maps.services.Places();
+  const [name, category] = v;
+  places.keywordSearch(
+    name,
+    (result, status) => {
+      if (status === kakao.value.maps.services.Status.OK) {
+        map.value.setCenter(new kakao.value.maps.LatLng(result[0]?.y, result[0]?.x));
+      }
+    },
+    { category_group_code: category },
+  );
 });
 </script>
 

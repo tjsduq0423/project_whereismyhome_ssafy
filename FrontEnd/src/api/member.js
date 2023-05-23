@@ -10,3 +10,5 @@ export const join = (id, password, name, email) =>
 export const sendEmail = email => member.get(`/${email}`);
 
 export const changePassword = (id, password) => member.put('/change', { id, password });
+
+export const checkMember = id => member.get(`/check/${id}`);

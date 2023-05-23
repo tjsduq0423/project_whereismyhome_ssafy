@@ -74,9 +74,16 @@ const initMap = () => {
   });
 };
 
+// 지역구별 커스텀 오버레이
+// const initGugunOverlay = ()=>{
+//   avgInGugun.value
+// }
+
 // 맵 마운트
 tryOnMounted(async () => {
   kakao.value.maps.load(initMap);
+
+  await setAvgInGugun();
 });
 
 // memberId
@@ -97,6 +104,7 @@ const { setAptToAmenDistanceInfo } = sideBarStore;
 import { useMarkersStore } from '@/stores/markers';
 const markersStore = useMarkersStore();
 const {
+  avgInGugun,
   schoolMarkers,
   hospitalMarkers,
   apartMarkers,
@@ -110,8 +118,14 @@ const {
   priceRange,
   buildYearRange,
 } = storeToRefs(markersStore);
-const { setApartMarkers, setSchoolMarkers, setHospitalMarkers, setSubwayMarkers, setBusMarkers } =
-  markersStore;
+const {
+  setApartMarkers,
+  setSchoolMarkers,
+  setHospitalMarkers,
+  setSubwayMarkers,
+  setBusMarkers,
+  setAvgInGugun,
+} = markersStore;
 
 // 중심좌표 추적 -> 마커 데이터 api call
 watchDebounced(
@@ -407,6 +421,7 @@ watch(selectedSearchInput, v => {
     { category_group_code: category },
   );
 });
+// 지역구 별 오버레이 생성
 </script>
 
 <style lang="scss" scoped></style>

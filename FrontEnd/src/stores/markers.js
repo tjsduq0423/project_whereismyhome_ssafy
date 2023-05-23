@@ -7,6 +7,7 @@ import {
   getHospitalMarkers,
   getBusMarkers,
 } from '@/api/amen';
+import { getAvgInGugun } from '@/api/info';
 
 export const useMarkersStore = defineStore('markers', () => {
   // 마커 데이터 처리
@@ -16,6 +17,8 @@ export const useMarkersStore = defineStore('markers', () => {
   const subwayMarkers = ref([]);
   const busMarkers = ref([]);
   const sidoGugun = ref([]);
+  // 지역구별 평균 매매가 커스텀 오버레이 구별 평균 매매가
+  const avgInGugun = ref([]);
 
   // 편의시설 마커 visible 관리 변수
   const isShowSchool = ref(false);
@@ -34,6 +37,16 @@ export const useMarkersStore = defineStore('markers', () => {
   // 아파트 마커 visible 필터링.
   const priceRange = ref('10');
   const buildYearRange = ref(100);
+
+  const setAvgInGugun = async () => {
+    if (avgInGugun.value.length !== 0) return;
+    try {
+      const response = await getAvgInGugun();
+      avgInGugun.value = [...response.data];
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   const setApartMarkers = async (lng, lat, zoomlevel) => {
     try {
@@ -77,6 +90,8 @@ export const useMarkersStore = defineStore('markers', () => {
   };
 
   return {
+    avgInGugun,
+    setAvgInGugun,
     buildYearRange,
     priceRange,
     apartMarkers,

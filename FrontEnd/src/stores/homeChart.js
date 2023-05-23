@@ -15,20 +15,26 @@ export const useHomeChartStore = defineStore('homeChar', () => {
       name: sido,
       labels: [...response.data.map(el => el.gugunName)],
       datasets: [
-        //관심도 추가.
+        {
+          label: '관심도',
+          backgroundColor: '#F99B7D',
+          data: [
+            ...response.data.map(el => el.dealAmount * 1.5 + el.viewCount * 3 + el.markCount * 10),
+          ],
+        },
         {
           label: '거래량',
-          backgroundColor: '#B799FF',
+          backgroundColor: '#E76161',
           data: [...response.data.map(el => el.dealAmount)],
         },
         {
           label: '조회수',
-          backgroundColor: '#ACBCFF',
+          backgroundColor: '#B04759',
           data: [...response.data.map(el => el.viewCount)],
         },
         {
           label: '북마크',
-          backgroundColor: '#AEE2FF',
+          backgroundColor: '#8BACAA',
           data: [...response.data.map(el => el.markCount)],
         },
       ],

@@ -28,7 +28,7 @@ const initMap = () => {
   };
   //맵 생성 + zoom controller 부착
   map.value = new kakao.value.maps.Map(container, options);
-  map.value.setMaxLevel(8);
+  map.value.setMaxLevel(9);
   map.value.setKeyboardShortcuts(false);
   map.value.addControl(new kakao.value.maps.ZoomControl(), kakao.value.maps.ControlPosition.RIGHT);
   // 지도 확대 축소 이벤트

@@ -228,22 +228,46 @@
 
         <!-- 지역, 아파트, 지하철 검색 filter(input box) -->
         <div class="col d-flex align-items-center">
-          <form class="position-relative">
-            <i class="searchIcon bi bi-search"></i>
+          <form @submit.prevent class="position-relative">
+            <i v-show="!searchInput" class="searchIcon bi bi-search"></i>
             <input
               class="form-control me-2"
               type="search"
               placeholder="Search"
               aria-label="Search"
-              v-model="searchInput"
+              :value="searchInput"
+              @input="searchInput = $event.target.value"
             />
             <div v-show="showSearchList" class="card searchList">
-              test
-              <!-- <div v-for="(gugun, idx) in gugunList" :key="idx">{{ gugun }}</div>
-              <hr v-if="aptList" />
-              <div v-for="(apt, idx) in aptList" :key="idx">{{ apt }}</div>
-              <hr v-if="subwayList" />
-              <div v-for="(subway, idx) in subwayList" :key="idx">{{ subway }}</div> -->
+              <div class="p-3" v-if="!sGugunList && !sAptList && !sSubwayList">
+                일치하는 검색 결과가 없습니다.
+              </div>
+              <div
+                @click="clickSearchList(gugun.gugunName, '')"
+                class="p-3 searchListEl"
+                v-for="(gugun, idx) in sGugunList"
+                :key="idx"
+              >
+                {{ gugun.gugunName }} - <i class="bi bi-building"></i> {{ gugun.aptCount }}
+              </div>
+              <hr v-if="sAptList?.length !== 0" class="m-0" />
+              <div
+                class="p-3 searchListEl"
+                v-for="(apt, idx) in sAptList"
+                :key="idx"
+                @click="clickSearchList(apt.aptName, '')"
+              >
+                {{ apt.aptName }} - <i class="bi bi-heart-fill"></i> {{ apt.bookMarkCount }}
+              </div>
+              <hr v-if="sSubwayList?.length !== 0" class="m-0" />
+              <div
+                @click="clickSearchList(subway.name, 'SW8')"
+                class="p-3 searchListEl"
+                v-for="(subway, idx) in sSubwayList"
+                :key="idx"
+              >
+                {{ subway.name }} - <i class="bi bi-truck-front-fill"></i>
+              </div>
             </div>
           </form>
         </div>
@@ -295,12 +319,22 @@ setTimeout(() => {
 // searchBar
 import { useSearchStore } from '@/stores/search';
 const searchStore = useSearchStore();
-const { showSearchList } = storeToRefs(searchStore);
+const { showSearchList, sAptList, sGugunList, sSubwayList, selectedSearchInput } =
+  storeToRefs(searchStore);
+const { setAptList, setGugunList, setSubwayList } = searchStore;
 
 const searchInput = ref('');
+
+const clickSearchList = (input, category) => {
+  selectedSearchInput.value = [input, category];
+  showSearchList.value = false;
+  searchInput.value = '';
+};
 const sendSearchInput = async () => {
   try {
-    //actions calls
+    await setAptList(searchInput.value);
+    await setGugunList(searchInput.value);
+    await setSubwayList(searchInput.value);
     showSearchList.value = true;
   } catch (err) {
     console.error(err);
@@ -309,12 +343,8 @@ const sendSearchInput = async () => {
 watchDebounced(
   searchInput,
   v => {
-    if (v === '') {
-      showSearchList.value = false;
-      return;
-    } else {
-      sendSearchInput();
-    }
+    if (v === '') showSearchList.value = false;
+    else sendSearchInput();
   },
   { debounce: 500, maxWait: 5000 },
 );
@@ -344,12 +374,12 @@ const { showSideBar } = storeToRefs(sideBarStore);
 import { useMarkersStore } from '@/stores/markers';
 import { storeToRefs } from 'pinia';
 import { watchDebounced } from '@vueuse/core';
+
 const markerStrore = useMarkersStore();
 const {
   buildYearRange,
   priceRange,
   sidoGugun,
-  // isShowCCTV,
   isShowSchool,
   isShowHospital,
   isShowSubway,
@@ -419,6 +449,12 @@ div > a {
   }
   &::-webkit-scrollbar-track {
     background-color: #ececec;
+  }
+}
+.searchListEl {
+  &:hover {
+    background-color: rgb(187, 185, 185);
+    cursor: pointer;
   }
 }
 </style>

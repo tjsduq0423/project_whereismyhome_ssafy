@@ -1,16 +1,18 @@
 import { amen } from '.';
 
-export const getSubwayMarkers = (lng, lat) => amen.post('/subway', { lng, lat });
+export const getSubwayMarkers = (lng, lat, zoomlevel) =>
+  amen.post('/subway', { lng, lat, zoomlevel });
 
-export const getSchoolMarkers = (lng, lat) => amen.post('/school', { lng, lat });
+export const getSchoolMarkers = (lng, lat, zoomlevel) =>
+  amen.post('/school', { lng, lat, zoomlevel });
 
-export const getHospitalMarkers = (lng, lat) => amen.post('/hospital', { lng, lat });
+export const getHospitalMarkers = (lng, lat, zoomlevel) =>
+  amen.post('/hospital', { lng, lat, zoomlevel });
 
-export const getCCTVMarkers = (lng, lat) => amen.post('/cctv', { lng, lat });
+export const getBusMarkers = (lng, lat, zoomlevel) => amen.post('/bus', { lng, lat, zoomlevel });
 
-export const getBusMarkers = (lng, lat) => amen.post('/bus', { lng, lat });
-
-export const getApartMarkers = () => amen.get('/house');
+export const getApartMarkers = (lng, lat, zoomlevel) =>
+  amen.post('/house', { lng, lat, zoomlevel });
 
 export const getSubwayDistance = aptCode => amen.get(`/subway${aptCode}`);
 

@@ -174,7 +174,7 @@
           data-bs-parent="#accordionFlushExample"
         >
           <div class="accordion-body p-0">
-            <div v-html="sectionHeadlineContent" style="text-decoration: none"></div>
+            <div v-html="sectionHeadlineContent"></div>
           </div>
         </div>
       </div>
@@ -238,22 +238,21 @@ watch([tableItems, curPage], ([items, p]) => {
 
 // new tabs 파싱
 const sectionHeadlineContent = ref('');
-watch(aptInfo, async v => {
-  const url = `https://land.naver.com/news/search.naver?keyword=${v.gugunName} 부동산`;
+// watch(aptInfo, async v => {
+//   const url = `https://land.naver.com/news/search.naver?keyword=${v.gugunName} 부동산`;
 
-  try {
-    const response = await axios.get(url);
-    const parser = new DOMParser();
-    const htmlDoc = parser.parseFromString(response.data, 'text/html');
-    const sectionHeadline = htmlDoc.querySelector('.headline_list');
-
-    if (sectionHeadline) {
-      sectionHeadlineContent.value = sectionHeadline.innerHTML;
-    }
-  } catch (err) {
-    console.error('Error occurred while fetching news:', err);
-  }
-});
+//   try {
+//     const response = await axios.get(url);
+//     const parser = new DOMParser();
+//     const htmlDoc = parser.parseFromString(response.data, 'text/html');
+//     const sectionHeadline = htmlDoc.querySelector('.headline_list');
+//     if (sectionHeadline) {
+//       sectionHeadlineContent.value = sectionHeadline.innerHTML;
+//     }
+//   } catch (err) {
+//     console.error('Error occurred while fetching news:', err);
+//   }
+// });
 </script>
 
 <style lang="scss" scoped>

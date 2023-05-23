@@ -121,7 +121,11 @@ const modalOpen = ref(false);
 const inputCode = ref('');
 const authCode = ref('');
 const authEmail = async () => {
-  if (!validate()) return;
+  if (!validate()) {
+    vAlert('다시 입력해주세요');
+    return;
+  }
+
   modalOpen.value = true;
   try {
     const response = await sendEmail(email.value);

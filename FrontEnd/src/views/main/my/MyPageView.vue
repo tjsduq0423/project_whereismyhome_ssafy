@@ -1,5 +1,8 @@
 <template>
   <AppContent class="img">
+    <template #header>
+      <div class="cardOver"></div>
+    </template>
     <template #default>
       <AppCardHeader class="py-3">Profile</AppCardHeader>
       <div class="container-fluid p-0">
@@ -70,5 +73,9 @@ a {
 }
 hr {
   margin: 1rem 0px 1rem 0px;
+}
+.cardOver {
+  margin-top: 25vh;
+  margin-bottom: 5vh;
 }
 </style>

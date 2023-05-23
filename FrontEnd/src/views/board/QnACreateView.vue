@@ -33,6 +33,7 @@ const title = ref('');
 const content = ref('');
 
 const createQnA = async () => {
+  if (!validate()) return;
   try {
     await registBoard(userInfo.value.id, title.value, content.value);
     router.push({ name: 'QnA' });
@@ -44,6 +45,13 @@ const createQnA = async () => {
 };
 
 const goListPage = () => router.push({ name: 'QnA' });
+const validate = () => {
+  if (!title.value || !content.value) {
+    vAlert('입력 형식을 지켜주세요.');
+    return false;
+  }
+  return true;
+};
 </script>
 
 <style scoped>

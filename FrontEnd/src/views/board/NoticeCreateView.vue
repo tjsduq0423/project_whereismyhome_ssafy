@@ -28,6 +28,7 @@ const title = ref('');
 const content = ref('');
 
 const createNotice = async () => {
+  if (!validate()) return;
   try {
     await registNotice(title.value, content.value);
     router.push({ name: 'Notice' });
@@ -39,6 +40,13 @@ const createNotice = async () => {
 };
 
 const goListPage = () => router.push({ name: 'Notice' });
+const validate = () => {
+  if (!title.value || !content.value) {
+    vAlert('입력 형식을 지켜주세요.');
+    return false;
+  }
+  return true;
+};
 </script>
 
 <style scoped>

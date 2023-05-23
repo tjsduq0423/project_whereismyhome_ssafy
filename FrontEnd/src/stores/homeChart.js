@@ -19,13 +19,13 @@ export const useHomeChartStore = defineStore('homeChar', () => {
           label: '관심도',
           backgroundColor: '#F99B7D',
           data: [
-            ...response.data.map(el => el.dealAmount * 1.5 + el.viewCount * 3 + el.markCount * 10),
+            ...response.data.map(el => el.dealAmount * 1000 + el.viewCount * 2 + el.markCount * 5),
           ],
         },
         {
           label: '거래량',
           backgroundColor: '#E76161',
-          data: [...response.data.map(el => el.dealAmount)],
+          data: [...response.data.map(el => el.dealAmount * 1000)],
         },
         {
           label: '조회수',

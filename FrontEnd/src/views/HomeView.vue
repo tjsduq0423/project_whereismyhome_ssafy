@@ -17,7 +17,7 @@
       <i class="bi bi-fire" style="color: red"></i> Trend
       <i class="bi bi-fire" style="color: red"></i>
     </h1>
-    <AppBarChart ref="chart" v-if="chartData" :chart-data="chartData"> </AppBarChart>
+    <AppBarChart v-if="chartData" :chart-data="chartData"> </AppBarChart>
     <div
       v-else
       class="d-flex align-items-center justify-content-center"
@@ -56,13 +56,8 @@ import AppBarChart from '@/components/chart/AppBarChart.vue';
 
 import { useHomeChartStore } from '@/stores/homeChart';
 import { storeToRefs } from 'pinia';
-import { ref, watch } from 'vue';
+import { watch } from 'vue';
 import { tryOnMounted } from '@vueuse/core';
-// 로딩창 너비 동기화
-const chart = ref(null);
-tryOnMounted(() => {
-  console.log(chart.value);
-});
 
 const homeChartStore = useHomeChartStore();
 const { curSidoName, chartData, dataList } = storeToRefs(homeChartStore);

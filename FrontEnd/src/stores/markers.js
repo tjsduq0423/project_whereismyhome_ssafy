@@ -5,7 +5,6 @@ import {
   getSubwayMarkers,
   getSchoolMarkers,
   getHospitalMarkers,
-  getCCTVMarkers,
   getBusMarkers,
 } from '@/api/amen';
 
@@ -13,14 +12,12 @@ export const useMarkersStore = defineStore('markers', () => {
   // 마커 데이터 처리
   const apartMarkers = ref([]);
   const schoolMarkers = ref([]);
-  const cctvMarkers = ref([]);
   const hospitalMarkers = ref([]);
   const subwayMarkers = ref([]);
   const busMarkers = ref([]);
   const sidoGugun = ref([]);
 
   // 편의시설 마커 visible 관리 변수
-  const isShowCCTV = ref(false);
   const isShowSchool = ref(false);
   const isShowHospital = ref(false);
   const isShowSubway = ref(false);
@@ -31,7 +28,6 @@ export const useMarkersStore = defineStore('markers', () => {
     let defalutDelay = 500;
     if (isShowBus.value) defalutDelay += 250;
     if (isShowHospital.value) defalutDelay += 250;
-    if (isShowCCTV.value) defalutDelay += 500;
     return defalutDelay;
   });
 
@@ -39,50 +35,41 @@ export const useMarkersStore = defineStore('markers', () => {
   const priceRange = ref('10');
   const buildYearRange = ref(100);
 
-  const setApartMarkers = async () => {
-    if (apartMarkers.value.length !== 0) return;
+  const setApartMarkers = async (lng, lat, zoomlevel) => {
     try {
-      const response = await getApartMarkers();
+      const response = await getApartMarkers(lng, lat, zoomlevel > 3 ? 3 : zoomlevel);
       apartMarkers.value = [...response.data];
     } catch (err) {
       console.error(err);
     }
   };
-  const setSchoolMarkers = async (lng, lat) => {
+  const setSchoolMarkers = async (lng, lat, zoomlevel) => {
     try {
-      const response = await getSchoolMarkers(lng, lat);
+      const response = await getSchoolMarkers(lng, lat, zoomlevel > 3 ? 3 : zoomlevel);
       schoolMarkers.value = [...response.data];
     } catch (err) {
       console.error(err);
     }
   };
-  const setCCTVMarkers = async (lng, lat) => {
+  const setHospitalMarkers = async (lng, lat, zoomlevel) => {
     try {
-      const response = await getCCTVMarkers(lng, lat);
-      cctvMarkers.value = [...response.data];
-    } catch (err) {
-      console.error(err);
-    }
-  };
-  const setHospitalMarkers = async (lng, lat) => {
-    try {
-      const response = await getHospitalMarkers(lng, lat);
+      const response = await getHospitalMarkers(lng, lat, zoomlevel > 3 ? 3 : zoomlevel);
       hospitalMarkers.value = [...response.data];
     } catch (err) {
       console.error(err);
     }
   };
-  const setSubwayMarkers = async (lng, lat) => {
+  const setSubwayMarkers = async (lng, lat, zoomlevel) => {
     try {
-      const response = await getSubwayMarkers(lng, lat);
+      const response = await getSubwayMarkers(lng, lat, zoomlevel > 3 ? 3 : zoomlevel);
       subwayMarkers.value = [...response.data];
     } catch (err) {
       console.error(err);
     }
   };
-  const setBusMarkers = async (lng, lat) => {
+  const setBusMarkers = async (lng, lat, zoomlevel) => {
     try {
-      const response = await getBusMarkers(lng, lat);
+      const response = await getBusMarkers(lng, lat, zoomlevel > 3 ? 3 : zoomlevel);
       busMarkers.value = [...response.data];
     } catch (err) {
       console.error(err);
@@ -94,18 +81,15 @@ export const useMarkersStore = defineStore('markers', () => {
     priceRange,
     apartMarkers,
     schoolMarkers,
-    cctvMarkers,
     hospitalMarkers,
     subwayMarkers,
     busMarkers,
     setApartMarkers,
     setSubwayMarkers,
     setSchoolMarkers,
-    setCCTVMarkers,
     setHospitalMarkers,
     setBusMarkers,
     sidoGugun,
-    isShowCCTV,
     isShowSchool,
     isShowHospital,
     isShowSubway,

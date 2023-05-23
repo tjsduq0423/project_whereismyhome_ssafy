@@ -48,9 +48,9 @@ const initMap = () => {
         if (isShowSchool.value) onOffMarkers(true, schoolMarkerList.value);
         if (isShowSubway.value) onOffMarkers(true, subwayMarkerList.value);
       }
-      if (level > 5) zoomFilter.value = false;
+      if (level > 4) zoomFilter.value = false;
       else zoomFilter.value = true;
-    }, 500),
+    }, 250),
   );
   // 중심좌표 추적 이벤트
   kakao.value.maps.event.addListener(
@@ -74,8 +74,6 @@ const initMap = () => {
 // 맵 마운트
 tryOnMounted(async () => {
   kakao.value.maps.load(initMap);
-  vLoading();
-  await setApartMarkers();
 });
 
 // memberId
@@ -115,15 +113,15 @@ const { setApartMarkers, setSchoolMarkers, setHospitalMarkers, setSubwayMarkers,
 watchDebounced(
   mapCenterLatLng,
   async v => {
-    // zoomLevel
-    // const level = map.value.getLevel();
+    const zoomlevel = map.value.getLevel();
     const [lat, lng] = v;
-    await setSchoolMarkers(lng, lat);
-    await setHospitalMarkers(lng, lat);
-    await setSubwayMarkers(lng, lat);
-    await setBusMarkers(lng, lat);
+    await setApartMarkers(lng, lat, zoomlevel);
+    await setSchoolMarkers(lng, lat, zoomlevel);
+    await setHospitalMarkers(lng, lat, zoomlevel);
+    await setSubwayMarkers(lng, lat, zoomlevel);
+    await setBusMarkers(lng, lat, zoomlevel);
   },
-  { debounce: 500, maxWait: 5000 },
+  { debounce: 250, maxWait: 5000 },
 );
 
 //아파트 마운트 및 필터를 위한 반응형 변수들.
@@ -175,6 +173,11 @@ watchDebounced(
 watch(apartMarkers, v => {
   const imgSize = new kakao.value.maps.Size(35, 40);
   const markerImg = new kakao.value.maps.MarkerImage('/img/apartmentMarker.png', imgSize);
+  mountMarkers(
+    null,
+    apartMarkerList.value.map(el => el.marker),
+  );
+  apartMarkerList.value = [];
   v.forEach(info => {
     const marker = new kakao.value.maps.Marker({
       map: map.value,
@@ -195,6 +198,7 @@ watch(apartMarkers, v => {
         console.error(err);
       }
     });
+    marker.setVisible(zoomFilter.value);
     apartMarkerList.value.push({ marker, info });
   });
 });
@@ -241,7 +245,7 @@ watch(isShowSchool, v => {
 
 // 병원 감시
 watch(hospitalMarkers, v => {
-  const imgSize = new kakao.value.maps.Size(25, 25);
+  const imgSize = new kakao.value.maps.Size(20, 20);
   const markerImg = new kakao.value.maps.MarkerImage('/img/hospitalMarker.png', imgSize);
   mountMarkers(null, hospitalMarkerList.value);
   hospitalMarkerList.value = [];

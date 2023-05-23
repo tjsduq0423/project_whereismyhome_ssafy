@@ -2,7 +2,6 @@ package com.whereismyhome.amenities.service;
 
 import com.whereismyhome.amenities.dto.response.*;
 import com.whereismyhome.amenities.repository.*;
-import com.whereismyhome.houseinfo.dto.HouseResponseDto;
 import com.whereismyhome.houseinfo.repository.HouseInfoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,8 +19,8 @@ public class AmenService {
     private final SubwayRepository subwayRepository;
 
     //아파트 정보 전체 조회
-    public List<HouseResponseDto> findAptAll() {
-        return houseInfoRepository.findByAptAll();
+    public List<Object[]> findApt(String lng, String lat, int zoomLevel) {
+        return houseInfoRepository.findByApt(lng, lat, getDist(zoomLevel));
     }
 
 

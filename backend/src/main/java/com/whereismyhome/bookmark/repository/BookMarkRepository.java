@@ -22,7 +22,9 @@ public interface BookMarkRepository extends JpaRepository<BookMark, Integer> {
             "       concat(d.sido_name, ' ', d.dong_name) as sigunguName, " +
             "       max(cast(replace(hd.deal_amount, ',', '') as signed)) as max, " +
             "       min(cast(replace(hd.deal_amount, ',', '') as signed)) as min, " +
-            "       h.apartment_name " +
+            "       h.apartment_name, " +
+            "       h.lat, " +
+            "       h.lng " +
             "from housedeal hd " +
             "         join houseinfo h on h.apt_code = hd.apt_code " +
             "         join dongcode d on d.dong_code = h.dong_code " +

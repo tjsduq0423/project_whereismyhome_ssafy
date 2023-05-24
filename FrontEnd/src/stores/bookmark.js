@@ -8,8 +8,9 @@ export const useBookmarkStore = defineStore('bookmark', () => {
   const setBookmarkList = async memberId => {
     const response = await getBookmark(memberId);
     bookmarkList.value = [...response.data];
-    const { lat, lng } = bookmarkList.value[0];
-    centerlatlng.value = [lat, lng];
+    if (bookmarkList.value.length !== 0) {
+      console.log(bookmarkList.value[0]);
+    }
   };
   const dBookmark = async (memberId, aptCode) => {
     await deleteBookmark(memberId, aptCode);

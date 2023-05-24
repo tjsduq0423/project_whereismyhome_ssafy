@@ -39,7 +39,6 @@ export const useMarkersStore = defineStore('markers', () => {
   const buildYearRange = ref(100);
 
   const setAvgInGugun = async () => {
-    if (avgInGugun.value.length !== 0) return;
     try {
       const response = await getAvgInGugun();
       avgInGugun.value = [...response.data];

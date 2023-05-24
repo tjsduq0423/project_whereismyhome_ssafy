@@ -18,4 +18,9 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
+  server: {
+    proxy: {
+      '/news': 'https://land.naver.com',
+    },
+  },
 });

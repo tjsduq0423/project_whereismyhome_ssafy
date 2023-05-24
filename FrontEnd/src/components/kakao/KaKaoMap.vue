@@ -8,14 +8,12 @@
 // kakao map 생성.
 import { ref, watch } from 'vue';
 import { storeToRefs } from 'pinia';
-import { tryOnMounted, watchDebounced } from '@vueuse/core';
+import { tryOnMounted, watchDebounced, useDebounceFn } from '@vueuse/core';
 import { useKakaoStore } from '@/stores/kakao';
 import { useLoading } from '@/composables/loading';
-import { useDebounceFn } from '@vueuse/core';
 import { useCookies } from 'vue3-cookies';
 import { plusViewCount } from '@/api/info';
 const { cookies } = useCookies();
-
 const { vLoading } = useLoading();
 const kakaoStore = useKakaoStore();
 const { kakao, mapCenterLatLng } = storeToRefs(kakaoStore);
@@ -31,7 +29,8 @@ const initMap = () => {
   };
   //맵 생성 + zoom controller 부착
   map.value = new kakao.value.maps.Map(container, options);
-  map.value.setMaxLevel(7);
+  map.value.setMaxLevel(8);
+  map.value.setZoomable(false);
   map.value.setKeyboardShortcuts(false);
   map.value.addControl(new kakao.value.maps.ZoomControl(), kakao.value.maps.ControlPosition.RIGHT);
   // 지도 확대 축소 이벤트
@@ -51,8 +50,13 @@ const initMap = () => {
         if (isShowSchool.value) onOffMarkers(true, schoolMarkerList.value);
         if (isShowSubway.value) onOffMarkers(true, subwayMarkerList.value);
       }
-      if (level > 4) zoomFilter.value = false;
-      else zoomFilter.value = true;
+      if (level > 5) {
+        zoomFilter.value = false;
+        zoomFilter_Overlay.value = true;
+      } else {
+        zoomFilter.value = true;
+        zoomFilter_Overlay.value = false;
+      }
     }, 500),
   );
   // 중심좌표 추적 이벤트
@@ -75,15 +79,63 @@ const initMap = () => {
 };
 
 // 지역구별 커스텀 오버레이
-// const initGugunOverlay = ()=>{
-//   avgInGugun.value
-// }
+const gugunOverlayList = ref([]);
+const zoomFilter_Overlay = ref(false);
+
+const initGugunOverlay = () => {
+  const geocoder = new kakao.value.maps.services.Geocoder();
+  avgInGugun.value.forEach(info => {
+    geocoder.addressSearch(
+      info.gugunName,
+      (result, status) => {
+        if (status === kakao.value.maps.services.Status.OK) {
+          const latlng = new kakao.value.maps.LatLng(result[0]?.y, result[0]?.x);
+          const contentHTML = document.createElement('div');
+          contentHTML.classList.add('card');
+          contentHTML.classList.add('rounded-pill');
+          contentHTML.classList.add('text-bg-warning');
+          contentHTML.innerHTML = `<div class="card-body text-center" style="font-size:0.75em;padding:1em">
+                          <p class="m-0">
+                            ${info.gugunName}
+                          </p>
+                          <p class="m-0">
+                            ${Math.floor(info.avgMount / 10000)}억 ${info.avgMount % 10000}만원
+                          </p>
+                        </div>`;
+          contentHTML.addEventListener('click', () => {
+            map.value.setLevel(4);
+            map.value.setCenter(latlng);
+          });
+
+          const customOverlay = new kakao.value.maps.CustomOverlay({
+            map: map.value,
+            clickable: true,
+            content: contentHTML,
+            position: latlng,
+            zIndex: 300,
+          });
+          customOverlay.setVisible(zoomFilter_Overlay.value);
+          gugunOverlayList.value.push(customOverlay);
+        }
+      },
+      {
+        size: 1,
+      },
+    );
+  });
+};
+
+watch(zoomFilter_Overlay, v => {
+  gugunOverlayList.value.forEach(overlay => {
+    overlay.setVisible(v);
+  });
+});
 
 // 맵 마운트
 tryOnMounted(async () => {
   kakao.value.maps.load(initMap);
-
   await setAvgInGugun();
+  initGugunOverlay();
 });
 
 // memberId
@@ -98,8 +150,7 @@ const { setBookmarkList } = bookmarkStore;
 import { useSideBarStore } from '@/stores/sideBar';
 const sideBarStore = useSideBarStore();
 const { showSideBar, lodaViewLatLng } = storeToRefs(sideBarStore);
-const { setAptInfo, setAptDealInfo, setAptRankByCode } = sideBarStore;
-const { setAptToAmenDistanceInfo } = sideBarStore;
+const { setAptInfo, setAptDealInfo, setAptRankByCode, setAptToAmenDistanceInfo } = sideBarStore;
 //마커
 import { useMarkersStore } from '@/stores/markers';
 const markersStore = useMarkersStore();

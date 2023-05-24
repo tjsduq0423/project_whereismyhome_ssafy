@@ -1,6 +1,6 @@
 <template>
   <table class="fs-3 m-0">
-    <thead>
+    <thead class="border-bottom border-3 border-dark">
       <tr>
         <th class="text-center">제목</th>
         <th class="text-center">답변내용</th>
@@ -10,7 +10,7 @@
   </table>
   <div ref="tbodyEl" class="infinity">
     <table class="table text-truncate">
-      <tbody class="table-group-divider">
+      <tbody>
         <tr v-for="item in _items" :key="item.id" class="text-truncate fs-4">
           <td class="text-truncate text-center">
             <a

@@ -48,7 +48,14 @@
         >
           <div class="container-fluid p-3">
             <div class="row">
-              <h4>매매 가격 : {{ `${priceRange[0] / 10000} 억 ~ ${priceRange[1] / 10000} 억` }}</h4>
+              <h4>
+                매매 가격 :
+                {{
+                  `${Math.floor(priceRange[0] / 10000)}억 ${
+                    priceRange[0] % 10000
+                  }만원 ~ ${Math.floor(priceRange[1] / 10000)}억 ${priceRange[1] % 10000}만원`
+                }}
+              </h4>
             </div>
             <div class="row p-0 m-0">
               <AppLineChart :chart-data="chartData"></AppLineChart>
@@ -66,7 +73,12 @@
                 <tbody v-if="_tableItems" class="table-group-divider">
                   <tr v-for="(item, idx) in _tableItems" :key="idx">
                     <th>{{ item.date }}</th>
-                    <td>{{ item.dealAmount / 10000 }} 억</td>
+                    <td>
+                      {{
+                        `${Math.floor(item.dealAmount / 10000)}억 ${item.dealAmount % 10000}만원`
+                      }}
+                      억
+                    </td>
                     <td>{{ (item.area / 3.3058).toFixed(1) }}</td>
                     <td>{{ item.floor }}</td>
                   </tr>
@@ -233,7 +245,7 @@ const {
 
 // 북마크
 import { useBookmarkStore } from '@/stores/bookmark';
-import { useDebounceFn } from '@vueuse/core';
+import { tryOnBeforeUnmount, useDebounceFn } from '@vueuse/core';
 const bookmarkStore = useBookmarkStore();
 const { bookmarkList } = storeToRefs(bookmarkStore);
 const { dBookmark, aBookmark } = bookmarkStore;
@@ -279,10 +291,12 @@ const newsDataList = ref([]);
 
 // new tabs 파싱
 watch(aptInfo, async v => {
-  const url = `https://land.naver.com/news/search.naver?keyword=${v.gugunName} 부동산&field=1`;
+  const url = `/news/search.naver?keyword=${v.gugunName} 부동산&field=1`;
 
   try {
-    const response = await axios.get(url);
+    const response = await axios.get(url, {
+      withCredentials: true,
+    });
     const parser = new DOMParser();
     const htmlDoc = parser.parseFromString(response.data, 'text/html');
     const sectionHeadline = htmlDoc.querySelector('.headline_list');
@@ -304,6 +318,9 @@ watch(aptInfo, async v => {
   } catch (err) {
     console.error('Error occurred while fetching news:', err);
   }
+});
+tryOnBeforeUnmount(() => {
+  showSideBar.value = false;
 });
 </script>
 

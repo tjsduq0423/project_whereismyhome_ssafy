@@ -20,24 +20,24 @@ export const useHomeChartStore = defineStore('homeChar', () => {
           backgroundColor: '#F99B7D',
           data: [
             ...response.data.map(
-              el => el.dealAmount * 337 + Math.ceil(el.viewCount * 0.8) + el.markCount * 33377,
+              el => el.dealAmount + Math.ceil(el.viewCount * 0.005) + el.markCount * 37 * 3,
             ),
           ],
         },
         {
-          label: '거래량',
-          backgroundColor: '#E76161',
-          data: [...response.data.map(el => el.dealAmount * 337)],
-        },
-        {
           label: '조회수',
           backgroundColor: '#B04759',
-          data: [...response.data.map(el => Math.ceil(el.viewCount * 0.8))],
+          data: [...response.data.map(el => Math.ceil(el.viewCount * 0.005))],
+        },
+        {
+          label: '거래량',
+          backgroundColor: '#E76161',
+          data: [...response.data.map(el => el.dealAmount)],
         },
         {
           label: '북마크',
           backgroundColor: '#8BACAA',
-          data: [...response.data.map(el => el.markCount * 33377)],
+          data: [...response.data.map(el => el.markCount * 37 * 3)],
         },
       ],
     };

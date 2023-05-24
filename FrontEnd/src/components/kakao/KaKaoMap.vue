@@ -8,12 +8,14 @@
 // kakao map 생성.
 import { ref, watch } from 'vue';
 import { storeToRefs } from 'pinia';
-import { tryOnMounted, watchDebounced, useDebounceFn } from '@vueuse/core';
+import { tryOnMounted, watchDebounced } from '@vueuse/core';
 import { useKakaoStore } from '@/stores/kakao';
 import { useLoading } from '@/composables/loading';
+import { useDebounceFn } from '@vueuse/core';
 import { useCookies } from 'vue3-cookies';
 import { plusViewCount } from '@/api/info';
 const { cookies } = useCookies();
+
 const { vLoading } = useLoading();
 const kakaoStore = useKakaoStore();
 const { kakao, mapCenterLatLng } = storeToRefs(kakaoStore);

@@ -21,6 +21,8 @@ public interface BookMarkMapper {
                 .max((long)objects[3])
                 .min((long)objects[4])
                 .aptName(String.valueOf(objects[5]))
+                .lat(String.valueOf(objects[6]))
+                .lng(String.valueOf(objects[7]))
                 .build();
     }
 

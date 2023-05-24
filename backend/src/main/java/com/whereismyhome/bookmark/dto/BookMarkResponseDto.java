@@ -16,4 +16,6 @@ public class BookMarkResponseDto {
     private long max;
     private long min;
     private String aptName;
+    private String lat;
+    private String lng;
 }

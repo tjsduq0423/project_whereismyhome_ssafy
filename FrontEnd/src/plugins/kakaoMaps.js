@@ -9,7 +9,7 @@ const KakaoMapsPlugin = {
     const { kakao } = storeToRefs(kakaoStore);
     script.src = `https://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=${
       import.meta.env.VITE_APP_KAKAOMAP_KEY
-    }&libraries=services,clusterer`;
+    }&libraries=services`;
     script.onload = () => {
       kakao.value = window.kakao;
     };

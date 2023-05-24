@@ -1,6 +1,6 @@
 <template>
   <table class="fs-3 m-0">
-    <thead>
+    <thead class="border-bottom border-3 border-dark">
       <tr>
         <th class="text-center">아파트 이름</th>
         <th class="text-center">지역</th>
@@ -11,8 +11,8 @@
   </table>
   <div ref="tbodyEl" class="infinity">
     <table class="table text-truncate">
-      <tbody class="table-group-divider">
-        <tr v-for="(item, idx) in _items" :key="idx" class="text-truncate fs-4">
+      <tbody>
+        <tr v-for="(item, idx) in _items" :key="idx" class="text-truncate fs-5">
           <td class="text-truncate text-center">
             {{ item.aptName }}
           </td>
@@ -20,7 +20,11 @@
             {{ item.areaName }}
           </td>
           <td class="text-center text-truncate">{{ item.buildYear }}</td>
-          <td class="text-center">{{ item.min / 10000 }}억 ~ {{ item.max / 10000 }} 억</td>
+
+          <td class="text-center">
+            {{ `${Math.floor(item.min / 10000)}억 ${item.min % 10000}만원` }}억 ~
+            {{ `${Math.floor(item.max / 10000)}억 ${item.max % 10000}만원` }} 억
+          </td>
         </tr>
       </tbody>
     </table>
@@ -89,7 +93,7 @@ tr {
   td:nth-child(1),
   th:nth-child(1) {
     padding-left: 16px;
-    min-width: 30vw;
+    min-width: 20vw;
   }
   td:nth-child(2),
   th:nth-child(2) {
@@ -97,11 +101,11 @@ tr {
   }
   td:nth-child(3),
   th:nth-child(3) {
-    min-width: 6vw;
+    min-width: 10vw;
   }
   td:nth-child(4),
   th:nth-child(4) {
-    min-width: 14vw;
+    min-width: 20vw;
   }
 }
 </style>

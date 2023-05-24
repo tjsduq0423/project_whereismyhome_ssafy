@@ -48,14 +48,14 @@
         >
           <div class="container-fluid p-3">
             <div class="row">
-              <h4>
+              <p class="fs-5">
                 매매 가격 :
                 {{
                   `${Math.floor(priceRange[0] / 10000)}억 ${
                     priceRange[0] % 10000
                   }만원 ~ ${Math.floor(priceRange[1] / 10000)}억 ${priceRange[1] % 10000}만원`
                 }}
-              </h4>
+              </p>
             </div>
             <div class="row p-0 m-0">
               <AppLineChart :chart-data="chartData"></AppLineChart>

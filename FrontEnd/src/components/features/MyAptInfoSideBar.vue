@@ -1,28 +1,25 @@
 <template>
   <!-- 로드뷰 + 헤더 + 등등 들어갈 자리 -->
   <div class="sidebar">
-    <div
-      class="aptInfo d-flex flex-column justify-content-center align-items-center"
-      v-if="bookmarkList.length !== 0"
-    >
+    <div class="container-fluid p-0" v-if="bookmarkList.length !== 0">
       <div
         v-for="bookmark in bookmarkList"
         :key="bookmark.aptCode"
-        class="listEl"
+        class="listEl row m-0 p-0"
         @click="changeLatLng(bookmark.lat, bookmark.lng)"
       >
-        <div>{{ bookmark.aptName }}</div>
-        <div>
+        <div class="col-12 fs-5 mt-3">{{ bookmark.aptName }}</div>
+        <div class="col-12">
           <i class="bi bi-cart4"></i>
           {{ `${Math.floor(bookmark.min / 10000)}억 ${bookmark.min % 10000}만원` }} ~
           {{ `${Math.floor(bookmark.max / 10000)}억 ${bookmark.max % 10000}만원` }}
         </div>
-        <div>
+        <div class="col-12 mb-3 d-flex">
           <i class="bi bi-geo-alt-fill"></i>
           {{ bookmark.areaName }}
-          <span> ~ {{ bookmark.buildYear }}</span>
+          <span class="ms-auto"> 건축년도 : {{ bookmark.buildYear }}</span>
         </div>
-        <hr />
+        <hr class="m-0" />
       </div>
     </div>
   </div>
@@ -35,6 +32,7 @@ const bookmarkStore = useBookmarkStore();
 const { bookmarkList, centerlatlng } = storeToRefs(bookmarkStore);
 
 const changeLatLng = (lat, lng) => {
+  console.log('test');
   centerlatlng.value = [lat, lng];
 };
 </script>
@@ -59,7 +57,7 @@ const changeLatLng = (lat, lng) => {
 .bi-cart4::before,
 .bi-geo-alt-fill::before {
   display: inline-block;
-  vertical-align: middle;
+  vertical-align: baseline;
 }
 .listEl {
   &:hover {

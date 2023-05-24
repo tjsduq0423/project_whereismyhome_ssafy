@@ -5,7 +5,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import { storeToRefs } from 'pinia';
 import { tryOnMounted } from '@vueuse/core';
 import { useKakaoStore } from '@/stores/kakao';
@@ -32,9 +32,17 @@ const initMap = () => {
   map.value.setZoomable(false);
   map.value.setKeyboardShortcuts(false);
   map.value.addControl(new kakao.value.maps.ZoomControl(), kakao.value.maps.ControlPosition.RIGHT);
+  kakao.value.maps.event.addListener(map.value, 'click', function (mouseEvent) {
+    if (mouseEvent.target === mouseEvent.currentTarget) {
+      showSideBar.value = false;
+    }
+  });
   settingMarkers();
 };
-
+watch(centerlatlng, v => {
+  const [lat, lng] = v;
+  map.value.setCenter(new kakao.value.maps.LatLng(lat, lng));
+});
 const settingMarkers = () => {
   const imgSize = new kakao.value.maps.Size(35, 40);
   const markerImg = new kakao.value.maps.MarkerImage('/img/apartmentMarker.png', imgSize);
@@ -49,7 +57,7 @@ const settingMarkers = () => {
       if (showSideBar.value === true) showSideBar.value = false;
       try {
         lodaViewLatLng.value = [info.lat, info.lng];
-        await setAptInfo(info.aptCode, info.apartmentName);
+        await setAptInfo(info.aptCode, info.aptName);
         await setAptDealInfo(info.aptCode);
         await setAptRankByCode(info.aptCode);
         await setAptToAmenDistanceInfo(info.aptCode);

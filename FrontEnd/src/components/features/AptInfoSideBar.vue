@@ -301,7 +301,6 @@ watch(aptInfo, async v => {
     const htmlDoc = parser.parseFromString(response.data, 'text/html');
     const sectionHeadline = htmlDoc.querySelector('.headline_list');
     if (!sectionHeadline) return;
-    console.log(sectionHeadline);
     const lis = sectionHeadline.getElementsByTagName('li');
     for (let i = 0; i < Math.min(lis.length, 10); i++) {
       let li = lis[i];

@@ -1,30 +1,42 @@
 # Where Is My Home
 
-목차
-
-## 팀원
-
-
-## 구현 기능
-
-### 기능 1
-
-### 기능 2
-
-### 기능 3
-
-### 기능 4
+## 팀원 - 문준호(FrontEnd) 한성현(BackEnd)
 
 ---
-<br>
-
 ## 기술 스택
 <div style="text-align:center">
-    <img src="https://github.com/tjsduq0423/WhereIsMyHome/assets/66876894/d89b0cc8-baba-497e-a325-b814022d1eca" style="width:500px;"/>
+    <img src="https://github.com/tjsduq0423/WhereIsMyHome/assets/66876894/d89b0cc8-baba-497e-a325-b814022d1eca" style="width:500px; margin-bottom:20px"/>
 </div>
 
 ---
-<br>
+# 구현 기능
+
+### 기능 1
+- 공공데이터 + KaKao Map API fmf 활용한 아파트 정보 조회 시스템
+### 기능 2
+- Chart.js + Vue.js 3 관심도 추적 차트
+### 기능 3
+- OAuth2.0 + SpringSecurity 를 활용한 소셜 로그인 + 인증,인가 보안 시스템
+### 기능 4
+- Haversine Formula(구의 최단거리 알고리즘)을 활용한 아파트 주변 편의시설 정보 제공
+
+---
+# 기능 최적화
+
+### 이벤트 핸들링 최적화 (DeBounce)
+- 
+
+### DB쿼리 최적화 (공간 인덱스)
+- 
+
+### 프로젝트에 적용된 디자인 패턴
+- 
+
+
+### 프로젝트에 적용된 알고리즘 프로젝트 하면서 신경쓴 부분.
+- 추가적으로 적을 내용
+
+---
 
 ## 로그인 & 회원 가입 & 비밀번호찾기
 
@@ -159,4 +171,4 @@
 
 ## 라이센스
 
-MIT &copy; [NoHack](mailto:lbjp114@gmail.com)
+MIT &copy; [MJH&HSH]

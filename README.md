@@ -1,6 +1,12 @@
 # Where Is My Home
 
-## 팀원 - 문준호(FrontEnd) 한성현(BackEnd)
+## Team - 문준호 한성현
+
+|문준호|한성현|
+|:--:|:--:|
+|[<img width="140px" height="140px" src="https://github.com/tjsduq0423/WhereIsMyHome/assets/66876894/c5429942-35f8-47c8-9c57-1b09653fc68b">](https://github.com/tjsduq0423/WhereIsMyHome/assets/66876894/c5429942-35f8-47c8-9c57-1b09653fc68b)|[<img width="140px" height="140px" src="https://github.com/tjsduq0423/WhereIsMyHome/assets/66876894/20318162-ee5a-4696-9844-ce8b6dcb738a">](https://github.com/tjsduq0423/WhereIsMyHome/assets/66876894/20318162-ee5a-4696-9844-ce8b6dcb738a)|
+|팀장(FE)|팀원(BE)|
+|[문준호](https://github.com/tjsduq0423)|[한성현](https://github.com/HanSungHyeon)|
 
 ---
 ## 기술 스택
@@ -26,9 +32,34 @@
 ### 이벤트 핸들링 최적화 (debounce)
 - 과도하게 이벤트 처리 함수(콜백함수)가 호출되지 않도록 하여 부하방지를 위해 쓰이는 방법입니다.
 - 프로젝트에서는 북마크on/off, 카카오 지도 줌, 중심좌표 이동 이벤트 ,아이디 중복체크, 검색어 자동완성, 데이터 필터링 이벤트 등에 널리 쓰이며 이벤트 핸들러의 과도한 데이터 요청으로 인한 부하를 방지하여 프로젝트의 성능을 향상시켰습니다.
+```javascript
+function debounce(func, timeout = 300) {
+  let timer;
+  return function(){
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      func.apply(this);
+    }, timeout);
+  };
+}
+```
 
 ### DB쿼리 최적화 (공간 인덱스)
-- [추가!]
+- 현재 위도 경도를 기준으로 일점 범위 안에 포함된 데이터를 조회하는 과정에서 속도 저하 발생
+- geometry 공간 데이터 타입 중 Point 타입을 사용하여 위도 경도를 저장
+- sptial 공간 인덱스를 사용하여 쿼리 속도 개선
+- 사용된 쿼리 
+```
+    select h.apt_code, h.apartmentName, h.lng, h.lat
+    from HouseInfo h
+    where st_contains(st_buffer(Point(:lng, :lat), :dist), h.localPoint);
+```
+|공간 인덱스 적용 전|공간 인덱스 적용 후|
+|:--:|:--:|
+|<img src ="https://github.com/tjsduq0423/WhereIsMyHome/assets/66876894/b1821f25-2442-4d9f-9796-e644679e192e"/>|<img src="https://github.com/tjsduq0423/WhereIsMyHome/assets/66876894/f9604dcf-112d-4df8-9be8-4686ad9ece1d"/>
+- 약 150배 개선
+    
+
 
 ### 프로젝트에 적용된 디자인 패턴
 ----
@@ -42,7 +73,17 @@ Vue의 Composition API에서의 Proxy 객체는 프록시 패턴과 유사한 �
 ### 프로젝트에 적용된 알고리즘 프로젝트 하면서 신경쓴 부분.
 - [추가!]
 
+<br>
+
 ---
+
+
+## API 문서 - PostMan API 문서
+https://documenter.getpostman.com/view/23655032/2s93m1YPB4#0ee2b2f6-67a6-4ca9-ae1f-5c177e7a834e
+
+<div style="text-align:center" >
+    <img src="https://github.com/tjsduq0423/WhereIsMyHome/assets/66876894/d94a0574-2adb-4de7-a826-b5ec896831bb" style="width:500px" />
+</div>
 
 ## 로그인 & 회원 가입 & 비밀번호찾기
 
